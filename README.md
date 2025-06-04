@@ -140,3 +140,6 @@ Two PHP scripts handle shipment updates:
 - `assets/cPhp/update_single_shipment.php` – Accepts a JSON body containing an
   `order_id` plus optional `provider`, `tracking_no` and `eta` values. It updates
   a single WooCommerce order and is used when editing rows in `shipments.js`.
+- `assets/cPhp/get_shipments_summary.php` – Returns orders with
+  `status=processing`. Results are paginated with `page` and `per_page`
+  parameters.

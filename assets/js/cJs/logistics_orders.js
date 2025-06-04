@@ -21,6 +21,7 @@ $(function(){
   });
 });
 
+// Fetch orders currently in the "processing" state
 function fetchLogisticsOrders(page=1){
   currentPage = page;
   const params = { page, per_page: PER_PAGE };
