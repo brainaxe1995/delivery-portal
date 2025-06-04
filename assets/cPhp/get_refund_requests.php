@@ -1,24 +1,52 @@
 <?php
 // assets/cPhp/get_refund_requests.php
-// Return a list of refund requests for the refund dashboard.
-// In production this would pull from WooCommerce or a database.
-// For this demo we read a local JSON file under uploads/.
+// Fetch WooCommerce refunds for the refund dashboard via REST API
+
+require_once(__DIR__ . '/master-api.php'); // loads $store_url, $consumer_key, $consumer_secret
+
+function callWooAPI($baseUrl, $endpoint, $ck, $cs) {
+    $url = rtrim($baseUrl, '/') . $endpoint;
+    $ch  = curl_init($url);
+
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_HEADER,         true);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, [
+        'Authorization: Basic ' . base64_encode("$ck:$cs"),
+        'Content-Type: application/json',
+    ]);
+
+    $raw = curl_exec($ch);
+
+    if (curl_errno($ch)) {
+        http_response_code(500);
+        echo json_encode(['error' => curl_error($ch)]);
+        exit;
+    }
+
+    $hsize  = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
+    $header = substr($raw, 0, $hsize);
+    $body   = substr($raw, $hsize);
+    curl_close($ch);
+
+    if (preg_match('/^X-WP-TotalPages:\s*(\d+)/mi', $header, $matches)) {
+        header('X-My-TotalPages: ' . $matches[1]);
+    }
+
+    return $body;
+}
+
+// Pagination inputs
+$page     = isset($_GET['page'])     ? (int) $_GET['page']     : 1;
+$per_page = isset($_GET['per_page']) ? (int) $_GET['per_page'] : 20;
+
+$endpoint = "/wp-json/wc/v3/refunds?page={$page}&per_page={$per_page}";
 
 header('Content-Type: application/json; charset=utf-8');
-
-$file = __DIR__ . '/../uploads/refund_requests.json';
-if (!file_exists($file)) {
-    echo json_encode([]);
-    exit;
-}
-
-$raw = file_get_contents($file);
-if ($raw === false) {
-    http_response_code(500);
-    echo json_encode(['error' => 'Failed to read data']);
-    exit;
-}
-
-echo $raw;
+echo callWooAPI(
+    $store_url,
+    $endpoint,
+    $consumer_key,
+    $consumer_secret
+);
 exit;
 ?>

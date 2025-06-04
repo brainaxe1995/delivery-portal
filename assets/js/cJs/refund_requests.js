@@ -10,43 +10,52 @@ $(function(){
   $('#statusFilter').on('change', () => fetchRequests(1));
 });
 
-function fetchRequests(page=1){
+function fetchRequests(page = 1) {
   currentPage = page;
 
   $.ajax({
     url: `${BASE_URL}/assets/cPhp/get_refund_requests.php`,
     method: 'GET',
+    data: { page, per_page: PER_PAGE },
     dataType: 'json',
-    success(list){
+    success(list, _status, xhr) {
       renderTable(list);
+      totalPages = parseInt(xhr.getResponseHeader('X-My-TotalPages'), 10) || 1;
       buildPagination();
       updateUrl(page);
     },
-    error(xhr, status, err){
+    error(xhr, status, err) {
       console.error('Refund fetch failed:', status, err);
     }
   });
 }
 
 function renderTable(list){
-  const filter = $('#statusFilter').val();
   const $tb = $('#refundTable tbody').empty();
-  list.filter(r => !filter || statusOf(r).includes(filter)).forEach(r => {
-    const hist = r.status_history.map(h => `${h.status} (${h.date})`).join('<br>');
-    const proof = r.proof ? `<a href="assets/uploads/${r.proof}" target="_blank">View</a>` : '—';
+
+  if (!list.length) {
+    return $tb.append('<tr><td colspan="4" class="text-center">No refunds found.</td></tr>');
+  }
+
+  list.forEach(r => {
+    const reason = r.reason || '—';
+    const date   = r.date_created ? new Date(r.date_created)
+                      .toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' })
+                      : '';
+    const hist   = date ? `Refunded (${date})` : 'Refunded';
+
     $tb.append(`
       <tr>
-        <td>#${r.order_id}</td>
-        <td>${r.reason}</td>
-        <td>${proof}</td>
+        <td>#${r.parent_id}</td>
+        <td>${reason}</td>
+        <td>—</td>
         <td>${hist}</td>
       </tr>`);
   });
 }
 
 function statusOf(r){
-  if(!Array.isArray(r.status_history) || r.status_history.length===0) return '';
-  return r.status_history[r.status_history.length-1].status;
+  return 'refunded';
 }
 
 function updateUrl(page){

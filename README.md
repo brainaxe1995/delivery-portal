@@ -140,6 +140,14 @@ Two PHP scripts handle shipment updates:
 - `assets/cPhp/update_single_shipment.php` – Accepts a JSON body containing an
   `order_id` plus optional `provider`, `tracking_no` and `eta` values. It updates
   a single WooCommerce order and is used when editing rows in `shipments.js`.
-- `assets/cPhp/get_shipments_summary.php` – Returns orders with
-  `status=processing`. Results are paginated with `page` and `per_page`
-  parameters.
+
+## Migrating Refund Requests Data
+
+Earlier versions of this portal read refund requests from
+`assets/uploads/refund_requests.json`. Refund data is now pulled directly from
+WooCommerce using the REST API. The JSON file is no longer required and can be
+deleted. Run the helper script below or remove the file manually:
+
+```bash
+scripts/remove-refund-json.sh
+```
