@@ -138,6 +138,7 @@ $BASE_URL = rtrim(PROJECT_BASE_URL, '/');
     </footer>
   </main>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   <script src="assets/js/bootstrap.bundle.min.js"></script>
   <script src="assets/js/main.js"></script>
   <script src="assets/js/cJs/invoices.js"></script>
