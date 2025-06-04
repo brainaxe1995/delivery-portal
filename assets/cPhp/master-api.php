@@ -30,9 +30,9 @@ if ($missing) {
     }
 }
 
-$consumer_key    = 'ck_59dee4f09e1b2b675a2cc0507ad0fbec896893ed';
-$consumer_secret = 'cs_71c195e94d621b758725aaae942ed9a6e09bedba';
-$store_url       = 'https://tharavix.com';
+$consumer_key    = getenv('WOOCOMMERCE_CK');
+$consumer_secret = getenv('WOOCOMMERCE_CS');
+$store_url       = getenv('STORE_URL');
 
 if (!$consumer_key || !$consumer_secret || !$store_url) {
     die('Environment variables WOOCOMMERCE_CK, WOOCOMMERCE_CS and STORE_URL must be set.');
