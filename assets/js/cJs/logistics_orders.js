@@ -10,6 +10,7 @@ $(function(){
   fetchLogisticsOrders(p);
 });
 
+// Fetch orders currently in the "processing" state
 function fetchLogisticsOrders(page=1){
   currentPage = page;
   $.ajax({
