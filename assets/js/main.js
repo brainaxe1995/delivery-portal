@@ -1,20 +1,20 @@
 (function () {
   /* ========= Preloader ======== */
-  const preloader = document.querySelectorAll('#preloader')
+  const skeleton = document.querySelectorAll('#skeleton-loader')
 
   // Helper functions exposed globally
   window.showLoader = function () {
-    const el = document.getElementById('preloader')
+    const el = document.getElementById('skeleton-loader')
     if (el) el.style.display = 'flex'
   }
 
   window.hideLoader = function () {
-    const el = document.getElementById('preloader')
+    const el = document.getElementById('skeleton-loader')
     if (el) el.style.display = 'none'
   }
 
   window.addEventListener('load', function () {
-    if (preloader.length) {
+    if (skeleton.length) {
       window.hideLoader()
     }
   })
