@@ -14,7 +14,7 @@ function fetchDeliveredOrders(page) {
   currentPage = page;
 
   $.ajax({
-    url: `${BASE_URL}/assets/cPhp/get_completed_orders.php`,
+    url: `${BASE_URL}/assets/cPhp/get_delivered_orders.php`,
     method: 'GET',
     data: { page, per_page: PER_PAGE },
     dataType: 'json',
