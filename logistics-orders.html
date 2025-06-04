@@ -86,7 +86,7 @@
                         </tr>
                       </thead>
                       <tbody>
-                        <!-- Dynamically injected rows from cancelled_orders.js -->
+                        <!-- Dynamically injected rows from logistics_orders.js -->
                       </tbody>
                     </table>
                   </div>
@@ -94,6 +94,10 @@
                 <!-- end card -->
               </div>
             </div>
+            <!-- Pagination -->
+            <nav>
+              <ul class="base-pagination pagination"></ul>
+            </nav>
           </div>
         </div>
       </section>
@@ -118,7 +122,8 @@
     <script src="assets/js/polyfill.js"></script>
     <script src="assets/js/main.js"></script>
 
-    <!-- Your updated JS that fetches cancelled orders and matches WooCommerce style -->
-    <script src="assets/js/cJs/cancelled_orders.js"></script>
+    <!-- JS to load logistics orders and pagination -->
+    <script src="assets/js/cJs/logistics_orders.js"></script>
+    <script src="assets/js/cJs/pagination.js"></script>
   </body>
 </html>
