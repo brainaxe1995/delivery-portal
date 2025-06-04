@@ -104,7 +104,8 @@ Then open `http://localhost:8000/index.php` in your browser.
 
 ## Running Tests
 
-Install dependencies and run the test suite. Requires Node.js >=18:
+Install dependencies and run the test suite. Requires Node.js >=18.
+You must run `npm install` before `npm test`.
 
 ```bash
 npm install
