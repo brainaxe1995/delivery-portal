@@ -35,10 +35,12 @@ $BASE_URL = rtrim(PROJECT_BASE_URL, '/');
             <div class="col-md-4"><input id="description" class="form-control" placeholder="Description"></div>
             <div class="col-md-2"><button class="btn btn-primary w-100">Add</button></div>
           </form>
-          <table class="table table-bordered">
-            <thead><tr><th>ID</th><th>Supplier</th><th>Product</th><th>Description</th><th>Requested</th></tr></thead>
-            <tbody id="requestsBody"></tbody>
-          </table>
+          <div class="table-responsive">
+            <table class="table table-bordered">
+              <thead><tr><th>ID</th><th>Supplier</th><th>Product</th><th>Description</th><th>Requested</th></tr></thead>
+              <tbody id="requestsBody"></tbody>
+            </table>
+          </div>
         </div>
       </section>
       <footer class="footer">

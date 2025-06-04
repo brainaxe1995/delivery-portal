@@ -30,10 +30,12 @@ $BASE_URL = rtrim(PROJECT_BASE_URL, '/');
             <div class="col-md-3"><input id="lt_time" class="form-control" placeholder="Lead Time (days)" required></div>
             <div class="col-md-3"><button class="btn btn-primary w-100">Save</button></div>
           </form>
-          <table class="table table-bordered">
-            <thead><tr><th>ID</th><th>Product</th><th>Supplier</th><th>Lead Time</th><th>Updated</th></tr></thead>
-            <tbody id="timesBody"></tbody>
-          </table>
+          <div class="table-responsive">
+            <table class="table table-bordered">
+              <thead><tr><th>ID</th><th>Product</th><th>Supplier</th><th>Lead Time</th><th>Updated</th></tr></thead>
+              <tbody id="timesBody"></tbody>
+            </table>
+          </div>
         </div>
       </section>
       <footer class="footer"><script src="assets/js/cJs/footer.js"></script></footer>
