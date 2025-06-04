@@ -8,7 +8,6 @@ $(function() {
     $('#box-low-stock').text(data.low_stock);
     $('#box-revenue').text(`AED ${data.revenue.toFixed(2)}`);
 
-    // Render notifications list
     function renderNotifications(list) {
       const $n = $('#notif-list').empty();
       (list || []).forEach(n => {
@@ -20,10 +19,23 @@ $(function() {
       });
     }
 
-    // Initial notifications
     renderNotifications(data.notifications);
 
-    // Function to render Top 10 list
+    function fetchTrackingNotifications() {
+      $.getJSON(`${BASE_URL}/assets/cPhp/update_tracking.php`, evs => {
+        if (Array.isArray(evs) && evs.length) {
+          const list = evs.map(e => ({
+            message: `Order #${e.order_id}: ${e.event_type}`,
+            link: `/shipments.php?order_id=${e.order_id}`
+          })).concat(data.notifications);
+          renderNotifications(list);
+        }
+      });
+    }
+
+    fetchTrackingNotifications();
+    setInterval(fetchTrackingNotifications, 300000);
+
     function renderTop(list) {
       const $b = $('#top-body').empty();
       (list || []).slice(0,10).forEach((item, i) => {
@@ -46,10 +58,8 @@ $(function() {
       });
     }
 
-    // Initial load (yearly)
     renderTop(data.top_sellers_yearly || data.top_sellers);
 
-    // Toggle Yearly/Monthly
     $('#top-range').on('change', function() {
       const list = (this.value === 'monthly'
         ? (data.top_sellers_monthly || data.top_sellers)

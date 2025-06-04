@@ -99,3 +99,23 @@ function updateUrl(page) {
   const newUrl = `${window.location.pathname}?page=${page}`;
   window.history.replaceState({}, '', newUrl);
 }
+
+/**
+ * Periodically check 17track for status updates
+ */
+function checkTrackingUpdates() {
+  $.getJSON(`${BASE_URL}/assets/cPhp/update_tracking.php`, events => {
+    events.forEach(ev => {
+      const $row = $(`#shipmentsTable tbody tr[data-order-id="${ev.order_id}"]`);
+      if ($row.length) {
+        $row.find('td').eq(4).text(ev.status);
+        $row.find('td').eq(5).text(ev.timestamp || '');
+      }
+    });
+  });
+}
+
+$(function(){
+  checkTrackingUpdates();
+  setInterval(checkTrackingUpdates, 300000); // every 5 minutes
+});
