@@ -104,6 +104,9 @@ while (true) {
 }
 
 $events = [];
+$delayed = [];
+$threshold = 9; // days
+$now = new DateTime('now');
 foreach ($orders as $o) {
     $carrier = $number = '';
     foreach ($o['meta_data'] as $m) {
@@ -121,6 +124,32 @@ foreach ($orders as $o) {
         wooRequest("/wp-json/wc/v3/orders/{$o['id']}", 'PUT', ['status' => 'delivered']);
     }
 
+    // check for delay beyond threshold
+    if ($time) {
+        try {
+            $dt = new DateTime($time);
+            $days = $now->diff($dt)->days;
+            if ($days > $threshold) {
+                $delayed[] = [
+                    'order_id' => $o['id'],
+                    'days_since_event' => $days,
+                    'status' => $status,
+                    'last_event' => $desc,
+                    'timestamp' => $time
+                ];
+
+                $alertEmail = getenv('ALERT_EMAIL');
+                if ($alertEmail) {
+                    @mail(
+                        $alertEmail,
+                        "Shipment Delay for Order #{$o['id']}",
+                        "Order #{$o['id']} delayed {$days} days. Last event: {$desc}"
+                    );
+                }
+            }
+        } catch (Exception $e) {}
+    }
+
     $events[] = [
         'order_id'   => $o['id'],
         'event_type' => $type,
@@ -131,6 +160,6 @@ foreach ($orders as $o) {
 }
 
 header('Content-Type: application/json; charset=utf-8');
-echo json_encode($events);
+echo json_encode(['events' => $events, 'delayed' => $delayed]);
 exit;
 ?>

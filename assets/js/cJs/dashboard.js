@@ -22,13 +22,24 @@ $(function() {
     renderNotifications(data.notifications);
 
     function fetchTrackingNotifications() {
-      $.getJSON(`${BASE_URL}/assets/cPhp/update_tracking.php`, evs => {
-        if (Array.isArray(evs) && evs.length) {
-          const list = evs.map(e => ({
+      $.getJSON(`${BASE_URL}/assets/cPhp/update_tracking.php`, res => {
+        const events  = Array.isArray(res) ? res : (res.events || []);
+        const delayed = Array.isArray(res) ? [] : (res.delayed || []);
+        let list = [];
+        if (events.length) {
+          list = list.concat(events.map(e => ({
             message: `Order #${e.order_id}: ${e.event_type}`,
             link: `/shipments.php?order_id=${e.order_id}`
-          })).concat(data.notifications);
-          renderNotifications(list);
+          })));
+        }
+        if (delayed.length) {
+          list = list.concat(delayed.map(d => ({
+            message: `Order #${d.order_id} delayed ${d.days_since_event} days`,
+            link: `/shipments.php?order_id=${d.order_id}`
+          })));
+        }
+        if (list.length) {
+          renderNotifications(list.concat(data.notifications));
         }
       });
     }
