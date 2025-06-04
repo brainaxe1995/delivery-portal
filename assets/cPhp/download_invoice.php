@@ -30,22 +30,6 @@ function output_pdf($html, $localFile, $id){
     echo $pdfContent;
 }
 
-function output_pdf($html, $localFile, $id){
-    $pdf = new TCPDF();
-    $pdf->SetCreator('Delivery Portal');
-    $pdf->SetAuthor('Delivery Portal');
-    $pdf->SetTitle('Invoice #' . $id);
-    $pdf->SetMargins(15, 15, 15);
-    $pdf->AddPage();
-    $pdf->writeHTML($html, true, false, true, false, '');
-    $pdf->Output($localFile, 'F');
-
-    $pdfContent = file_get_contents($localFile);
-    header('Content-Type: application/pdf');
-    header('Content-Disposition: attachment; filename="invoice-' . $id . '.pdf"');
-    header('Content-Length: ' . strlen($pdfContent));
-    echo $pdfContent;
-}
 
 $id = isset($_GET['id']) ? (int) $_GET['id'] : 0;
 if (!$id) {
@@ -179,6 +163,8 @@ if (!$order) {
 // --- Build HTML invoice template ---
 $name   = trim(($order['billing']['first_name'] ?? '') . ' ' . ($order['billing']['last_name'] ?? ''));
 $billing = $order['billing'] ?? [];
+$billingAddress1 = $billing['address_1'] ?? '';
+$billingCityPostcode = ($billing['city'] ?? '') . ' ' . ($billing['postcode'] ?? '');
 $currency = $order['currency'] ?? '$';
 $itemsHtml = '';
 foreach ($order['line_items'] ?? [] as $it) {
@@ -211,8 +197,8 @@ th { background: #f0f0f0; }
   <h1>Invoice #$id</h1>
   <div class="address">
     <strong>$name</strong><br/>
-    {$billing['address_1'] ?? ''}<br/>
-    {$billing['city'] ?? ''} {$billing['postcode'] ?? ''}
+    {$billingAddress1}<br/>
+    {$billingCityPostcode}
   </div>
 </div>
 <table class="invoice-table">
