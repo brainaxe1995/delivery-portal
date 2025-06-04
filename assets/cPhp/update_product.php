@@ -20,8 +20,21 @@ if (!$id) {
 $fields = [];
 if (isset($data['price']))  $fields['regular_price'] = (string)$data['price'];
 if (isset($data['stock']))  $fields['stock_quantity'] = (int)$data['stock'];
+
 if (isset($data['status'])) $fields['stock_status']   = $data['status'];
 if (isset($data['moq']))   $fields['meta_data'] = [['key' => 'moq', 'value' => (int)$data['moq']]];
+
+if (isset($data['status'])) {
+    $allowedStatuses = ['instock', 'outofstock', 'discontinued'];
+    if (!in_array($data['status'], $allowedStatuses, true)) {
+        http_response_code(400);
+        header('Content-Type: application/json; charset=utf-8');
+        echo json_encode(['error' => 'Invalid status']);
+        exit;
+    }
+    $fields['stock_status'] = $data['status'];
+}
+
 
 if (empty($fields)) {
     http_response_code(400);

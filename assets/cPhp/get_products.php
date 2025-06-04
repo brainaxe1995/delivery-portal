@@ -47,6 +47,13 @@ if (is_array($products)) {
     unset($p);
 }
 
+// Optional stock status filter
+$status = $_GET['status'] ?? '';
+$allowed = ['instock', 'outofstock', 'discontinued'];
+if ($status && in_array($status, $allowed, true)) {
+    $endpoint .= "&stock_status={$status}";
+}
+
 header('Content-Type: application/json; charset=utf-8');
 echo json_encode($products);
 exit;
