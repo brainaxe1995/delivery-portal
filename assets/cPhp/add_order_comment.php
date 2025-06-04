@@ -16,10 +16,21 @@ $fileUrl = '';
 if (!empty($_FILES['file']['tmp_name'])) {
   $uploaddir = __DIR__ . '/../uploads/';
   if (!is_dir($uploaddir)) mkdir($uploaddir, 0755, true);
-  $dest = $uploaddir . basename($_FILES['file']['name']);
+
+  $origName = $_FILES['file']['name'];
+  $ext = strtolower(pathinfo($origName, PATHINFO_EXTENSION));
+  $allowed = ['jpg', 'jpeg', 'png', 'gif', 'pdf'];
+  if (!in_array($ext, $allowed)) {
+    http_response_code(400);
+    echo json_encode(['error' => 'Invalid file type']);
+    exit;
+  }
+
+  $uniqueName = uniqid('', true) . '.' . $ext;
+  $dest = $uploaddir . $uniqueName;
+
   if (move_uploaded_file($_FILES['file']['tmp_name'], $dest)) {
-    // Use your actual public URL path here
-    $fileUrl = PROJECT_BASE_URL . '/uploads/' . basename($_FILES['file']['name']);
+    $fileUrl = PROJECT_BASE_URL . '/uploads/' . $uniqueName;
   }
 }
 
