@@ -5,9 +5,12 @@
   border-spacing: 0px;
 
   & > :not(caption) > * > * {
-    padding: 15px 0;
+    padding: 0.75rem;
     border-bottom-color: $light;
     vertical-align: middle;
+    @media #{$xs} {
+      padding: 0.5rem;
+    }
   }
   & > :not(:last-child) > :last-child > * {
     border-bottom-color: $light;
@@ -34,7 +37,7 @@
 
   td {
     &.min-width {
-      padding: 5px;
+      padding: 0.5rem;
 
       @media #{$xs} {
         min-width: 150px;
