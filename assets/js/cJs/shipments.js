@@ -144,7 +144,10 @@ function updateUrl(page) {
  * Periodically check 17track for status updates
  */
 function checkTrackingUpdates() {
-  $.getJSON(`${BASE_URL}/assets/cPhp/update_tracking.php`, events => {
+  $.getJSON(`${BASE_URL}/assets/cPhp/update_tracking.php`, data => {
+    const events  = Array.isArray(data) ? data : (data.events || []);
+    const delayed = Array.isArray(data) ? [] : (data.delayed || []);
+
     events.forEach(ev => {
       const $row = $(`#shipmentsTable tbody tr[data-order-id="${ev.order_id}"]`);
       if ($row.length) {
@@ -152,6 +155,21 @@ function checkTrackingUpdates() {
         $row.find('td').eq(5).text(ev.timestamp || '');
       }
     });
+
+    // highlight delayed rows & show alert message
+    const $alert = $('#shipmentAlerts');
+    if (delayed.length) {
+      const msgs = [];
+      delayed.forEach(d => {
+        const $row = $(`#shipmentsTable tbody tr[data-order-id="${d.order_id}"]`);
+        if ($row.length) $row.addClass('table-warning');
+        msgs.push(`Order #${d.order_id} delayed ${d.days_since_event} days`);
+      });
+      $alert.removeClass('d-none').html(msgs.join('<br>'));
+    } else {
+      $('#shipmentsTable tbody tr').removeClass('table-warning');
+      $alert.addClass('d-none').empty();
+    }
   });
 }
 

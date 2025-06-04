@@ -68,6 +68,9 @@ $BASE_URL = rtrim(PROJECT_BASE_URL, '/');
           </div>
         </div>
 
+        <!-- Alerts -->
+        <div id="shipmentAlerts" class="alert alert-warning d-none"></div>
+
         <!-- Shipments Table Card -->
         <div class="card-style mb-30">
           <div class="card-body p-0">

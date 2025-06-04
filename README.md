@@ -82,6 +82,7 @@ The PHP scripts under `assets/cPhp` expect the following environment variables t
 - `WOOCOMMERCE_CS` – WooCommerce consumer secret
 - `STORE_URL` – URL of your WooCommerce store
 - `TRACK17_APIKEY` – API key for communicating with [17TRACK](https://www.17track.net/)
+- `ALERT_EMAIL`  – optional address to email when a shipment delay is detected
 
 Create a `.env` file in the project root containing these variables and export them in your server environment before running the application. If `WOOCOMMERCE_CK`, `WOOCOMMERCE_CS`, or `STORE_URL` are unset you will see the error message `Environment variables WOOCOMMERCE_CK, WOOCOMMERCE_CS and STORE_URL must be set.` when a PHP page loads:
 
