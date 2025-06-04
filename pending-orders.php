@@ -103,14 +103,13 @@
     <script src="assets/js/world-merc.js"></script>
     <script src="assets/js/polyfill.js"></script>
     <script src="assets/js/main.js"></script>
-    <!-- Our custom JS files for handling orders & pagination -->
-    <script src="assets/js/main.js"></script>
 <script>
   const BASE_URL = "<?php
     include 'assets/cPhp/server-config.php';
     echo rtrim(PROJECT_BASE_URL, '/');
   ?>";
 </script>
+    <!-- Our custom JS files for handling orders & pagination -->
 <script src="assets/js/cJs/pending_orders.js"></script>
     <script src="assets/js/cJs/pagination.js"></script>
   </body>
