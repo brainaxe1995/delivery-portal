@@ -5,6 +5,9 @@
   "repository": "https://github.com/PlainAdmin/plainadmin.git",
   "author": "plainadmin team",
   "license": "MIT",
+  "engines": {
+    "node": ">=18"
+  },
   "devDependencies": {
     "browser-sync": "^3.0.4",
     "gulp": "^5.0.1",
