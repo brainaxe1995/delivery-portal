@@ -36,6 +36,17 @@ if (isset($data['status'])) {
 }
 
 
+$meta = [];
+if (isset($data['packaging_info_url'])) {
+    $meta[] = ['key' => '_packaging_info_url', 'value' => $data['packaging_info_url']];
+}
+if (isset($data['safety_sheet_url'])) {
+    $meta[] = ['key' => '_safety_sheet_url', 'value' => $data['safety_sheet_url']];
+}
+if ($meta) {
+    $fields['meta_data'] = $meta;
+}
+
 if (empty($fields)) {
     http_response_code(400);
     header('Content-Type: application/json; charset=utf-8');

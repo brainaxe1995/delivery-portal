@@ -54,6 +54,35 @@ if ($status && in_array($status, $allowed, true)) {
     $endpoint .= "&stock_status={$status}";
 }
 
+$json = callWooAPI($store_url, $endpoint, $consumer_key, $consumer_secret);
+$products = json_decode($json, true);
+
+if (is_array($products)) {
+    foreach ($products as &$p) {
+        if (($p['type'] ?? '') === 'variable') {
+            $varResp = callWooAPI(
+                $store_url,
+                "/wp-json/wc/v3/products/{$p['id']}/variations?per_page=100",
+                $consumer_key,
+                $consumer_secret
+            );
+            $vars = json_decode($varResp, true);
+            if (is_array($vars)) {
+                $p['variant_attributes'] = array_map(function($v){
+                    return $v['attributes'];
+                }, $vars);
+            }
+        }
+    }
+    header('Content-Type: application/json; charset=utf-8');
+    echo json_encode($products);
+    exit;
+}
+
 header('Content-Type: application/json; charset=utf-8');
+
+echo $json;
+
 echo json_encode($products);
+
 exit;

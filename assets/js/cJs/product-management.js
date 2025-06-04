@@ -52,7 +52,11 @@ function fetchProducts(page = 1) {
     error(_, __, err) {
       console.error('📦 Fetch failed:', err);
       $('#products-table tbody').html(
+
+        `<tr><td colspan="9" class="text-center">Error loading products.</td></tr>`
+
         `<tr><td colspan="8" class="text-center">Error loading products.</td></tr>`
+
       );
     }
   });
@@ -71,16 +75,25 @@ function renderTable() {
   const $tb = $('#products-table tbody').empty();
   if (!filtered.length) {
     return $tb.append(
+
+      `<tr><td colspan="9" class="text-center">No products found.</td></tr>`
+
       `<tr><td colspan="8" class="text-center">No products found.</td></tr>`
+
     );
   }
 
   filtered.forEach(p => {
+    const variants = Array.isArray(p.variant_attributes)
+      ? p.variant_attributes.map(v => v.map(a => `${a.name}: ${a.option}`).join(' / ')).join('; ')
+      : '';
     $tb.append(`
       <tr>
         <td>${escapeHtml(p.id)}</td>
         <td><img src="${escapeHtml(p.images?.[0]?.src || '')}" width="50"/></td>
         <td>${escapeHtml(p.name)}</td>
+        <td>${escapeHtml(p.sku || '')}</td>
+        <td>${escapeHtml(variants)}</td>
         <td>${escapeHtml(p.stock_quantity ?? 'N/A')}</td>
         <td>${escapeHtml(p.price)}</td>
         <td>${escapeHtml(p.moq ?? '')}</td>
@@ -127,6 +140,8 @@ $(document).on('click', '.edit-btn', function() {
       $('#edit-moq').val(moqMeta ? moqMeta.value : '');
       $('#edit-stock').val(p.stock_quantity ?? '');
       $('#edit-status').val(p.stock_status || 'instock');
+      $('#edit-packaging-url').val(p.packaging_info_url || '');
+      $('#edit-safety-url').val(p.safety_sheet_url || '');
       new bootstrap.Modal($('#editProductModal')).show();
     })
     .fail(xhr => {
@@ -142,7 +157,9 @@ $('#editProductForm').submit(function(e){
     price: $('#edit-price').val(),
     moq:   $('#edit-moq').val(),
     stock: $('#edit-stock').val(),
-    status: $('#edit-status').val()
+    status: $('#edit-status').val(),
+    packaging_info_url: $('#edit-packaging-url').val(),
+    safety_sheet_url: $('#edit-safety-url').val()
   };
 
   $.ajax({
