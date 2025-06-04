@@ -21,6 +21,10 @@ $(function(){
     const id = $(this).data('id');
     deleteInvoice(id);
   });
+  $('#invoiceTable').on('click', '.view-invoice', function(){
+    const id = $(this).data('id');
+    viewInvoice(id);
+  });
 });
 
 function fetchInvoices(page=1){
@@ -45,6 +49,7 @@ function fetchInvoices(page=1){
           <td>${inv.status}</td>
           <td>${inv.date}</td>
           <td><a href="${BASE_URL}/assets/cPhp/download_invoice.php?id=${inv.id}" data-id="${inv.id}" class="btn btn-sm btn-primary invoice-download">PDF</a></td>
+          <td><button class="btn btn-sm btn-info view-invoice" data-id="${inv.id}">View</button></td>
           <td><button class="btn btn-sm btn-danger delete-invoice" data-id="${inv.id}">Delete</button></td>
         </tr>`;
       });
@@ -152,6 +157,48 @@ function deleteInvoice(id){
     fetchInvoices(page);
   }).fail(xhr => {
     alert('Delete failed: ' + (xhr.responseJSON?.error || xhr.statusText));
+  });
+}
+
+function viewInvoice(id){
+  $.ajax({
+    url: `${BASE_URL}/assets/cPhp/get_invoices.php`,
+    method: 'GET',
+    data: {id, per_page: 1000},
+    dataType: 'json'
+  }).done(res => {
+    const inv = Array.isArray(res) ? res.find(v => String(v.id) === String(id)) : res;
+    if(!inv){
+      alert('Invoice not found');
+      return;
+    }
+    const items = Array.isArray(inv.items) ? inv.items : [];
+    let html = '';
+    if(items.length){
+      items.forEach(it => {
+        html += `<tr>
+          <td>${it.orderNumber || ''}</td>
+          <td>${it.trackingCode || ''}</td>
+          <td>${it.shippingProof || ''}</td>
+          <td>${it.customerName || ''}</td>
+          <td>${it.address || ''}</td>
+          <td>${it.countryName || ''}</td>
+          <td>${it.productName || ''}</td>
+          <td>${it.stripe || ''}</td>
+          <td>${it.productCost || ''}</td>
+          <td>${it.shippingCost || ''}</td>
+          <td>${it.totalCost || ''}</td>
+          <td>${it.note || ''}</td>
+        </tr>`;
+      });
+    } else {
+      html = '<tr><td colspan="12" class="text-center">No items</td></tr>';
+    }
+    $('#viewItemsTable tbody').html(html);
+    $('#viewInvoiceModal .modal-title').text('Invoice #' + inv.id);
+    new bootstrap.Modal($('#viewInvoiceModal')).show();
+  }).fail(xhr => {
+    alert('Failed to fetch invoice: ' + (xhr.responseJSON?.error || xhr.statusText));
   });
 }
 
