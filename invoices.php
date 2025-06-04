@@ -59,29 +59,36 @@ $BASE_URL = rtrim(PROJECT_BASE_URL, '/');
 
     <!-- Invoice Modal -->
     <div class="modal fade" id="invoiceModal" tabindex="-1" aria-hidden="true">
-      <div class="modal-dialog">
+      <div class="modal-dialog modal-fullscreen">
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title">Create Invoice</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
           </div>
           <div class="modal-body">
-            <div class="mb-3">
-              <label class="form-label">Customer</label>
-              <input type="text" class="form-control" id="invCustomer">
+            <div class="table-responsive">
+              <table class="table table-bordered" id="itemsTable">
+                <thead class="table-light">
+                  <tr>
+                    <th>Order Number</th>
+                    <th>Tracking Code</th>
+                    <th>Shipping Proof</th>
+                    <th>Customer Name</th>
+                    <th>Address</th>
+                    <th>Country Name</th>
+                    <th>Product Name</th>
+                    <th>Stripe</th>
+                    <th>Product Cost</th>
+                    <th>Shipping Cost</th>
+                    <th>Total Cost</th>
+                    <th>Note</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
             </div>
-            <div class="mb-3">
-              <label class="form-label">Amount</label>
-              <input type="number" step="0.01" class="form-control" id="invAmount">
-            </div>
-            <div class="mb-3">
-              <label class="form-label">Status</label>
-              <input type="text" class="form-control" id="invStatus">
-            </div>
-            <div class="mb-3">
-              <label class="form-label">Date</label>
-              <input type="date" class="form-control" id="invDate">
-            </div>
+            <button type="button" class="btn btn-secondary" id="addItem">Add</button>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-primary" id="saveInvoice">Save</button>
