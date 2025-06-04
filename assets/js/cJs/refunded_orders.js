@@ -1,4 +1,4 @@
-// assets/js/cJs/delivered_orders.js
+// assets/js/cJs/refunded_orders.js
 
 let currentPage = 1;
 let totalPages  = 1;
@@ -7,14 +7,14 @@ const PER_PAGE  = 20;
 $(document).ready(function() {
   const params   = new URLSearchParams(window.location.search);
   const pageParm = parseInt(params.get('page'), 10) || 1;
-  fetchDeliveredOrders(pageParm);
+  fetchRefundedOrders(pageParm);
 });
 
-function fetchDeliveredOrders(page) {
+function fetchRefundedOrders(page) {
   currentPage = page;
 
   $.ajax({
-    url: `${BASE_URL}/assets/cPhp/get_delivered_orders.php`,
+    url: `${BASE_URL}/assets/cPhp/get_refunded_orders.php`,
     method: 'GET',
     data: { page, per_page: PER_PAGE },
     dataType: 'json',
@@ -25,8 +25,8 @@ function fetchDeliveredOrders(page) {
       updateUrl(page);
     },
     error(xhr, status, err) {
-      console.error('Error fetching delivered orders:', status, err);
-      alert('❌ Could not load delivered orders');
+      console.error('Error fetching refunded orders:', status, err);
+      alert('❌ Could not load refunded orders');
     }
   });
 }
