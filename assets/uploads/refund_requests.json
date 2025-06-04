@@ -1,0 +1,23 @@
+[
+  {
+    "id": 1,
+    "order_id": 2351,
+    "reason": "Item damaged during shipping",
+    "proof": "damage1.png",
+    "status_history": [
+      {"status": "requested", "date": "2024-05-01"},
+      {"status": "approved", "date": "2024-05-02"},
+      {"status": "refunded", "date": "2024-05-03"}
+    ]
+  },
+  {
+    "id": 2,
+    "order_id": 2352,
+    "reason": "Wrong size received",
+    "proof": "size_issue.jpg",
+    "status_history": [
+      {"status": "requested", "date": "2024-06-05"},
+      {"status": "denied", "date": "2024-06-07"}
+    ]
+  }
+]

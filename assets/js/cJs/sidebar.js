@@ -42,6 +42,7 @@ const sidebarHTML = `
           <li><a href="delivered-orders.php">Delivered Orders</a></li>
           <li><a href="returned-orders.php">Returned Orders</a></li>
           <li><a href="refunded-orders.php">Refunded Orders</a></li>
+          <li><a href="refund-dashboard.php">Refund Dashboard</a></li>
           <li><a href="cancelled-orders.php">Cancelled Orders</a></li>
           <li><a href="orders.php">Orders</a></li>
           <li><a href="shipments.php">shipments</a></li>
@@ -50,6 +51,22 @@ const sidebarHTML = `
         </ul>
       </li>
       <span class="divider"><hr /></span>
+      <!-- Payments & Billing -->
+      <li class="nav-item nav-item-has-children">
+        <a href="#0" class="collapsed" data-bs-toggle="collapse" data-bs-target="#ddmenu_pay" aria-controls="ddmenu_pay" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="icon">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M2 4.16667C2 3.24619 2.74619 2.5 3.66667 2.5H16.3333C17.2538 2.5 18 3.24619 18 4.16667V15.8333C18 16.7538 17.2538 17.5 16.3333 17.5H3.66667C2.74619 17.5 2 16.7538 2 15.8333V4.16667Z" />
+              <path d="M2 6.66667H18" />
+            </svg>
+          </span>
+          <span class="text">Payments & Billing</span>
+        </a>
+        <ul id="ddmenu_pay" class="collapse dropdown-nav">
+          <li><a href="invoices.php">Invoices</a></li>
+          <li><a href="payment-terms.php">Payment Terms</a></li>
+        </ul>
+      </li>
       <!-- Additional sidebar sections can be added here -->
     </ul>
   </nav>

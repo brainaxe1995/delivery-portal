@@ -1,0 +1,5 @@
+[
+  {"id":1,"name":"Net 30","description":"Payment due within 30 days"},
+  {"id":2,"name":"Net 15","description":"Payment due within 15 days"},
+  {"id":3,"name":"Prepaid","description":"Payment required before shipment"}
+]
