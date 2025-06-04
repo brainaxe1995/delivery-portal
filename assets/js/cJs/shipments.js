@@ -28,6 +28,9 @@ $(function(){
   $('#manifestForm').submit(function(e){
     e.preventDefault();
     const fd = new FormData(this);
+    const $btn = $(this).find('button[type="submit"]');
+    $btn.prop('disabled', true);
+    window.showLoader();
     $.ajax({
       url: `${BASE_URL}/assets/cPhp/upload_manifest.php`,
       method: 'POST',
@@ -45,6 +48,10 @@ $(function(){
     .fail((xhr, ts, err) => {
       console.error('Upload failed:', err, xhr.responseText);
       alert('Upload failed: ' + (xhr.responseJSON?.error || err));
+    })
+    .always(() => {
+      $btn.prop('disabled', false);
+      window.hideLoader();
     });
   });
 
@@ -55,6 +62,10 @@ $(function(){
     const provider = $row.find('.provider-select').val()?.trim() || '';
     const trackNo  = $row.find('.tracking-code-input').val()?.trim() || '';
     const eta      = $row.find('.eta-input').val()?.trim() || '';
+
+    const $btn = $(this);
+    $btn.prop('disabled', true);
+    window.showLoader();
 
     $.ajax({
       url: `${BASE_URL}/assets/cPhp/update_single_shipment.php`,
@@ -71,6 +82,10 @@ $(function(){
     .fail(xhr => {
       console.error('Update failed:', xhr.responseText);
       alert('Failed to update shipment');
+    })
+    .always(() => {
+      $btn.prop('disabled', false);
+      window.hideLoader();
     });
   });
 });
@@ -82,6 +97,7 @@ function fetchShipments(page = 1) {
   currentPage = page;
 
   $.ajax({
+    beforeSend: window.showLoader,
     url: `${BASE_URL}/assets/cPhp/get_shipments_summary.php`,
     method: 'GET',
     data: { page, per_page: PER_PAGE },
@@ -92,6 +108,7 @@ function fetchShipments(page = 1) {
       totalPages = parseInt(xhr.getResponseHeader('X-My-TotalPages'), 10) || 1;
       buildPagination();
       updateUrl(currentPage);
+      window.hideLoader();
     },
 
     success(list) {
