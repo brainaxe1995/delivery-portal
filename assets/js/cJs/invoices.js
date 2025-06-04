@@ -58,25 +58,11 @@ function fetchInvoices(page=1){
   });
 }
 
-// handle download button clicks to surface 404 errors
-$(document).on('click', '.invoice-download', function(e) {
+// handle download button clicks
+$(document).on('click', '.invoice-download', function(e){
   e.preventDefault();
-  const url = $(this).attr('href');
-  const id  = $(this).data('id');
-  fetch(url)
-    .then(r => {
-      if (!r.ok) throw new Error('Invoice not found');
-      return r.blob();
-    })
-    .then(blob => {
-      const a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      a.download = `invoice-${id}.pdf`;
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-    })
-    .catch(err => alert(err.message));
+  const id = $(this).data('id');
+  generateInvoicePdf(id);
 });
 
 function openAddInvoice(){
@@ -202,5 +188,44 @@ function viewInvoice(id){
   });
 }
 
+function generateInvoicePdf(id){
+  if(typeof html2pdf === "undefined"){
+    window.location = `${BASE_URL}/assets/cPhp/download_invoice.php?id=${id}`;
+    return;
+  }
+  $.ajax({
+    url: `${BASE_URL}/assets/cPhp/get_invoices.php`,
+    method: "GET",
+    data: {id, per_page: 1000},
+    dataType: "json"
+  }).done(res => {
+    const inv = Array.isArray(res) ? res.find(v => String(v.id) === String(id)) : res;
+    if(!inv){
+      alert("Invoice not found");
+      return;
+    }
+    const items = Array.isArray(inv.items) ? inv.items : [];
+    let rows = "";
+    if(items.length){
+      items.forEach(it => {
+        rows += `<tr><td>${it.orderNumber || ''}</td><td>${it.productName || ''}</td><td class="amount">${it.totalCost || ''}</td></tr>`;
+      });
+    } else {
+      rows = '<tr><td colspan="3" class="text-center">No items</td></tr>';
+    }
+    const wrapper = $(`<div style=\"display:none\"></div>`);
+    wrapper.html(`\n  <h1>Invoice #${inv.id}</h1>\n  <p><strong>Customer:</strong> ${inv.customer || ''}</p>\n  <p><strong>Date:</strong> ${inv.date || ''}</p>\n  <table style=\"width:100%;border-collapse:collapse\" border=\"1\" cellpadding=\"4\"><thead><tr><th>Order</th><th>Product</th><th>Total</th></tr></thead><tbody>${rows}</tbody><tfoot><tr><td colspan=\"2\" class=\"amount\"><strong>Total</strong></td><td class=\"amount\">${inv.amount}</td></tr></tfoot></table>`);
+    $('body').append(wrapper);
+    html2pdf().set({filename:`invoice-${id}.pdf`}).from(wrapper[0]).save().then(() => wrapper.remove()).catch(() => {
+      wrapper.remove();
+      window.location = `${BASE_URL}/assets/cPhp/download_invoice.php?id=${id}`;
+    });
+  }).fail(xhr => {
+    alert('Failed to fetch invoice: ' + (xhr.responseJSON?.error || xhr.statusText));
+  });
+}
+
+window.generateInvoicePdf = generateInvoicePdf;
 // expose for pagination.js
 window.fetchPendingOrders = fetchInvoices;
+
