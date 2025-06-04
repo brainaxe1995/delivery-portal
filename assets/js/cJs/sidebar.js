@@ -99,6 +99,25 @@ const sidebarHTML = `
           <li><a href="logistics-orders.html">Logistics Orders</a></li>
         </ul>
       </li>
+
+      <!-- Sourcing & Pricing -->
+      <li class="nav-item nav-item-has-children">
+        <a href="#0" class="collapsed" data-bs-toggle="collapse" data-bs-target="#ddmenu_sourcing" aria-controls="ddmenu_sourcing" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="icon">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M10 1.667L12.5 6.667H17.5L13.75 10L15 15L10 12.5L5 15L6.25 10L2.5 6.667H7.5L10 1.667Z" />
+            </svg>
+          </span>
+          <span class="text">Sourcing & Pricing</span>
+        </a>
+        <ul id="ddmenu_sourcing" class="collapse dropdown-nav">
+          <li><a href="new-product-requests.php">Product Requests</a></li>
+          <li><a href="supplier-pricing.php">Supplier Pricing</a></li>
+          <li><a href="lead-times.php">Lead Times</a></li>
+          <li><a href="factory-documents.php">Factory Docs</a></li>
+        </ul>
+      </li>
+
       <span class="divider"><hr /></span>
       <!-- Payments & Billing -->
       <li class="nav-item nav-item-has-children">
