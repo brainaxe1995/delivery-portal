@@ -1,7 +1,7 @@
 <?php
-// get_pending_orders.php
+// get_refunded_orders.php
 //
-// Fetches WooCommerce orders with status=processing ("New Orders")
+// Fetches WooCommerce orders with status=pending
 // and re-emits the X-My-TotalPages header so JS can paginate correctly.
 
 require_once(__DIR__ . '/master-api.php'); // loads $store_url, $consumer_key, $consumer_secret

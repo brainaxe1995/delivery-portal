@@ -1,5 +1,5 @@
 <?php
-// portal/assets/cPhp/get_delivered_orders.php
+// portal/assets/cPhp/get_delivered_order.php
 require_once __DIR__ . '/master-api.php';
 
 function callWooAPI($baseUrl, $endpoint, $ck, $cs) {

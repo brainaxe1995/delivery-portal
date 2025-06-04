@@ -1,5 +1,5 @@
 <?php
-// portal/assets/cPhp/upload_manifest.php
+// portal/assets/cPhp/update_shipment.php
 require_once __DIR__ . '/master-api.php';
 
 if (empty($_FILES['manifest']) || $_FILES['manifest']['error']) {
