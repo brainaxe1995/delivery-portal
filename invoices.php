@@ -29,10 +29,9 @@ $BASE_URL = rtrim(PROJECT_BASE_URL, '/');
     </header>
     <section class="table-components">
       <div class="container-fluid">
-        <div class="title-wrapper pt-30 mb-3">
-          <div class="row align-items-center">
-            <div class="col-md-6"><h2>Invoices</h2></div>
-          </div>
+        <div class="title-wrapper pt-30 mb-3 d-flex justify-content-between align-items-center">
+          <h2>Invoices</h2>
+          <button id="addInvoice" class="main-btn primary-btn btn-hover btn-sm">Create Invoice</button>
         </div>
         <div class="card-style mb-30">
           <div class="table-responsive">
@@ -45,6 +44,7 @@ $BASE_URL = rtrim(PROJECT_BASE_URL, '/');
                   <th>Status</th>
                   <th>Date</th>
                   <th>Download</th>
+                  <th>Delete</th>
                 </tr>
               </thead>
               <tbody></tbody>
@@ -56,6 +56,39 @@ $BASE_URL = rtrim(PROJECT_BASE_URL, '/');
         </div>
       </div>
     </section>
+
+    <!-- Invoice Modal -->
+    <div class="modal fade" id="invoiceModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Create Invoice</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+          <div class="modal-body">
+            <div class="mb-3">
+              <label class="form-label">Customer</label>
+              <input type="text" class="form-control" id="invCustomer">
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Amount</label>
+              <input type="number" step="0.01" class="form-control" id="invAmount">
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Status</label>
+              <input type="text" class="form-control" id="invStatus">
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Date</label>
+              <input type="date" class="form-control" id="invDate">
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" id="saveInvoice">Save</button>
+          </div>
+        </div>
+      </div>
+    </div>
     <footer class="footer">
       <script src="assets/js/cJs/footer.js"></script>
     </footer>
