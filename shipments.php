@@ -57,7 +57,7 @@ $BASE_URL = rtrim(PROJECT_BASE_URL, '/');
             <div class="col-md-6">
               <h2 class="page-title">Logistics & Shipping</h2>
             </div>
-            <div class="col-md-6 text-end d-flex align-items-center justify-content-end">
+            <div class="filter-bar col-md-6 text-end d-flex align-items-center justify-content-end">
               <label for="orderSearch" class="me-2 mb-0">Search:</label>
               <input id="orderSearch" type="text" class="form-control form-control-sm me-2"
                      style="width:120px;" placeholder="Order ID" />

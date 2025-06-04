@@ -34,7 +34,7 @@ $BASE_URL = rtrim(PROJECT_BASE_URL, '/');
           <div class="col">
             <h2>Order Management</h2>
           </div>
-          <div class="col-auto d-flex align-items-center">
+          <div class="filter-bar col-auto d-flex align-items-center">
             <label for="statusFilter" class="me-2 mb-0">Status:</label>
             <select id="statusFilter" class="form-select form-select-sm">
               <option value="new">New Orders</option>

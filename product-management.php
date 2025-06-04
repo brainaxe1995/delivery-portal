@@ -20,7 +20,6 @@
     <style>
       td { white-space: nowrap; vertical-align: top; }
       td.variant-info { white-space: pre-line; }
-      .table-responsive { overflow-x: auto; }
       img { border-radius: 4px; }
       .badge { font-size: .9em; }
     </style>
@@ -57,7 +56,7 @@
           <div class="card-style mb-30">
             <div class="card-body">
               <!-- Filters -->
-              <div class="d-flex justify-content-between align-items-center mb-3">
+              <div class="filter-bar d-flex justify-content-between align-items-center mb-3">
                 <div class="d-flex align-items-center">
                   <label for="searchInput" class="me-2 mb-0">Search:</label>
                   <input id="searchInput" type="text"
