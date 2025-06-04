@@ -52,7 +52,7 @@ function fetchProducts(page = 1) {
     error(_, __, err) {
       console.error('📦 Fetch failed:', err);
       $('#products-table tbody').html(
-        `<tr><td colspan="7" class="text-center">Error loading products.</td></tr>`
+        `<tr><td colspan="8" class="text-center">Error loading products.</td></tr>`
       );
     }
   });
@@ -71,7 +71,7 @@ function renderTable() {
   const $tb = $('#products-table tbody').empty();
   if (!filtered.length) {
     return $tb.append(
-      `<tr><td colspan="7" class="text-center">No products found.</td></tr>`
+      `<tr><td colspan="8" class="text-center">No products found.</td></tr>`
     );
   }
 
@@ -83,8 +83,15 @@ function renderTable() {
         <td>${escapeHtml(p.name)}</td>
         <td>${escapeHtml(p.stock_quantity ?? 'N/A')}</td>
         <td>${escapeHtml(p.price)}</td>
+        <td>${escapeHtml(p.moq ?? '')}</td>
         <td>
-          <span class="badge ${p.stock_status === 'instock' ? 'bg-success' : 'bg-danger'}">
+          <span class="badge ${
+            p.stock_status === 'instock'
+              ? 'bg-success'
+              : p.stock_status === 'discontinued'
+              ? 'bg-secondary'
+              : 'bg-danger'
+          }">
             ${escapeHtml(p.stock_status)}
           </span>
         </td>
@@ -116,6 +123,8 @@ $(document).on('click', '.edit-btn', function() {
       $('#edit-id').val(p.id);
       $('#edit-name').val(p.name);
       $('#edit-price').val(p.price || p.regular_price || '');
+      const moqMeta = (p.meta_data || []).find(m => m.key === 'moq');
+      $('#edit-moq').val(moqMeta ? moqMeta.value : '');
       $('#edit-stock').val(p.stock_quantity ?? '');
       $('#edit-status').val(p.stock_status || 'instock');
       new bootstrap.Modal($('#editProductModal')).show();
@@ -131,6 +140,7 @@ $('#editProductForm').submit(function(e){
   const payload = {
     id:    $('#edit-id').val(),
     price: $('#edit-price').val(),
+    moq:   $('#edit-moq').val(),
     stock: $('#edit-stock').val(),
     status: $('#edit-status').val()
   };

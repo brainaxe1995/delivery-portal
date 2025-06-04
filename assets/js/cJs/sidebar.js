@@ -79,6 +79,7 @@ const sidebarHTML = `
         <ul id="ddmenu_products" class="collapse dropdown-nav">
           <li><a href="product-management.php">Product Management</a></li>
           <li><a href="inventory-management.php">Inventory Management</a></li>
+          <li><a href="product-requests.php">Product Requests</a></li>
         </ul>
       </li>
 

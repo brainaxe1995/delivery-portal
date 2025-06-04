@@ -27,7 +27,8 @@ if (!$id) {
     exit;
 }
 
+$endpoint = "/wp-json/wc/v3/products/{$id}?context=edit";
 header('Content-Type: application/json; charset=utf-8');
-echo callWooAPI($store_url, "/wp-json/wc/v3/products/{$id}", $consumer_key, $consumer_secret);
+echo callWooAPI($store_url, $endpoint, $consumer_key, $consumer_secret);
 exit;
 ?>
