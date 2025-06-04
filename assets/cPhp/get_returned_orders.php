@@ -1,7 +1,7 @@
 <?php
-// get_completed_orders.php
+// get_returned_orders.php
 //
-// Fetches WooCommerce orders with status=processing ("New Orders")
+// Fetches WooCommerce orders with status=returned
 // and re-emits the X-My-TotalPages header so JS can paginate correctly.
 
 require_once(__DIR__ . '/master-api.php'); // loads $store_url, $consumer_key, $consumer_secret
