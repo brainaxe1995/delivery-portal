@@ -6,7 +6,7 @@ const endpointMap = {
   pending:      'get_pending_orders.php',
   processing:   'get_processing_orders.php',
   'in-transit': 'get_in_transit_orders.php',
-  completed:    'get_completed_orders.php',
+  completed:    'get_delivered_orders.php',
   returned:     'get_returned_orders.php',
   refunded:     'get_refunded_orders.php',
   cancelled:    'get_cancelled_orders.php'
