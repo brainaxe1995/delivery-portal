@@ -84,7 +84,13 @@ function renderTable() {
         <td>${escapeHtml(p.stock_quantity ?? 'N/A')}</td>
         <td>${escapeHtml(p.price)}</td>
         <td>
-          <span class="badge ${p.stock_status === 'instock' ? 'bg-success' : 'bg-danger'}">
+          <span class="badge ${
+            p.stock_status === 'instock'
+              ? 'bg-success'
+              : p.stock_status === 'discontinued'
+              ? 'bg-secondary'
+              : 'bg-danger'
+          }">
             ${escapeHtml(p.stock_status)}
           </span>
         </td>

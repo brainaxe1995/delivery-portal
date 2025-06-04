@@ -68,6 +68,7 @@
                     <option value="">All</option>
                     <option value="instock">In Stock</option>
                     <option value="outofstock">Out of Stock</option>
+                    <option value="discontinued">Discontinued</option>
                   </select>
                 </div>
               </div>
@@ -127,6 +128,7 @@
                 <select id="edit-status" name="status" class="form-select">
                   <option value="instock">In Stock</option>
                   <option value="outofstock">Out of Stock</option>
+                  <option value="discontinued">Discontinued</option>
                 </select>
               </div>
             </div>
