@@ -153,3 +153,34 @@ deleted. Run the helper script below or remove the file manually:
 ```bash
 scripts/remove-refund-json.sh
 ```
+## Invoice Generation
+
+Invoices are stored in `assets/data/invoices.json` and served from the
+`invoices.php` page. When you click the **PDF** button an invoice is
+fetched via `assets/cPhp/download_invoice.php`. This script uses the
+TCPDF library to render HTML into a PDF file. If a PDF has not been
+created yet, the script pulls order details from WooCommerce and then
+saves the generated PDF under `assets/uploads/invoices/`.
+
+Because it talks to WooCommerce, `download_invoice.php` requires the
+`WOOCOMMERCE_CK`, `WOOCOMMERCE_CS` and `STORE_URL` variables defined in
+your `.env` file just like other API scripts.
+
+### Creating a Test Invoice
+
+To generate a non‑blank PDF you need an invoice entry with at least one
+item. You can POST JSON data to `assets/cPhp/create_invoice.php`:
+
+```bash
+curl -X POST http://localhost:8000/assets/cPhp/create_invoice.php \
+  -H 'Content-Type: application/json' \
+  -d '{"items":[{"orderNumber":"TEST-1","productName":"Demo","totalCost":9.99,"customerName":"Alice"}]}'
+```
+
+Alternatively edit `assets/data/invoices.json` manually and add an
+`items` array to one of the example invoices. After saving, download the
+PDF with:
+
+```bash
+php assets/cPhp/download_invoice.php?id=1 > invoice-1.pdf
+```
