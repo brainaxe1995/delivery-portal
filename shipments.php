@@ -57,7 +57,10 @@ $BASE_URL = rtrim(PROJECT_BASE_URL, '/');
             <div class="col-md-6">
               <h2 class="page-title">Logistics & Shipping</h2>
             </div>
-            <div class="col-md-6 text-end">
+            <div class="col-md-6 text-end d-flex align-items-center justify-content-end">
+              <label for="orderSearch" class="me-2 mb-0">Search:</label>
+              <input id="orderSearch" type="text" class="form-control form-control-sm me-2"
+                     style="width:120px;" placeholder="Order ID" />
               <button id="refreshShipments" class="btn btn-outline-primary btn-sm me-2">
                 <i class="lni lni-reload"></i> Refresh
               </button>

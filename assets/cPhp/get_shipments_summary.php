@@ -8,8 +8,9 @@ if (getenv('DEBUG')) {
 require_once __DIR__ . '/master-api.php';  // loads $store_url, $consumer_key, $consumer_secret
 
 // Pagination inputs
-$page     = isset($_GET['page'])     ? (int)$_GET['page']     : 1;
-$per_page = isset($_GET['per_page']) ? (int)$_GET['per_page'] : 20;
+$page      = isset($_GET['page'])     ? (int)$_GET['page']     : 1;
+$per_page  = isset($_GET['per_page']) ? (int)$_GET['per_page'] : 20;
+$order_id  = isset($_GET['order_id']) ? trim($_GET['order_id']) : '';
 
 /**
  * Call WooCommerce REST API and re-emit X-My-TotalPages
@@ -43,8 +44,11 @@ function callWoo($endpoint) {
     return json_decode($body, true);
 }
 
-// Fetch orders restricted to processing status
-$endpoint = "/wp-json/wc/v3/orders?status=processing&page={$page}&per_page={$per_page}";
+// Fetch orders
+$endpoint = "/wp-json/wc/v3/orders?page={$page}&per_page={$per_page}";
+if ($order_id !== '') {
+    $endpoint .= '&search=' . urlencode($order_id);
+}
 $orders   = callWoo($endpoint);
 
 header('Content-Type: application/json; charset=utf-8');
