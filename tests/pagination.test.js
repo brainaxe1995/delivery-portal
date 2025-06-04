@@ -1,6 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const vm = require('vm');
+const { JSDOM } = require('jsdom');
 const jquery = require('jquery');
 
 let script;
@@ -10,14 +11,18 @@ beforeAll(() => {
 });
 
 beforeEach(() => {
-  // Jest uses jsdom environment by default
+  const dom = new JSDOM('<!doctype html><html><body></body></html>');
+  global.window = dom.window;
+  global.document = dom.window.document;
   global.$ = jquery(global.window);
   document.body.innerHTML = '<ul class="base-pagination pagination"></ul>';
-  vm.runInThisContext(script);
+  vm.runInNewContext(script, global);
 });
 
 afterEach(() => {
   delete global.$;
+  delete global.window;
+  delete global.document;
   delete global.buildPagination;
   delete global.currentPage;
   delete global.totalPages;
