@@ -2,9 +2,12 @@
 // master-api.php
 include_once(__DIR__ . '/server-config.php');
 
-// WooCommerce REST API Credentials  
-$consumer_key    = 'ck_599f2b3ebf95fe43c9ec032de08ebb1e1b10428a';
-$consumer_secret = 'cs_f781a6ecf0d14294b126954a2e15428930b1ac29';
-// Change store_url to point to the live site:
-$store_url       = 'https://tharavix.com';
+// WooCommerce REST API Credentials loaded from environment variables
+$consumer_key    = getenv('WOOCOMMERCE_CK');
+$consumer_secret = getenv('WOOCOMMERCE_CS');
+$store_url       = getenv('STORE_URL');
+
+if (!$consumer_key || !$consumer_secret || !$store_url) {
+    die('Environment variables WOOCOMMERCE_CK, WOOCOMMERCE_CS and STORE_URL must be set.');
+}
 ?>
