@@ -35,8 +35,22 @@ $code     = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 curl_close($ch);
 
 if ($code !== 200 || $response === false) {
-    http_response_code(404);
-    echo 'Invoice not found';
+    error_log("WooCommerce invoice request returned HTTP $code: $response");
+
+    if (in_array($code, [401, 403])) {
+        http_response_code(500);
+        echo 'WooCommerce API credentials may be misconfigured.';
+        exit;
+    }
+
+    if ($code === 404) {
+        http_response_code(404);
+        echo 'Order ID ' . $id . ' not found.';
+        exit;
+    }
+
+    http_response_code(500);
+    echo 'Failed to retrieve invoice.';
     exit;
 }
 
