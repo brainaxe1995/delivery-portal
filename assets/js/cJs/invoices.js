@@ -64,8 +64,11 @@ $(document).on('click', '.invoice-download', function(e) {
   const url = $(this).attr('href');
   const id  = $(this).data('id');
   fetch(url)
-    .then(r => {
-      if (!r.ok) throw new Error('Invoice not found');
+    .then(async r => {
+      if (!r.ok) {
+        const msg = await r.text();
+        throw new Error(msg || 'Failed to download invoice');
+      }
       return r.blob();
     })
     .then(blob => {

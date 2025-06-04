@@ -35,6 +35,8 @@ $consumer_secret = getenv('WOOCOMMERCE_CS');
 $store_url       = getenv('STORE_URL');
 
 if (!$consumer_key || !$consumer_secret || !$store_url) {
-    die('Environment variables WOOCOMMERCE_CK, WOOCOMMERCE_CS and STORE_URL must be set.');
+    http_response_code(500);
+    echo 'Required environment variables WOOCOMMERCE_CK, WOOCOMMERCE_CS and STORE_URL are not set.';
+    exit;
 }
 ?>
