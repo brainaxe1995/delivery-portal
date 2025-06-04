@@ -19,6 +19,8 @@
 
     <style>
       td { white-space: nowrap; vertical-align: top; }
+      td.variant-info { white-space: pre-line; }
+      .table-responsive { overflow-x: auto; }
       img { border-radius: 4px; }
       .badge { font-size: .9em; }
     </style>
