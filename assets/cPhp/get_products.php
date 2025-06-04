@@ -30,6 +30,13 @@ $page     = isset($_GET['page'])     ? (int)$_GET['page']     : 1;
 $per_page = isset($_GET['per_page']) ? (int)$_GET['per_page'] : 20;
 $endpoint = "/wp-json/wc/v3/products?page={$page}&per_page={$per_page}";
 
+// Optional stock status filter
+$status = $_GET['status'] ?? '';
+$allowed = ['instock', 'outofstock', 'discontinued'];
+if ($status && in_array($status, $allowed, true)) {
+    $endpoint .= "&stock_status={$status}";
+}
+
 header('Content-Type: application/json; charset=utf-8');
 echo callWooAPI($store_url, $endpoint, $consumer_key, $consumer_secret);
 exit;
