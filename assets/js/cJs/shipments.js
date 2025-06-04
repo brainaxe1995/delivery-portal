@@ -1,8 +1,9 @@
 // portal/assets/js/cJs/shipments.js
 
-let currentPage = 1,
-    totalPages  = 1,
-    PER_PAGE    = 20;
+let currentPage   = 1,
+    totalPages    = 1,
+    PER_PAGE      = 20,
+    searchOrderId = '';
 
 function escapeHtml(str) {
   return String(str)
@@ -13,11 +14,22 @@ function escapeHtml(str) {
 }
 
 $(function(){
+  const params   = new URLSearchParams(window.location.search);
+  searchOrderId  = params.get('order_id') || '';
+  const pageParm = parseInt(params.get('page'), 10) || 1;
+
+  $('#orderSearch').val(searchOrderId);
+
   // Initial load
-  fetchShipments(1);
+  fetchShipments(pageParm);
 
   // Refresh button
   $('#refreshShipments').click(() => fetchShipments(1));
+
+  $('#orderSearch').on('change', function(){
+    searchOrderId = this.value.trim();
+    fetchShipments(1);
+  });
 
   // Show manifest modal
   $('#uploadManifestBtn').click(() =>
@@ -92,10 +104,13 @@ $(function(){
 function fetchShipments(page = 1) {
   currentPage = page;
 
+  const params = { page, per_page: PER_PAGE };
+  if (searchOrderId) params.order_id = searchOrderId;
+
   $.ajax({
     url: `${BASE_URL}/assets/cPhp/get_shipments_summary.php`,
     method: 'GET',
-    data: { page, per_page: PER_PAGE },
+    data: params,
     dataType: 'json',
 
     complete(xhr) {
@@ -147,7 +162,8 @@ window.fetchPendingOrders = fetchShipments;
  * Update the browser URL without reloading
  */
 function updateUrl(page) {
-  const newUrl = `${window.location.pathname}?page=${page}`;
+  let newUrl = `${window.location.pathname}?page=${page}`;
+  if (searchOrderId) newUrl += `&order_id=${encodeURIComponent(searchOrderId)}`;
   window.history.replaceState({}, '', newUrl);
 }
 

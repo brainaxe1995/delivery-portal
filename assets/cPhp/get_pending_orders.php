@@ -41,11 +41,15 @@ function callWooAPI($baseUrl, $endpoint, $ck, $cs) {
 }
 
 // Pagination inputs
-$page     = isset($_GET['page'])     ? (int) $_GET['page']     : 1;
-$per_page = isset($_GET['per_page']) ? (int) $_GET['per_page'] : 20;
+$page      = isset($_GET['page'])     ? (int) $_GET['page']     : 1;
+$per_page  = isset($_GET['per_page']) ? (int) $_GET['per_page'] : 20;
+$order_id  = isset($_GET['order_id']) ? trim($_GET['order_id']) : '';
 
 // Fetch only "pending" orders (your New/Pending bucket)
 $endpoint = "/wp-json/wc/v3/orders?status=pending&page={$page}&per_page={$per_page}";
+if ($order_id !== '') {
+    $endpoint .= '&search=' . urlencode($order_id);
+}
 
 // — Fetch raw orders JSON —
 $body   = callWooAPI($store_url, $endpoint, $consumer_key, $consumer_secret);

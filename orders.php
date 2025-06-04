@@ -46,6 +46,10 @@ $BASE_URL = rtrim(PROJECT_BASE_URL, '/');
               <option value="refunded">Refunded Orders</option>
               <option value="cancelled">Cancelled Orders</option>
             </select>
+            <label for="orderSearch" class="ms-3 me-2 mb-0">Search:</label>
+            <input id="orderSearch" type="text"
+                   class="form-control form-control-sm" style="width:120px;"
+                   placeholder="Order ID" />
           </div>
         </div>
 

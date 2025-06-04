@@ -30,13 +30,17 @@ function callWooAPI($baseUrl, $endpoint, $ck, $cs) {
 }
 
 // page & per_page from GET
-$page     = isset($_GET['page'])     ? (int)$_GET['page']     : 1;
-$per_page = isset($_GET['per_page']) ? (int)$_GET['per_page'] : 20;
+$page      = isset($_GET['page'])     ? (int)$_GET['page']     : 1;
+$per_page  = isset($_GET['per_page']) ? (int)$_GET['per_page'] : 20;
+$order_id  = isset($_GET['order_id']) ? trim($_GET['order_id']) : '';
 
 // *** IMPORTANT: use your custom “delivered” slug here ***
 $endpoint = "/wp-json/wc/v3/orders?"
           . "status=delivered"
           . "&page={$page}&per_page={$per_page}";
+if ($order_id !== '') {
+    $endpoint .= '&search=' . urlencode($order_id);
+}
 
 header('Content-Type: application/json; charset=utf-8');
 echo callWooAPI($store_url, $endpoint, $consumer_key, $consumer_secret);

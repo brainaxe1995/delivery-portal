@@ -40,11 +40,15 @@ function callWooAPI($baseUrl, $endpoint, $ck, $cs) {
 }
 
 // Pagination inputs
-$page     = isset($_GET['page'])     ? (int) $_GET['page']     : 1;
-$per_page = isset($_GET['per_page']) ? (int) $_GET['per_page'] : 20;
+$page      = isset($_GET['page'])     ? (int) $_GET['page']     : 1;
+$per_page  = isset($_GET['per_page']) ? (int) $_GET['per_page'] : 20;
+$order_id  = isset($_GET['order_id']) ? trim($_GET['order_id']) : '';
 
 // API call
 $endpoint = "/wp-json/wc/v3/orders?status=refunded&page={$page}&per_page={$per_page}";
+if ($order_id !== '') {
+    $endpoint .= '&search=' . urlencode($order_id);
+}
 
 header('Content-Type: application/json; charset=utf-8');
 echo callWooAPI(
