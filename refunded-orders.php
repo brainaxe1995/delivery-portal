@@ -15,7 +15,7 @@
     <!-- Inline CSS -->
     <style>
       td {
-        white-space: normal;
+        white-space: nowrap;
         vertical-align: top;
       }
       .items-col p {

@@ -30,10 +30,12 @@ $BASE_URL = rtrim(PROJECT_BASE_URL, '/');
             <div class="col-md-4"><input type="file" name="document" class="form-control" required></div>
             <div class="col-md-2"><button class="btn btn-primary w-100">Upload</button></div>
           </form>
-          <table class="table table-bordered">
-            <thead><tr><th>ID</th><th>Supplier</th><th>Product</th><th>File</th><th>Uploaded</th></tr></thead>
-            <tbody id="docsBody"></tbody>
-          </table>
+          <div class="table-responsive">
+            <table class="table table-bordered">
+              <thead><tr><th>ID</th><th>Supplier</th><th>Product</th><th>File</th><th>Uploaded</th></tr></thead>
+              <tbody id="docsBody"></tbody>
+            </table>
+          </div>
         </div>
       </section>
       <footer class="footer"><script src="assets/js/cJs/footer.js"></script></footer>

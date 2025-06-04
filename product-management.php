@@ -18,7 +18,7 @@
     <link rel="stylesheet" href="assets/css/main.css"/>
 
     <style>
-      td { white-space: normal; vertical-align: top; }
+      td { white-space: nowrap; vertical-align: top; }
       img { border-radius: 4px; }
       .badge { font-size: .9em; }
     </style>

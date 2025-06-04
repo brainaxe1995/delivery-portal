@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="assets/css/main.css"/>
 
     <style>
-      td { white-space: normal; vertical-align: top; }
+      td { white-space: nowrap; vertical-align: top; }
       .items-col p { margin: 0; }
       /* green dropdown for New Orders */
       .card-style .dropdown-toggle {
