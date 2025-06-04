@@ -8,6 +8,21 @@ $(function() {
     $('#box-low-stock').text(data.low_stock);
     $('#box-revenue').text(`AED ${data.revenue.toFixed(2)}`);
 
+    // Render notifications list
+    function renderNotifications(list) {
+      const $n = $('#notif-list').empty();
+      (list || []).forEach(n => {
+        $n.append(`
+          <li class="list-group-item">
+            <a href="${n.link}">${n.message}</a>
+          </li>
+        `);
+      });
+    }
+
+    // Initial notifications
+    renderNotifications(data.notifications);
+
     // Function to render Top 10 list
     function renderTop(list) {
       const $b = $('#top-body').empty();

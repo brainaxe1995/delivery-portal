@@ -1,7 +1,11 @@
 <?php
 // get_refunded_orders.php
 //
+ codex/update-comments-in-php-scripts
 // Fetches WooCommerce orders with status=pending
+
+// Fetches WooCommerce orders with status=refunded ("Refunded Orders")
+ main
 // and re-emits the X-My-TotalPages header so JS can paginate correctly.
 
 require_once(__DIR__ . '/master-api.php'); // loads $store_url, $consumer_key, $consumer_secret
@@ -43,7 +47,7 @@ $page     = isset($_GET['page'])     ? (int) $_GET['page']     : 1;
 $per_page = isset($_GET['per_page']) ? (int) $_GET['per_page'] : 20;
 
 // API call
-$endpoint = "/wp-json/wc/v3/orders?status=pending&page={$page}&per_page={$per_page}";
+$endpoint = "/wp-json/wc/v3/orders?status=refunded&page={$page}&per_page={$per_page}";
 
 header('Content-Type: application/json; charset=utf-8');
 echo callWooAPI(

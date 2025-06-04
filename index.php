@@ -30,7 +30,7 @@
     <main class="main-wrapper">
       <header class="header">
         <script src="assets/js/cJs/header.js"></script>
-        <script src="assets/js/cJs/menuToogle.js"></script>
+        <script src="assets/js/cJs/menuToggle.js"></script>
       </header>
 
       <section class="section">
@@ -137,6 +137,13 @@
                 </tbody>
               </table>
             </div>
+          </div>
+          <!-- Notifications -->
+          <div class="card-style mb-30">
+            <h6 class="text-medium mb-25">Notifications</h6>
+            <ul id="notif-list" class="list-group list-group-flush">
+              <!-- injected by JS -->
+            </ul>
           </div>
         </div>
       </section>
