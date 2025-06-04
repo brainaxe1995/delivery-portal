@@ -23,7 +23,7 @@
     </style>
   </head>
   <body>
-    <div id="preloader"><div class="spinner"></div></div>
+    <div id="skeleton-loader"><div class="skeleton-block"></div></div>
 
     <aside class="sidebar-nav-wrapper">
       <script src="assets/js/cJs/sidebar.js"></script>

@@ -32,7 +32,7 @@ $BASE_URL = rtrim(PROJECT_BASE_URL, '/');
 </head>
 <body>
   <!-- Preloader -->
-  <div id="preloader"><div class="spinner"></div></div>
+  <div id="skeleton-loader"><div class="skeleton-block"></div></div>
 
   <!-- Sidebar -->
   <aside class="sidebar-nav-wrapper">
