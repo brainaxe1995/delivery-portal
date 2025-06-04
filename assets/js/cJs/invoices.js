@@ -27,10 +27,31 @@ function fetchInvoices(page=1){
           <td>$${inv.amount}</td>
           <td>${inv.status}</td>
           <td>${inv.date}</td>
-          <td><a href="${BASE_URL}/assets/cPhp/download_invoice.php?id=${inv.id}" class="btn btn-sm btn-primary">PDF</a></td>
+          <td><a href="${BASE_URL}/assets/cPhp/download_invoice.php?id=${inv.id}" data-id="${inv.id}" class="btn btn-sm btn-primary invoice-download">PDF</a></td>
         </tr>`;
       });
       $('#invoiceTable tbody').html(html);
     }
   });
 }
+
+// handle download button clicks to surface 404 errors
+$(document).on('click', '.invoice-download', function(e) {
+  e.preventDefault();
+  const url = $(this).attr('href');
+  const id  = $(this).data('id');
+  fetch(url)
+    .then(r => {
+      if (!r.ok) throw new Error('Invoice not found');
+      return r.blob();
+    })
+    .then(blob => {
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = `invoice-${id}.pdf`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+    })
+    .catch(err => alert(err.message));
+});
