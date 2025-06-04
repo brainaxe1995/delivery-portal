@@ -91,6 +91,17 @@ STORE_URL=https://example.com
 TRACK17_APIKEY=your_api_key
 ```
 
+## PHP Version & Local Server
+
+This project requires **PHP 8.0 or later**. You can quickly serve the PHP files
+locally using the built‑in development server:
+
+```bash
+php -S localhost:8000
+```
+
+Then open `http://localhost:8000/index.php` in your browser.
+
 ## Running Tests
 
 Install dependencies and run the test suite. Requires Node.js >=18:
