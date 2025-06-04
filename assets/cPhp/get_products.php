@@ -79,10 +79,35 @@ if (is_array($products)) {
     exit;
 }
 
+// ---------------------------------------------------------------------
+// Fetch products from WooCommerce and merge restock_eta from local store
+// ---------------------------------------------------------------------
+$rawJson = callWooAPI($store_url, $endpoint, $consumer_key, $consumer_secret);
+$products = json_decode($rawJson, true);
+
+// Load restock ETA mapping
+$etaFile = __DIR__ . '/../data/restock_eta.json';
+$etaData = file_exists($etaFile) ? json_decode(file_get_contents($etaFile), true) : [];
+$etaMap  = [];
+foreach ($etaData as $e) {
+    if (isset($e['id'])) {
+        $etaMap[$e['id']] = $e['restock_eta'] ?? null;
+    }
+}
+
+foreach ($products as &$p) {
+    $p['restock_eta'] = $etaMap[$p['id']] ?? null;
+}
+unset($p);
+
 header('Content-Type: application/json; charset=utf-8');
+
+echo json_encode($products);
+
 
 echo $json;
 
 echo json_encode($products);
+
 
 exit;

@@ -30,6 +30,25 @@ if (!$id) {
 $endpoint = "/wp-json/wc/v3/products/{$id}?context=edit";
 header('Content-Type: application/json; charset=utf-8');
 
+// Fetch product from WooCommerce
+$raw = callWooAPI($store_url, "/wp-json/wc/v3/products/{$id}", $consumer_key, $consumer_secret);
+$product = json_decode($raw, true);
+
+// Attach local restock_eta value
+$etaFile = __DIR__ . '/../data/restock_eta.json';
+if (file_exists($etaFile)) {
+    $data = json_decode(file_get_contents($etaFile), true);
+    foreach ($data as $e) {
+        if (isset($e['id']) && (int)$e['id'] === $id) {
+            $product['restock_eta'] = $e['restock_eta'] ?? null;
+            break;
+        }
+    }
+}
+
+echo json_encode($product);
+
+
 $json = callWooAPI($store_url, "/wp-json/wc/v3/products/{$id}", $consumer_key, $consumer_secret);
 $product = json_decode($json, true);
 
@@ -66,6 +85,7 @@ if (is_array($product)) {
 echo $json;
 
 echo callWooAPI($store_url, $endpoint, $consumer_key, $consumer_secret);
+
 
 exit;
 ?>
