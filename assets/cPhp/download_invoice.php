@@ -5,7 +5,47 @@
 
 require_once __DIR__ . '/master-api.php';
 // Use TCPDF for generating PDFs from HTML templates
-require_once '/usr/share/php/tcpdf/tcpdf.php';
+if (file_exists('/usr/share/php/tcpdf/tcpdf.php')) {
+    require_once '/usr/share/php/tcpdf/tcpdf.php';
+} else {
+    http_response_code(500);
+    echo 'TCPDF library not found at /usr/share/php/tcpdf/tcpdf.php';
+    exit;
+}
+
+function output_pdf($html, $localFile, $id){
+    $pdf = new TCPDF();
+    $pdf->SetCreator('Delivery Portal');
+    $pdf->SetAuthor('Delivery Portal');
+    $pdf->SetTitle('Invoice #' . $id);
+    $pdf->SetMargins(15, 15, 15);
+    $pdf->AddPage();
+    $pdf->writeHTML($html, true, false, true, false, '');
+    $pdf->Output($localFile, 'F');
+
+    $pdfContent = file_get_contents($localFile);
+    header('Content-Type: application/pdf');
+    header('Content-Disposition: attachment; filename="invoice-' . $id . '.pdf"');
+    header('Content-Length: ' . strlen($pdfContent));
+    echo $pdfContent;
+}
+
+function output_pdf($html, $localFile, $id){
+    $pdf = new TCPDF();
+    $pdf->SetCreator('Delivery Portal');
+    $pdf->SetAuthor('Delivery Portal');
+    $pdf->SetTitle('Invoice #' . $id);
+    $pdf->SetMargins(15, 15, 15);
+    $pdf->AddPage();
+    $pdf->writeHTML($html, true, false, true, false, '');
+    $pdf->Output($localFile, 'F');
+
+    $pdfContent = file_get_contents($localFile);
+    header('Content-Type: application/pdf');
+    header('Content-Disposition: attachment; filename="invoice-' . $id . '.pdf"');
+    header('Content-Length: ' . strlen($pdfContent));
+    echo $pdfContent;
+}
 
 $id = isset($_GET['id']) ? (int) $_GET['id'] : 0;
 if (!$id) {
@@ -25,6 +65,76 @@ if (file_exists($localFile)) {
     header('Content-Disposition: attachment; filename="invoice-' . $id . '.pdf"');
     readfile($localFile);
     exit;
+}
+
+// Try to load invoice from JSON store
+$jsonFile = __DIR__ . '/../data/invoices.json';
+if (file_exists($jsonFile)) {
+    $invoices = json_decode(file_get_contents($jsonFile), true);
+    if (is_array($invoices)) {
+        foreach ($invoices as $inv) {
+            if ((int)($inv['id'] ?? 0) === $id && !empty($inv['items']) && is_array($inv['items'])) {
+                $itemsHtml = '';
+                foreach ($inv['items'] as $it) {
+                    $itemsHtml .= '<tr>' .
+                        '<td>' . htmlspecialchars($it['orderNumber'] ?? '') . '</td>' .
+                        '<td>' . htmlspecialchars($it['trackingCode'] ?? '') . '</td>' .
+                        '<td>' . htmlspecialchars($it['shippingProof'] ?? '') . '</td>' .
+                        '<td>' . htmlspecialchars($it['customerName'] ?? '') . '</td>' .
+                        '<td>' . htmlspecialchars($it['address'] ?? '') . '</td>' .
+                        '<td>' . htmlspecialchars($it['countryName'] ?? '') . '</td>' .
+                        '<td>' . htmlspecialchars($it['productName'] ?? '') . '</td>' .
+                        '<td>' . htmlspecialchars($it['stripe'] ?? '') . '</td>' .
+                        '<td class="amount">' . htmlspecialchars($it['productCost'] ?? '') . '</td>' .
+                        '<td class="amount">' . htmlspecialchars($it['shippingCost'] ?? '') . '</td>' .
+                        '<td class="amount">' . htmlspecialchars($it['totalCost'] ?? '') . '</td>' .
+                        '<td>' . htmlspecialchars($it['note'] ?? '') . '</td>' .
+                        '</tr>';
+                }
+
+                $html = <<<HTML
+<html>
+<head>
+<style>
+body{font-family: DejaVu Sans, sans-serif; font-size:12px; color:#333;}
+table{width:100%; border-collapse:collapse;}
+th,td{border:1px solid #ccc; padding:4px;}
+th{background:#f0f0f0;}
+.amount{text-align:right;}
+</style>
+</head>
+<body>
+<h2>Invoice #$id</h2>
+<table>
+<thead>
+<tr>
+  <th>Order Number</th>
+  <th>Tracking Code</th>
+  <th>Shipping Proof</th>
+  <th>Customer Name</th>
+  <th>Address</th>
+  <th>Country Name</th>
+  <th>Product Name</th>
+  <th>Stripe</th>
+  <th>Product Cost</th>
+  <th>Shipping Cost</th>
+  <th>Total Cost</th>
+  <th>Note</th>
+</tr>
+</thead>
+<tbody>
+$itemsHtml
+</tbody>
+</table>
+</body>
+</html>
+HTML;
+
+                output_pdf($html, $localFile, $id);
+                exit;
+            }
+        }
+    }
 }
 
 // --- Fetch order details from WooCommerce ---
@@ -121,20 +231,6 @@ th { background: #f0f0f0; }
 HTML;
 
 // --- Generate PDF using TCPDF ---
-$pdf = new TCPDF();
-$pdf->SetCreator('Delivery Portal');
-$pdf->SetAuthor('Delivery Portal');
-$pdf->SetTitle('Invoice #' . $id);
-$pdf->SetMargins(15, 15, 15);
-$pdf->AddPage();
-$pdf->writeHTML($html, true, false, true, false, '');
-
-$pdf->Output($localFile, 'F');
-$pdfContent = file_get_contents($localFile);
-
-header('Content-Type: application/pdf');
-header('Content-Disposition: attachment; filename="invoice-' . $id . '.pdf"');
-header('Content-Length: ' . strlen($pdfContent));
-echo $pdfContent;
+output_pdf($html, $localFile, $id);
 exit;
 ?>
