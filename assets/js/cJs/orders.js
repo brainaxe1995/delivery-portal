@@ -5,6 +5,7 @@ const endpointMap = {
   new:          'get_processing_orders.php',
   pending:      'get_pending_orders.php',
   processing:   'get_processing_orders.php',
+  'on-hold':    'get_on_hold_orders.php',
   'in-transit': 'get_in_transit_orders.php',
   completed:    'get_delivered_orders.php',
   returned:     'get_returned_orders.php',
@@ -82,6 +83,7 @@ function renderOrders(orders) {
 window.fetchNewOrders        = page => (currentStatus='new',        fetchOrders(page));
 window.fetchPendingOrders    = page => (currentStatus='pending',    fetchOrders(page));
 window.fetchProcessingOrders = page => (currentStatus='processing', fetchOrders(page));
+window.fetchOnHoldOrders    = page => (currentStatus='on-hold',    fetchOrders(page));
 window.fetchInTransitOrders  = page => (currentStatus='in-transit', fetchOrders(page));
 window.fetchDeliveredOrders  = page => (currentStatus='completed',  fetchOrders(page));
 window.fetchReturnedOrders   = page => (currentStatus='returned',   fetchOrders(page));
