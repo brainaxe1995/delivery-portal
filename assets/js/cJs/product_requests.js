@@ -4,14 +4,8 @@ let totalPages  = 1;
 
 $(function(){
   fetchRequests(1);
-  $('#newProductBtn').on('click', function(){
+  $('#newProductBtn,#priceChangeBtn').on('click', function(){
     $('#requestForm')[0].reset();
-    $('#requestType').val('new_product');
-    $('#requestModal').modal('show');
-  });
-  $('#priceChangeBtn').on('click', function(){
-    $('#requestForm')[0].reset();
-    $('#requestType').val('price_change');
     $('#requestModal').modal('show');
   });
   $('#saveRequest').on('click', submitRequest);
@@ -33,31 +27,26 @@ function fetchRequests(page=1){
       list.forEach(r=>{
         html += `<tr>
           <td>${r.id}</td>
-          <td>${r.type.replace('_',' ')}</td>
+          <td>${r.supplier}</td>
           <td>${r.product}</td>
-          <td>$${r.proposed_price}</td>
-          <td>${r.reason || ''}</td>
-          <td><span class="badge ${r.status==='Approved'?'bg-success':r.status==='Rejected'?'bg-danger':'bg-secondary'}">${r.status}</span></td>
-          <td>
-            <button class="btn btn-sm btn-success approve-btn" data-id="${r.id}">Approve</button>
-            <button class="btn btn-sm btn-danger reject-btn" data-id="${r.id}">Reject</button>
-          </td>
+          <td>${r.description || ''}</td>
+          <td>${r.requested_at}</td>
         </tr>`;
       });
-      $('#requestsTable tbody').html(html);
+      const tbody = $('#requestsTable tbody,#requestsBody');
+      tbody.html(html);
     }
   });
 }
 
 function submitRequest(){
   const payload = {
-    type: $('#requestType').val(),
-    product: $('#productName').val(),
-    proposed_price: $('#proposedPrice').val(),
-    reason: $('#requestReason').val()
+    supplier: $('#supplier').val() || 'N/A',
+    product: $('#product').val() || $('#productName').val(),
+    description: $('#description').val() || $('#requestReason').val()
   };
   $.ajax({
-    url:`${BASE_URL}/assets/cPhp/submit_product_request.php`,
+    url:`${BASE_URL}/assets/cPhp/add_product_request.php`,
     method:'POST',
     contentType:'application/json',
     data: JSON.stringify(payload)

@@ -1,21 +1,35 @@
 // assets/js/cJs/logistics_orders.js
 // Fetch logistics/shipment orders summary and populate table with pagination
 
-let currentPage = 1;
-let totalPages  = 1;
-const PER_PAGE  = 20;
+let currentPage   = 1;
+let totalPages    = 1;
+const PER_PAGE    = 20;
+let searchOrderId = '';
 
 $(function(){
-  const p = parseInt(new URLSearchParams(location.search).get('page'), 10) || 1;
+  const params  = new URLSearchParams(location.search);
+  const p       = parseInt(params.get('page'), 10) || 1;
+  searchOrderId = params.get('order_id') || '';
+
+  $('#orderSearch').val(searchOrderId);
+
   fetchLogisticsOrders(p);
+
+  $('#orderSearch').on('change', function(){
+    searchOrderId = this.value.trim();
+    fetchLogisticsOrders(1);
+  });
 });
 
+// Fetch orders currently in the "processing" state
 function fetchLogisticsOrders(page=1){
   currentPage = page;
+  const params = { page, per_page: PER_PAGE };
+  if (searchOrderId) params.order_id = searchOrderId;
   $.ajax({
     url: 'assets/cPhp/get_shipments_summary.php',
     method: 'GET',
-    data: { page, per_page: PER_PAGE },
+    data: params,
     dataType: 'json',
     success(list, textStatus, xhr){
       const $tb = $('table tbody').empty();
@@ -49,7 +63,8 @@ function fetchLogisticsOrders(page=1){
 window.fetchPendingOrders = fetchLogisticsOrders;
 
 function updateUrl(page){
-  const newUrl = `${window.location.pathname}?page=${page}`;
+  let newUrl = `${window.location.pathname}?page=${page}`;
+  if (searchOrderId) newUrl += `&order_id=${encodeURIComponent(searchOrderId)}`;
   window.history.replaceState({}, '', newUrl);
 }
 

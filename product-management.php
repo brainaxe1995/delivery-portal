@@ -139,6 +139,19 @@
                   <option value="discontinued">Discontinued</option>
                 </select>
               </div>
+              <div class="mb-3">
+
+                <label class="form-label">Restock ETA</label>
+                <input type="text" id="edit-restock" name="restock_eta" class="form-control"/>
+
+                <label class="form-label">Packaging Info URL</label>
+                <input type="url" id="edit-packaging-url" name="packaging_info_url" class="form-control"/>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Safety/Data Sheet URL</label>
+                <input type="url" id="edit-safety-url" name="safety_sheet_url" class="form-control"/>
+
+              </div>
             </div>
             <div class="modal-footer">
               <button type="submit" class="main-btn primary-btn btn-hover">Save</button>

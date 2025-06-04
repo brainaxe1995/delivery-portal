@@ -40,12 +40,17 @@ $BASE_URL = rtrim(PROJECT_BASE_URL, '/');
               <option value="new">New Orders</option>
               <option value="pending">Pending Orders</option>
               <option value="processing">Processing Orders</option>
+              <option value="on-hold">On-Hold Orders</option>
               <option value="in-transit">Orders in Transit</option>
               <option value="completed">Delivered Orders</option>
               <option value="returned">Returned Orders</option>
               <option value="refunded">Refunded Orders</option>
               <option value="cancelled">Cancelled Orders</option>
             </select>
+            <label for="orderSearch" class="ms-3 me-2 mb-0">Search:</label>
+            <input id="orderSearch" type="text"
+                   class="form-control form-control-sm" style="width:120px;"
+                   placeholder="Order ID" />
           </div>
         </div>
 

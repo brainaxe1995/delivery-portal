@@ -5,6 +5,7 @@ const endpointMap = {
   new:          'get_processing_orders.php',
   pending:      'get_pending_orders.php',
   processing:   'get_processing_orders.php',
+  'on-hold':    'get_on_hold_orders.php',
   'in-transit': 'get_in_transit_orders.php',
   completed:    'get_delivered_orders.php',
   returned:     'get_returned_orders.php',
@@ -12,9 +13,10 @@ const endpointMap = {
   cancelled:    'get_cancelled_orders.php'
 };
 
-let currentStatus = 'new';
-let currentPage   = 1;
-let totalPages    = 1;
+let currentStatus  = 'new';
+let currentPage    = 1;
+let totalPages     = 1;
+let searchOrderId  = '';
 
 function escapeHtml(str) {
   return String(str)
@@ -27,10 +29,12 @@ function escapeHtml(str) {
 // fetch + render
 function fetchOrders(page = 1) {
   currentPage = page;
+  const params = { page, per_page: 20 };
+  if (searchOrderId) params.order_id = searchOrderId;
   $.ajax({
     url: `${BASE_URL}/assets/cPhp/${endpointMap[currentStatus]}`,
     method: 'GET',
-    data: { page, per_page: 20 },
+    data: params,
     dataType: 'json',
     success(data) {
       renderOrders(data);
@@ -38,7 +42,9 @@ function fetchOrders(page = 1) {
     complete(xhr) {
       totalPages = parseInt(xhr.getResponseHeader('X-My-TotalPages'), 10) || 1;
       buildPagination();  // from pagination.js
-      history.replaceState({}, '', `${location.pathname}?status=${currentStatus}&page=${currentPage}`);
+      let newUrl = `${location.pathname}?status=${currentStatus}&page=${currentPage}`;
+      if (searchOrderId) newUrl += `&order_id=${encodeURIComponent(searchOrderId)}`;
+      history.replaceState({}, '', newUrl);
     }
   });
 }
@@ -77,6 +83,7 @@ function renderOrders(orders) {
 window.fetchNewOrders        = page => (currentStatus='new',        fetchOrders(page));
 window.fetchPendingOrders    = page => (currentStatus='pending',    fetchOrders(page));
 window.fetchProcessingOrders = page => (currentStatus='processing', fetchOrders(page));
+window.fetchOnHoldOrders    = page => (currentStatus='on-hold',    fetchOrders(page));
 window.fetchInTransitOrders  = page => (currentStatus='in-transit', fetchOrders(page));
 window.fetchDeliveredOrders  = page => (currentStatus='completed',  fetchOrders(page));
 window.fetchReturnedOrders   = page => (currentStatus='returned',   fetchOrders(page));
@@ -127,11 +134,25 @@ $('#commentForm').on('submit', e => {
 
 // when DOM ready
 $(function(){
+  const params = new URLSearchParams(window.location.search);
+  currentStatus = params.get('status') || currentStatus;
+  searchOrderId = params.get('order_id') || '';
+  const pageParm = parseInt(params.get('page'), 10) || 1;
+
+  $('#statusFilter').val(currentStatus);
+  $('#orderSearch').val(searchOrderId);
+
   $('#statusFilter').on('change', function(){
     currentStatus = this.value;
     fetchOrders(1);
   });
-  fetchOrders(1);
+
+  $('#orderSearch').on('change', function(){
+    searchOrderId = this.value.trim();
+    fetchOrders(1);
+  });
+
+  fetchOrders(pageParm);
 });
 
 // export for testing
