@@ -1,0 +1,5 @@
+[
+  {"id":1,"type":"new_product","product":"Widget X","proposed_price":19.99,"reason":"Customer demand","status":"Pending","date":"2023-06-01"},
+  {"id":2,"type":"price_change","product":"SKU123","proposed_price":14.99,"reason":"Market trend","status":"Pending","date":"2023-06-05"},
+  {"id":3,"type":"new_product","product":"Gadget Y","proposed_price":29.5,"reason":"Add premium line","status":"Approved","date":"2023-06-10"}
+]
