@@ -4,6 +4,14 @@ let currentPage = 1,
     totalPages  = 1,
     PER_PAGE    = 20;
 
+function escapeHtml(str) {
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
 $(function(){
   // Initial load
   fetchShipments(1);
@@ -90,19 +98,19 @@ function fetchShipments(page = 1) {
       const $tbody = $('#shipmentsTable tbody').empty();
       list.forEach(s => {
         $tbody.append(`
-          <tr data-order-id="${s.order_id}">
-            <td>#${s.order_id}</td>
+          <tr data-order-id="${escapeHtml(s.order_id)}">
+            <td>#${escapeHtml(s.order_id)}</td>
             <td>
-              <input type="text" class="form-control form-control-sm provider-select" value="${s.provider || ''}">
+              <input type="text" class="form-control form-control-sm provider-select" value="${escapeHtml(s.provider || '')}">
             </td>
             <td>
-              <input type="text" class="form-control form-control-sm tracking-code-input" value="${s.tracking_no || ''}">
+              <input type="text" class="form-control form-control-sm tracking-code-input" value="${escapeHtml(s.tracking_no || '')}">
             </td>
             <td>
-              <input type="date" class="form-control form-control-sm eta-input" value="${s.eta || ''}">
+              <input type="date" class="form-control form-control-sm eta-input" value="${escapeHtml(s.eta || '')}">
             </td>
-            <td>${s.status}</td>
-            <td>${s.last_update}</td>
+            <td>${escapeHtml(s.status)}</td>
+            <td>${escapeHtml(s.last_update)}</td>
             <td>
               <button class="btn btn-sm btn-primary save-btn">
                 <i class="lni lni-checkmark-circle"></i>

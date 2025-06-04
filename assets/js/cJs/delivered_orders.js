@@ -4,6 +4,14 @@ let currentPage = 1;
 let totalPages  = 1;
 const PER_PAGE  = 20;
 
+function escapeHtml(str) {
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
 $(function() {
   // grab ?page=... from URL if present
   const params = new URLSearchParams(location.search);
@@ -47,28 +55,28 @@ function renderTable(orders) {
     // billing might be missing on some older/custom statuses
     const first = o.billing?.first_name  || '';
     const last  = o.billing?.last_name   || '';
-    const email = o.billing?.email       || 'No Email';
-    const name  = (first + ' ' + last).trim() || 'No Name';
+    const email = escapeHtml(o.billing?.email       || 'No Email');
+    const name  = escapeHtml((first + ' ' + last).trim() || 'No Name');
     const date  = o.date_created
-      ? new Date(o.date_created).toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' })
+      ? escapeHtml(new Date(o.date_created).toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' }))
       : 'No Date';
 
     // items
     const items = (o.line_items || []).length
-       ? o.line_items.map(i => `<p>${i.quantity}× ${i.name}</p>`).join('')
+       ? o.line_items.map(i => `<p>${escapeHtml(i.quantity)}× ${escapeHtml(i.name)}</p>`).join('')
        : '<p>No Items</p>';
 
     // status badge
     const st = o.status;
-    const badge = `<mark class="order-status status-${st}"><span>${st.replace('-', ' ')}</span></mark>`;
+    const badge = `<mark class="order-status status-${escapeHtml(st)}"><span>${escapeHtml(st.replace('-', ' '))}</span></mark>`;
 
     // any existing tracking in meta_data?
     const meta = o.meta_data || [];
-    const trk  = meta.find(m => /tracking/i.test(m.key))?.value || '';
+    const trk  = escapeHtml(meta.find(m => /tracking/i.test(m.key))?.value || '');
 
     $tb.append(`
-      <tr data-order-id="${o.id}">
-        <td>#${o.id}<br/><small>${name}</small></td>
+      <tr data-order-id="${escapeHtml(o.id)}">
+        <td>#${escapeHtml(o.id)}<br/><small>${name}</small></td>
         <td><a href="mailto:${email}">${email}</a></td>
         <td>${date}</td>
         <td class="items-col">${items}</td>

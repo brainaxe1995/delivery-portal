@@ -4,6 +4,14 @@ let currentPage = 1,
     totalPages  = 1,
     allProducts = [];
 
+function escapeHtml(str) {
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
 $(function(){
   // 1) Read ?page= or default to 1
   const params = new URLSearchParams(window.location.search);
@@ -70,18 +78,18 @@ function renderTable() {
   filtered.forEach(p => {
     $tb.append(`
       <tr>
-        <td>${p.id}</td>
-        <td><img src="${p.images?.[0]?.src || ''}" width="50"/></td>
-        <td>${p.name}</td>
-        <td>${p.stock_quantity ?? 'N/A'}</td>
-        <td>${p.price}</td>
+        <td>${escapeHtml(p.id)}</td>
+        <td><img src="${escapeHtml(p.images?.[0]?.src || '')}" width="50"/></td>
+        <td>${escapeHtml(p.name)}</td>
+        <td>${escapeHtml(p.stock_quantity ?? 'N/A')}</td>
+        <td>${escapeHtml(p.price)}</td>
         <td>
           <span class="badge ${p.stock_status === 'instock' ? 'bg-success' : 'bg-danger'}">
-            ${p.stock_status}
+            ${escapeHtml(p.stock_status)}
           </span>
         </td>
         <td>
-          <button class="btn btn-sm btn-primary edit-btn" data-id="${p.id}">
+          <button class="btn btn-sm btn-primary edit-btn" data-id="${escapeHtml(p.id)}">
             Edit
           </button>
         </td>

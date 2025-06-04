@@ -4,6 +4,14 @@ let currentPage = 1;
 let totalPages  = 1;
 let allItems    = [];
 
+function escapeHtml(str) {
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
 $(function() {
   // 1) On load, read ?page= or default to 1
   const params = new URLSearchParams(window.location.search);
@@ -71,12 +79,12 @@ function renderTable() {
   filtered.forEach(i => {
     $tb.append(`
       <tr>
-        <td>${i.id}</td>
-        <td>${i.name}</td>
-        <td>${i.stock_quantity ?? 'N/A'}</td>
+        <td>${escapeHtml(i.id)}</td>
+        <td>${escapeHtml(i.name)}</td>
+        <td>${escapeHtml(i.stock_quantity ?? 'N/A')}</td>
         <td>
           <span class="badge ${i.stock_status === 'instock' ? 'bg-success' : 'bg-danger'}">
-            ${i.stock_status}
+            ${escapeHtml(i.stock_status)}
           </span>
         </td>
       </tr>
