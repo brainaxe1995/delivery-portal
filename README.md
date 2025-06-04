@@ -72,3 +72,19 @@ If you are looking for a high-quality free admin template that comes with all es
 - Updated to Bootstrap 5.1.1
 - Fixed minor bugs
 - Enhanced the UI and Improved Typography
+
+## Environment Configuration
+
+The PHP scripts under `assets/cPhp` expect three environment variables to be present:
+
+- `WOOCOMMERCE_CK` – WooCommerce consumer key
+- `WOOCOMMERCE_CS` – WooCommerce consumer secret
+- `STORE_URL` – URL of your WooCommerce store
+
+Create a `.env` file in the project root containing these variables and export them in your server environment before running the application:
+
+```bash
+WOOCOMMERCE_CK=your_key
+WOOCOMMERCE_CS=your_secret
+STORE_URL=https://example.com
+```
