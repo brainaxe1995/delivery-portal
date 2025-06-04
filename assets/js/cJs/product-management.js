@@ -77,7 +77,7 @@ function renderTable() {
 
   filtered.forEach(p => {
     const variants = Array.isArray(p.variant_attributes)
-      ? p.variant_attributes.map(v => v.map(a => `${a.name}: ${a.option}`).join(' / ')).join('; ')
+      ? p.variant_attributes.map(v => v.map(a => `${a.name}: ${a.option}`).join(' / ')).join('\n')
       : '';
     $tb.append(`
       <tr>
@@ -85,7 +85,7 @@ function renderTable() {
         <td><img src="${escapeHtml(p.images?.[0]?.src || '')}" width="50"/></td>
         <td>${escapeHtml(p.name)}</td>
         <td>${escapeHtml(p.sku || '')}</td>
-        <td>${escapeHtml(variants)}</td>
+        <td class="variant-info">${escapeHtml(variants)}</td>
         <td>${escapeHtml(p.stock_quantity ?? 'N/A')}</td>
         <td>${escapeHtml(p.price)}</td>
         <td>${escapeHtml(p.moq ?? '')}</td>
