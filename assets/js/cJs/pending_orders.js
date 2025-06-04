@@ -23,7 +23,6 @@ function fetchPendingOrders(page) {
   currentPage = page;
 
   $.ajax({
-    beforeSend: window.showLoader,
     url: `${BASE_URL}/assets/cPhp/get_pending_orders.php`,
     method: 'GET',
     data: { page, per_page: PER_PAGE },
@@ -43,7 +42,6 @@ function fetchPendingOrders(page) {
       console.error('Error fetching pending orders:', textStatus, errorThrown);
       alert('❌ Could not load pending orders');
     },
-    complete: window.hideLoader
   });
 }
 
@@ -120,7 +118,6 @@ function renderTable(orders) {
     // Persist to server
     const $toggle = $btnGrp.find('.dropdown-toggle');
     $toggle.prop('disabled', true);
-    window.showLoader();
     $.ajax({
       url: `${BASE_URL}/assets/cPhp/update_order.php`,
       method: 'POST',
@@ -134,7 +131,6 @@ function renderTable(orders) {
     })
     .always(() => {
       $toggle.prop('disabled', false);
-      window.hideLoader();
     });
   });
 
@@ -147,7 +143,6 @@ function renderTable(orders) {
 
     const $btn = $form.find('button[type="submit"]');
     $btn.prop('disabled', true);
-    window.showLoader();
 
     $.ajax({
       url: `${BASE_URL}/assets/cPhp/update_order.php`,
@@ -162,7 +157,6 @@ function renderTable(orders) {
     })
     .always(() => {
       $btn.prop('disabled', false);
-      window.hideLoader();
     });
   });
 }
