@@ -49,7 +49,7 @@ $(function(){
     const eta      = $row.find('.eta-input').val()?.trim() || '';
 
     $.ajax({
-      url: `${BASE_URL}/assets/cPhp/update_shipment.php`,
+      url: `${BASE_URL}/assets/cPhp/update_single_shipment.php`,
       method: 'POST',
       contentType: 'application/json',
       data: JSON.stringify({
