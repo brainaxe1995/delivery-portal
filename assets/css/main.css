@@ -2072,6 +2072,17 @@ h6,
   border: none;
 }
 
+@media (max-width: 767px) {
+  .table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .filter-bar {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 0.5rem;
+  }
+}
 /* =========== form elements css ========== */
 /* ===== input style ===== */
 .input-style-1 {
