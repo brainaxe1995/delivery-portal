@@ -1,7 +1,9 @@
 <?php
-// Enable errors for debugging
-ini_set('display_errors', 1);
-error_reporting(E_ALL);
+// Enable detailed errors only when DEBUG environment variable is truthy
+if (getenv('DEBUG')) {
+    ini_set('display_errors', '1');
+    error_reporting(E_ALL);
+}
 
 require_once __DIR__ . '/master-api.php';  // loads $store_url, $consumer_key, $consumer_secret
 
