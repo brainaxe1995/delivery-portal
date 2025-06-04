@@ -91,7 +91,7 @@ STORE_URL=https://example.com
 
 ## Running Tests
 
-Install dependencies and run the test suite:
+Install dependencies and run the test suite. Requires Node.js >=18:
 
 ```bash
 npm install
