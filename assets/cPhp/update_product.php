@@ -21,6 +21,7 @@ $fields = [];
 if (isset($data['price']))  $fields['regular_price'] = (string)$data['price'];
 if (isset($data['stock']))  $fields['stock_quantity'] = (int)$data['stock'];
 if (isset($data['status'])) $fields['stock_status']   = $data['status'];
+if (isset($data['moq']))   $fields['meta_data'] = [['key' => 'moq', 'value' => (int)$data['moq']]];
 
 if (empty($fields)) {
     http_response_code(400);

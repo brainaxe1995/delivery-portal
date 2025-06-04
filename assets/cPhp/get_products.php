@@ -28,8 +28,25 @@ function callWooAPI($baseUrl, $endpoint, $ck, $cs) {
 
 $page     = isset($_GET['page'])     ? (int)$_GET['page']     : 1;
 $per_page = isset($_GET['per_page']) ? (int)$_GET['per_page'] : 20;
-$endpoint = "/wp-json/wc/v3/products?page={$page}&per_page={$per_page}";
+$endpoint = "/wp-json/wc/v3/products?page={$page}&per_page={$per_page}&context=edit";
+
+$body     = callWooAPI($store_url, $endpoint, $consumer_key, $consumer_secret);
+$products = json_decode($body, true);
+if (is_array($products)) {
+    foreach ($products as &$p) {
+        $p['moq'] = '';
+        if (!empty($p['meta_data'])) {
+            foreach ($p['meta_data'] as $m) {
+                if ($m['key'] === 'moq') {
+                    $p['moq'] = $m['value'];
+                    break;
+                }
+            }
+        }
+    }
+    unset($p);
+}
 
 header('Content-Type: application/json; charset=utf-8');
-echo callWooAPI($store_url, $endpoint, $consumer_key, $consumer_secret);
+echo json_encode($products);
 exit;
