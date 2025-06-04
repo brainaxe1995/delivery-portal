@@ -12,6 +12,7 @@
     const el = document.getElementById('skeleton-loader')
     if (el) el.style.display = 'none'
   }
+$(document).ajaxStart(window.showLoader).ajaxStop(window.hideLoader);
 
   window.addEventListener('load', function () {
     if (skeleton.length) {
