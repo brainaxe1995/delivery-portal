@@ -38,6 +38,7 @@ const sidebarHTML = `
         <ul id="ddmenu_orders" class="collapse dropdown-nav">
           <li><a href="new-orders.php">New Orders</a></li>
           <li><a href="pending-orders.php">Pending Orders</a></li>
+          <li><a href="on-hold-orders.php">On-Hold Orders</a></li>
           <li><a href="in-transit-orders.php">In-Transit Orders</a></li>
           <li><a href="cancelled-orders.php">Cancelled Orders</a></li>
           <li><a href="delivered-orders.php">Delivered Orders</a></li>

@@ -40,6 +40,7 @@ $BASE_URL = rtrim(PROJECT_BASE_URL, '/');
               <option value="new">New Orders</option>
               <option value="pending">Pending Orders</option>
               <option value="processing">Processing Orders</option>
+              <option value="on-hold">On-Hold Orders</option>
               <option value="in-transit">Orders in Transit</option>
               <option value="completed">Delivered Orders</option>
               <option value="returned">Returned Orders</option>
