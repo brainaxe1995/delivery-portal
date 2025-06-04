@@ -43,8 +43,8 @@ function callWoo($endpoint) {
     return json_decode($body, true);
 }
 
-// Fetch orders
-$endpoint = "/wp-json/wc/v3/orders?page={$page}&per_page={$per_page}";
+// Fetch orders restricted to processing status
+$endpoint = "/wp-json/wc/v3/orders?status=processing&page={$page}&per_page={$per_page}";
 $orders   = callWoo($endpoint);
 
 header('Content-Type: application/json; charset=utf-8');
