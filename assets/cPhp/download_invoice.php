@@ -30,6 +30,23 @@ function output_pdf($html, $localFile, $id){
     echo $pdfContent;
 }
 
+function output_pdf($html, $localFile, $id){
+    $pdf = new TCPDF();
+    $pdf->SetCreator('Delivery Portal');
+    $pdf->SetAuthor('Delivery Portal');
+    $pdf->SetTitle('Invoice #' . $id);
+    $pdf->SetMargins(15, 15, 15);
+    $pdf->AddPage();
+    $pdf->writeHTML($html, true, false, true, false, '');
+    $pdf->Output($localFile, 'F');
+
+    $pdfContent = file_get_contents($localFile);
+    header('Content-Type: application/pdf');
+    header('Content-Disposition: attachment; filename="invoice-' . $id . '.pdf"');
+    header('Content-Length: ' . strlen($pdfContent));
+    echo $pdfContent;
+}
+
 $id = isset($_GET['id']) ? (int) $_GET['id'] : 0;
 if (!$id) {
     http_response_code(400);
