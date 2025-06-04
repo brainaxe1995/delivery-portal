@@ -1683,9 +1683,14 @@ h6,
   border-spacing: 0px;
 }
 .table > :not(caption) > * > * {
-  padding: 15px 0;
+  padding: 0.75rem;
   border-bottom-color: #efefef;
   vertical-align: middle;
+}
+@media (max-width: 767px) {
+  .table > :not(caption) > * > * {
+    padding: 0.5rem;
+  }
 }
 .table > :not(:last-child) > :last-child > * {
   border-bottom-color: #efefef;
@@ -1703,7 +1708,7 @@ h6,
   font-size: 14px;
 }
 .table td.min-width {
-  padding: 5px;
+  padding: 0.5rem;
 }
 @media (max-width: 767px) {
   .table td.min-width {
@@ -5983,16 +5988,6 @@ h6,
   100% {
     background-position: 200% 0;
   }
-}
-
-/* Ensure tables can scroll horizontally at all breakpoints */
-.table-responsive {
-  overflow-x: auto;
-}
-
-/* Display semicolon-separated variant data on separate lines */
-td.variant-info {
-  white-space: pre-line;
 }
 
 /*# sourceMappingURL=main.css.map */
