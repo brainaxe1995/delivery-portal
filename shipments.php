@@ -45,7 +45,7 @@ $BASE_URL = rtrim(PROJECT_BASE_URL, '/');
     <!-- Header -->
     <header class="header">
       <script src="assets/js/cJs/header.js"></script>
-      <script src="assets/js/cJs/menuToogle.js"></script>
+      <script src="assets/js/cJs/menuToggle.js"></script>
     </header>
 
     <!-- Shipments Section -->

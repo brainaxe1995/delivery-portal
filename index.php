@@ -30,7 +30,7 @@
     <main class="main-wrapper">
       <header class="header">
         <script src="assets/js/cJs/header.js"></script>
-        <script src="assets/js/cJs/menuToogle.js"></script>
+        <script src="assets/js/cJs/menuToggle.js"></script>
       </header>
 
       <section class="section">
