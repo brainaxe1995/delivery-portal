@@ -4,7 +4,8 @@
 // it from WooCommerce order data.
 
 require_once __DIR__ . '/master-api.php';
-require_once __DIR__ . '/fpdf.php';
+// Use TCPDF for generating PDFs from HTML templates
+require_once '/usr/share/php/tcpdf/tcpdf.php';
 
 $id = isset($_GET['id']) ? (int) $_GET['id'] : 0;
 if (!$id) {
@@ -15,6 +16,10 @@ if (!$id) {
 
 // Look for a previously generated invoice in uploads/invoices
 $localFile = __DIR__ . "/../uploads/invoices/invoice-{$id}.pdf";
+// Create folder if it does not exist
+if (!is_dir(dirname($localFile))) {
+    mkdir(dirname($localFile), 0777, true);
+}
 if (file_exists($localFile)) {
     header('Content-Type: application/pdf');
     header('Content-Disposition: attachment; filename="invoice-' . $id . '.pdf"');
@@ -47,20 +52,71 @@ if (!$order) {
     exit;
 }
 
-// --- Generate a very simple PDF invoice ---
-$pdf = new FPDF();
+// --- Build HTML invoice template ---
+$name   = trim(($order['billing']['first_name'] ?? '') . ' ' . ($order['billing']['last_name'] ?? ''));
+$billing = $order['billing'] ?? [];
+$currency = $order['currency'] ?? '$';
+$itemsHtml = '';
+foreach ($order['line_items'] ?? [] as $it) {
+    $p = number_format((float)($it['price'] ?? 0), 2);
+    $t = number_format((float)($it['total'] ?? 0), 2);
+    $itemsHtml .= '<tr>' .
+        '<td>' . htmlspecialchars($it['name']) . '</td>' .
+        '<td class="qty">' . (int)$it['quantity'] . '</td>' .
+        '<td class="amount">' . $currency . ' ' . $p . '</td>' .
+        '<td class="amount">' . $currency . ' ' . $t . '</td>' .
+        '</tr>';
+}
+
+$html = <<<HTML
+<html>
+<head>
+<style>
+body { font-family: DejaVu Sans, sans-serif; color: #333; font-size: 12px; }
+.invoice-header { display: flex; justify-content: space-between; border-bottom: 1px solid #ccc; margin-bottom: 20px; }
+.invoice-header h1 { font-size: 20px; margin: 0; }
+.address { text-align: right; }
+table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+th, td { border: 1px solid #ccc; padding: 8px; }
+th { background: #f0f0f0; }
+.amount, .qty { text-align: right; }
+</style>
+</head>
+<body>
+<div class="invoice-header">
+  <h1>Invoice #$id</h1>
+  <div class="address">
+    <strong>$name</strong><br/>
+    {$billing['address_1'] ?? ''}<br/>
+    {$billing['city'] ?? ''} {$billing['postcode'] ?? ''}
+  </div>
+</div>
+<table class="invoice-table">
+  <thead>
+    <tr><th>Item</th><th class="qty">Qty</th><th class="amount">Price</th><th class="amount">Total</th></tr>
+  </thead>
+  <tbody>
+    $itemsHtml
+  </tbody>
+  <tfoot>
+    <tr><td colspan="3" class="amount"><strong>Total</strong></td><td class="amount">$currency {$order['total']}</td></tr>
+  </tfoot>
+</table>
+</body>
+</html>
+HTML;
+
+// --- Generate PDF using TCPDF ---
+$pdf = new TCPDF();
+$pdf->SetCreator('Delivery Portal');
+$pdf->SetAuthor('Delivery Portal');
+$pdf->SetTitle('Invoice #' . $id);
+$pdf->SetMargins(15, 15, 15);
 $pdf->AddPage();
-$pdf->SetFont('Arial', 'B', 16);
-$pdf->Cell(40, 10, 'Invoice #' . $id);
-$pdf->Ln(10);
-$pdf->SetFont('Arial', '', 12);
-$name = trim(($order['billing']['first_name'] ?? '') . ' ' . ($order['billing']['last_name'] ?? ''));
-$pdf->Cell(40, 10, 'Customer: ' . $name);
-$pdf->Ln(8);
-$pdf->Cell(40, 10, 'Total: ' . ($order['total'] ?? '0.00'));
-$pdf->Ln(8);
-$pdf->Cell(40, 10, 'Date: ' . substr($order['date_created'] ?? '', 0, 10));
-$pdfContent = $pdf->Output('S');
+$pdf->writeHTML($html, true, false, true, false, '');
+
+$pdf->Output($localFile, 'F');
+$pdfContent = file_get_contents($localFile);
 
 header('Content-Type: application/pdf');
 header('Content-Disposition: attachment; filename="invoice-' . $id . '.pdf"');
