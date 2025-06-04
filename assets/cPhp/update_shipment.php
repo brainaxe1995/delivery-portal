@@ -45,10 +45,19 @@ if (stripos($ctype, 'application/json') !== false) {
         CURLOPT_HTTPHEADER     => ['Content-Type: application/json'],
         CURLOPT_POSTFIELDS     => json_encode($payload)
     ]);
-    curl_exec($ch);
+    $resp   = curl_exec($ch);
+    $status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
     curl_close($ch);
 
-    echo json_encode(['success' => true]);
+    if ($status >= 200 && $status < 300) {
+        echo json_encode(['success' => true]);
+    } else {
+        http_response_code($status ?: 500);
+        echo json_encode([
+            'error'   => 'WooCommerce API error',
+            'details' => $resp
+        ]);
+    }
     exit;
 }
 
@@ -88,8 +97,18 @@ while (($row = fgetcsv($tmp)) !== false) {
         CURLOPT_HTTPHEADER     => ['Content-Type: application/json'],
         CURLOPT_POSTFIELDS     => json_encode($payload)
     ]);
-    curl_exec($ch);
+    $resp   = curl_exec($ch);
+    $status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
     curl_close($ch);
+    if ($status < 200 || $status >= 300) {
+        http_response_code($status ?: 500);
+        echo json_encode([
+            'error'   => 'WooCommerce API error',
+            'details' => $resp,
+            'order_id'=> $order_id
+        ]);
+        exit;
+    }
 }
 
 echo json_encode(['success' => true]);

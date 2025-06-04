@@ -39,8 +39,18 @@ foreach ($rows as $row) {
     curl_setopt($ch, CURLOPT_USERPWD, "$consumer_key:$consumer_secret");
     curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
     curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
-    curl_exec($ch);
+    $resp   = curl_exec($ch);
+    $status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
     curl_close($ch);
+    if ($status < 200 || $status >= 300) {
+        http_response_code($status ?: 500);
+        echo json_encode([
+            'error'   => 'WooCommerce API error',
+            'details' => $resp,
+            'order_id'=> $orderId
+        ]);
+        exit;
+    }
 }
 
 echo json_encode(['success'=>true]);
