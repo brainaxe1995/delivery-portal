@@ -2,7 +2,6 @@ const fs = require('fs');
 const path = require('path');
 const vm = require('vm');
 const { JSDOM } = require('jsdom');
-const jquery = require('jquery');
 
 let script;
 
@@ -14,7 +13,10 @@ beforeEach(() => {
   const dom = new JSDOM('<!doctype html><html><body></body></html>');
   global.window = dom.window;
   global.document = dom.window.document;
-  global.$ = jquery(global.window);
+  // Load jQuery with the newly created window
+  delete require.cache[require.resolve('jquery')];
+  const jquery = require('jquery');
+  global.$ = jquery;
   document.body.innerHTML = '<ul class="base-pagination pagination"></ul>';
   vm.runInNewContext(script, global);
 });
