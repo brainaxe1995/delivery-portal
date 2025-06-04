@@ -80,6 +80,8 @@
                       <th>ID</th>
                       <th>Image</th>
                       <th>Name</th>
+                      <th>SKU</th>
+                      <th>Variants</th>
                       <th>Stock</th>
                       <th>Price</th>
                       <th>Status</th>
@@ -128,6 +130,14 @@
                   <option value="instock">In Stock</option>
                   <option value="outofstock">Out of Stock</option>
                 </select>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Packaging Info URL</label>
+                <input type="url" id="edit-packaging-url" name="packaging_info_url" class="form-control"/>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Safety/Data Sheet URL</label>
+                <input type="url" id="edit-safety-url" name="safety_sheet_url" class="form-control"/>
               </div>
             </div>
             <div class="modal-footer">
