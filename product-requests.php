@@ -32,8 +32,7 @@ $BASE_URL = rtrim(PROJECT_BASE_URL, '/');
         <div class="title-wrapper pt-30 mb-3 d-flex justify-content-between align-items-center">
           <h2>Product Requests</h2>
           <div>
-            <button id="newProductBtn" class="main-btn primary-btn btn-hover btn-sm me-2">New Product</button>
-            <button id="priceChangeBtn" class="main-btn primary-btn btn-hover btn-sm">Price Change</button>
+            <button id="newProductBtn" class="main-btn primary-btn btn-hover btn-sm">Add Request</button>
           </div>
         </div>
         <div class="card-style mb-30">
@@ -42,15 +41,13 @@ $BASE_URL = rtrim(PROJECT_BASE_URL, '/');
               <thead class="table-light">
                 <tr>
                   <th>ID</th>
-                  <th>Type</th>
+                  <th>Supplier</th>
                   <th>Product</th>
-                  <th>Proposed Price</th>
-                  <th>Reason</th>
-                  <th>Status</th>
-                  <th>Actions</th>
+                  <th>Description</th>
+                  <th>Requested</th>
                 </tr>
               </thead>
-              <tbody></tbody>
+              <tbody id="requestsBody"></tbody>
             </table>
           </div>
           <nav class="p-3"><ul class="base-pagination pagination"></ul></nav>
@@ -68,18 +65,17 @@ $BASE_URL = rtrim(PROJECT_BASE_URL, '/');
           </div>
           <div class="modal-body">
             <form id="requestForm">
-              <input type="hidden" id="requestType" value="new_product" />
               <div class="mb-3">
-                <label class="form-label">Product / SKU</label>
-                <input type="text" class="form-control" id="productName" required />
+                <label class="form-label">Supplier</label>
+                <input type="text" class="form-control" id="supplier" required />
               </div>
               <div class="mb-3">
-                <label class="form-label">Proposed Price</label>
-                <input type="number" step="0.01" class="form-control" id="proposedPrice" />
+                <label class="form-label">Product</label>
+                <input type="text" class="form-control" id="product" required />
               </div>
               <div class="mb-3">
-                <label class="form-label">Reason</label>
-                <textarea class="form-control" id="requestReason"></textarea>
+                <label class="form-label">Description</label>
+                <textarea class="form-control" id="description"></textarea>
               </div>
             </form>
           </div>

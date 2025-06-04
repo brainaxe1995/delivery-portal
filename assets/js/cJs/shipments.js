@@ -89,6 +89,7 @@ $(function(){
 /**
  * Fetch and render the shipments page
  */
+// Load only orders that are still processing
 function fetchShipments(page = 1) {
   currentPage = page;
 
