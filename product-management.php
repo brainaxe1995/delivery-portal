@@ -68,6 +68,7 @@
                     <option value="">All</option>
                     <option value="instock">In Stock</option>
                     <option value="outofstock">Out of Stock</option>
+                    <option value="discontinued">Discontinued</option>
                   </select>
                 </div>
               </div>
@@ -84,6 +85,7 @@
                       <th>Variants</th>
                       <th>Stock</th>
                       <th>Price</th>
+                      <th>MOQ</th>
                       <th>Status</th>
                       <th>Actions</th>
                     </tr>
@@ -121,6 +123,10 @@
                        class="form-control" required/>
               </div>
               <div class="mb-3">
+                <label class="form-label">MOQ</label>
+                <input type="number" id="edit-moq" name="moq" class="form-control"/>
+              </div>
+              <div class="mb-3">
                 <label class="form-label">Stock Quantity</label>
                 <input type="number" id="edit-stock" name="stock" class="form-control"/>
               </div>
@@ -129,6 +135,7 @@
                 <select id="edit-status" name="status" class="form-select">
                   <option value="instock">In Stock</option>
                   <option value="outofstock">Out of Stock</option>
+                  <option value="discontinued">Discontinued</option>
                 </select>
               </div>
               <div class="mb-3">
