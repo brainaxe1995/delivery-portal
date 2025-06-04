@@ -75,11 +75,12 @@ If you are looking for a high-quality free admin template that comes with all es
 
 ## Environment Configuration
 
-The PHP scripts under `assets/cPhp` expect three environment variables to be present:
+The PHP scripts under `assets/cPhp` expect the following environment variables to be present:
 
 - `WOOCOMMERCE_CK` – WooCommerce consumer key
 - `WOOCOMMERCE_CS` – WooCommerce consumer secret
 - `STORE_URL` – URL of your WooCommerce store
+- `TRACK17_APIKEY` – API key for communicating with [17TRACK](https://www.17track.net/)
 
 Create a `.env` file in the project root containing these variables and export them in your server environment before running the application:
 
@@ -87,6 +88,7 @@ Create a `.env` file in the project root containing these variables and export t
 WOOCOMMERCE_CK=your_key
 WOOCOMMERCE_CS=your_secret
 STORE_URL=https://example.com
+TRACK17_APIKEY=your_api_key
 ```
 
 ## Running Tests
