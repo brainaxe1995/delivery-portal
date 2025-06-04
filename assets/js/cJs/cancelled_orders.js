@@ -17,7 +17,6 @@ function fetchCancelledOrders(page) {
     method: 'GET',
     dataType: 'json',
     success: function (orders, textStatus, xhr) {
-      console.log('Cancelled Orders (page ' + page + '):', orders);
       updateTable(orders);
       
       // Get total pages from our custom header (set in PHP)

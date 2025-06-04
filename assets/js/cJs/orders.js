@@ -19,7 +19,6 @@ let totalPages    = 1;
 // fetch + render
 function fetchOrders(page = 1) {
   currentPage = page;
-  console.log('Fetching', currentStatus, 'page', page);
   $.ajax({
     url: `${BASE_URL}/assets/cPhp/${endpointMap[currentStatus]}`,
     method: 'GET',
@@ -30,7 +29,6 @@ function fetchOrders(page = 1) {
     },
     complete(xhr) {
       totalPages = parseInt(xhr.getResponseHeader('X-My-TotalPages'), 10) || 1;
-      console.log('Total pages =', totalPages);
       buildPagination();  // from pagination.js
       history.replaceState({}, '', `${location.pathname}?status=${currentStatus}&page=${currentPage}`);
     }
