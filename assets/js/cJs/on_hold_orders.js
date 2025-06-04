@@ -4,6 +4,14 @@ let currentPage = 1;
 let totalPages  = 1;
 const PER_PAGE  = 20;
 
+function escapeHtml(str) {
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
 $(document).ready(function() {
   const params   = new URLSearchParams(window.location.search);
   const pageParm = parseInt(params.get('page'), 10) || 1;
