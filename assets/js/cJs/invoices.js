@@ -1,11 +1,22 @@
 // page-specific fetcher for Invoices
 let currentPage = 1;
 let totalPages  = 1;
+let invoiceItems = [];
 
 $(function(){
   fetchInvoices(1);
   $('#addInvoice').on('click', openAddInvoice);
   $('#saveInvoice').on('click', saveInvoice);
+  $('#addItem').on('click', addItem);
+  $('#itemsTable').on('click', '.remove-item', function(){
+    const idx = $(this).data('index');
+    removeItem(idx);
+  });
+  $('#itemsTable').on('input', 'input', function(){
+    const idx = $(this).closest('tr').data('index');
+    const field = $(this).data('field');
+    if(invoiceItems[idx]) invoiceItems[idx][field] = $(this).val();
+  });
   $('#invoiceTable').on('click', '.delete-invoice', function(){
     const id = $(this).data('id');
     deleteInvoice(id);
@@ -64,20 +75,58 @@ $(document).on('click', '.invoice-download', function(e) {
 });
 
 function openAddInvoice(){
-  $('#invCustomer').val('');
-  $('#invAmount').val('');
-  $('#invStatus').val('');
-  $('#invDate').val('');
+  invoiceItems = [];
+  addItem();
   new bootstrap.Modal($('#invoiceModal')).show();
 }
 
+function addItem(){
+  invoiceItems.push({
+    orderNumber: '',
+    trackingCode: '',
+    shippingProof: '',
+    customerName: '',
+    address: '',
+    countryName: '',
+    productName: '',
+    stripe: '',
+    productCost: '',
+    shippingCost: '',
+    totalCost: '',
+    note: ''
+  });
+  renderItems();
+}
+
+function removeItem(idx){
+  invoiceItems.splice(idx,1);
+  renderItems();
+}
+
+function renderItems(){
+  let html = '';
+  invoiceItems.forEach((item,i)=>{
+    html += `<tr data-index="${i}">
+      <td><input data-field="orderNumber" type="text" class="form-control" value="${item.orderNumber}"></td>
+      <td><input data-field="trackingCode" type="text" class="form-control" value="${item.trackingCode}"></td>
+      <td><input data-field="shippingProof" type="text" class="form-control" value="${item.shippingProof}"></td>
+      <td><input data-field="customerName" type="text" class="form-control" value="${item.customerName}"></td>
+      <td><input data-field="address" type="text" class="form-control" value="${item.address}"></td>
+      <td><input data-field="countryName" type="text" class="form-control" value="${item.countryName}"></td>
+      <td><input data-field="productName" type="text" class="form-control" value="${item.productName}"></td>
+      <td><input data-field="stripe" type="text" class="form-control" value="${item.stripe}"></td>
+      <td><input data-field="productCost" type="number" step="0.01" class="form-control" value="${item.productCost}"></td>
+      <td><input data-field="shippingCost" type="number" step="0.01" class="form-control" value="${item.shippingCost}"></td>
+      <td><input data-field="totalCost" type="number" step="0.01" class="form-control" value="${item.totalCost}"></td>
+      <td><input data-field="note" type="text" class="form-control" value="${item.note}"></td>
+      <td><button type="button" class="btn btn-sm btn-danger remove-item" data-index="${i}">Remove</button></td>
+    </tr>`;
+  });
+  $('#itemsTable tbody').html(html);
+}
+
 function saveInvoice(){
-  const payload = {
-    customer: $('#invCustomer').val(),
-    amount: parseFloat($('#invAmount').val()||0),
-    status: $('#invStatus').val(),
-    date: $('#invDate').val()
-  };
+  const payload = { items: invoiceItems };
   $.ajax({
     url:`${BASE_URL}/assets/cPhp/create_invoice.php`,
     method:'POST',
