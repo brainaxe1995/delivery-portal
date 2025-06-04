@@ -42,6 +42,7 @@ const sidebarHTML = `
           <li><a href="delivered-orders.php">Delivered Orders</a></li>
           <li><a href="returned-orders.php">Returned Orders</a></li>
           <li><a href="refunded-orders.php">Refunded Orders</a></li>
+          <li><a href="refund-dashboard.php">Refund Dashboard</a></li>
           <li><a href="cancelled-orders.php">Cancelled Orders</a></li>
           <li><a href="orders.php">Orders</a></li>
           <li><a href="shipments.php">shipments</a></li>
