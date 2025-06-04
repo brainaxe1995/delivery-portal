@@ -110,3 +110,13 @@ Install dependencies and run the test suite. Requires Node.js >=18:
 npm install
 npm test
 ```
+
+## Shipment Update Endpoints
+
+Two PHP scripts handle shipment updates:
+
+- `assets/cPhp/upload_manifest.php` – Upload a CSV manifest under the form field
+  `manifest` to bulk update orders with tracking numbers, providers and ETAs.
+- `assets/cPhp/update_single_shipment.php` – Accepts a JSON body containing an
+  `order_id` plus optional `provider`, `tracking_no` and `eta` values. It updates
+  a single WooCommerce order and is used when editing rows in `shipments.js`.
