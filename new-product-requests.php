@@ -48,6 +48,6 @@ $BASE_URL = rtrim(PROJECT_BASE_URL, '/');
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="assets/js/bootstrap.bundle.min.js"></script>
     <script src="assets/js/main.js"></script>
-    <script src="assets/js/cJs/product-requests.js"></script>
+    <script src="assets/js/cJs/product_requests.js"></script>
   </body>
 </html>
