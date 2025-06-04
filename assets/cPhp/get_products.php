@@ -28,64 +28,22 @@ function callWooAPI($baseUrl, $endpoint, $ck, $cs) {
 
 $page     = isset($_GET['page'])     ? (int)$_GET['page']     : 1;
 $per_page = isset($_GET['per_page']) ? (int)$_GET['per_page'] : 20;
+$status   = $_GET['status'] ?? '';
+
 $endpoint = "/wp-json/wc/v3/products?page={$page}&per_page={$per_page}&context=edit";
-
-$body     = callWooAPI($store_url, $endpoint, $consumer_key, $consumer_secret);
-$products = json_decode($body, true);
-if (is_array($products)) {
-    foreach ($products as &$p) {
-        $p['moq'] = '';
-        if (!empty($p['meta_data'])) {
-            foreach ($p['meta_data'] as $m) {
-                if ($m['key'] === 'moq') {
-                    $p['moq'] = $m['value'];
-                    break;
-                }
-            }
-        }
-    }
-    unset($p);
-}
-
-// Optional stock status filter
-$status = $_GET['status'] ?? '';
-$allowed = ['instock', 'outofstock', 'discontinued'];
+$allowed  = ['instock', 'outofstock', 'discontinued'];
 if ($status && in_array($status, $allowed, true)) {
     $endpoint .= "&stock_status={$status}";
 }
 
-$json = callWooAPI($store_url, $endpoint, $consumer_key, $consumer_secret);
-$products = json_decode($json, true);
-
-if (is_array($products)) {
-    foreach ($products as &$p) {
-        if (($p['type'] ?? '') === 'variable') {
-            $varResp = callWooAPI(
-                $store_url,
-                "/wp-json/wc/v3/products/{$p['id']}/variations?per_page=100",
-                $consumer_key,
-                $consumer_secret
-            );
-            $vars = json_decode($varResp, true);
-            if (is_array($vars)) {
-                $p['variant_attributes'] = array_map(function($v){
-                    return $v['attributes'];
-                }, $vars);
-            }
-        }
-    }
+$body     = callWooAPI($store_url, $endpoint, $consumer_key, $consumer_secret);
+$products = json_decode($body, true);
+if (!is_array($products)) {
     header('Content-Type: application/json; charset=utf-8');
-    echo json_encode($products);
+    echo $body;
     exit;
 }
 
-// ---------------------------------------------------------------------
-// Fetch products from WooCommerce and merge restock_eta from local store
-// ---------------------------------------------------------------------
-$rawJson = callWooAPI($store_url, $endpoint, $consumer_key, $consumer_secret);
-$products = json_decode($rawJson, true);
-
-// Load restock ETA mapping
 $etaFile = __DIR__ . '/../data/restock_eta.json';
 $etaData = file_exists($etaFile) ? json_decode(file_get_contents($etaFile), true) : [];
 $etaMap  = [];
@@ -96,18 +54,31 @@ foreach ($etaData as $e) {
 }
 
 foreach ($products as &$p) {
+    $p['moq'] = '';
+    if (!empty($p['meta_data']) && is_array($p['meta_data'])) {
+        foreach ($p['meta_data'] as $m) {
+            if ($m['key'] === 'moq') {
+                $p['moq'] = $m['value'];
+                break;
+            }
+        }
+    }
+
     $p['restock_eta'] = $etaMap[$p['id']] ?? null;
+
+    if (($p['type'] ?? '') === 'variable' && !empty($p['attributes'])) {
+        $p['variant_attributes'] = [array_map(function($attr){
+            $opts = $attr['options'] ?? [];
+            return [
+                'name'   => $attr['name'] ?? '',
+                'option' => implode(', ', $opts)
+            ];
+        }, $p['attributes'])];
+    }
 }
 unset($p);
 
 header('Content-Type: application/json; charset=utf-8');
 
 echo json_encode($products);
-
-
-echo $json;
-
-echo json_encode($products);
-
-
 exit;
