@@ -88,3 +88,12 @@ WOOCOMMERCE_CK=your_key
 WOOCOMMERCE_CS=your_secret
 STORE_URL=https://example.com
 ```
+
+## Running Tests
+
+Install dependencies and run the test suite:
+
+```bash
+npm install
+npm test
+```
