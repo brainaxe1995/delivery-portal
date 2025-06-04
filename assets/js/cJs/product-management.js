@@ -100,8 +100,46 @@ function updateUrl(page) {
 // --------------------------------------------------------------------------------
 window.fetchPendingOrders = fetchProducts;
 
-// — Modal logic stays unchanged —
+// — Modal logic —
 $(document).on('click', '.edit-btn', function() {
-  /* …open + populate modal… */
+  const id = $(this).data('id');
+  $.getJSON(`${BASE_URL}/assets/cPhp/get_product.php`, { id })
+    .done(p => {
+      $('#edit-id').val(p.id);
+      $('#edit-name').val(p.name);
+      $('#edit-price').val(p.price || p.regular_price || '');
+      $('#edit-stock').val(p.stock_quantity ?? '');
+      $('#edit-status').val(p.stock_status || 'instock');
+      new bootstrap.Modal($('#editProductModal')).show();
+    })
+    .fail(xhr => {
+      console.error('Product load failed:', xhr.responseText);
+      alert('Failed to load product information');
+    });
 });
-$('#editProductForm').submit(function(e){ /* …save product…*/ });
+
+$('#editProductForm').submit(function(e){
+  e.preventDefault();
+  const payload = {
+    id:    $('#edit-id').val(),
+    price: $('#edit-price').val(),
+    stock: $('#edit-stock').val(),
+    status: $('#edit-status').val()
+  };
+
+  $.ajax({
+    url: `${BASE_URL}/assets/cPhp/update_product.php`,
+    method: 'POST',
+    contentType: 'application/json',
+    dataType: 'json',
+    data: JSON.stringify(payload)
+  })
+  .done(() => {
+    bootstrap.Modal.getInstance($('#editProductModal')[0]).hide();
+    fetchProducts(currentPage);
+  })
+  .fail(xhr => {
+    console.error('Update failed:', xhr.responseText);
+    alert('Failed to update product');
+  });
+});
