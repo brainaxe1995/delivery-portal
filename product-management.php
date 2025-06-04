@@ -83,6 +83,7 @@
                       <th>Name</th>
                       <th>Stock</th>
                       <th>Price</th>
+                      <th>MOQ</th>
                       <th>Status</th>
                       <th>Actions</th>
                     </tr>
@@ -118,6 +119,10 @@
                 <label class="form-label">Price</label>
                 <input type="number" step="0.01" id="edit-price" name="price"
                        class="form-control" required/>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">MOQ</label>
+                <input type="number" id="edit-moq" name="moq" class="form-control"/>
               </div>
               <div class="mb-3">
                 <label class="form-label">Stock Quantity</label>
