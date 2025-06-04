@@ -52,15 +52,7 @@ function fetchProducts(page = 1) {
     error(_, __, err) {
       console.error('📦 Fetch failed:', err);
       $('#products-table tbody').html(
-
-        `<tr><td colspan="8" class="text-center">Error loading products.</td></tr>`
-
-
-        `<tr><td colspan="9" class="text-center">Error loading products.</td></tr>`
-
-        `<tr><td colspan="8" class="text-center">Error loading products.</td></tr>`
-
-
+        '<tr><td colspan="11" class="text-center">Error loading products.</td></tr>'
       );
     }
   });
@@ -79,15 +71,7 @@ function renderTable() {
   const $tb = $('#products-table tbody').empty();
   if (!filtered.length) {
     return $tb.append(
-
-      `<tr><td colspan="8" class="text-center">No products found.</td></tr>`
-
-
-      `<tr><td colspan="9" class="text-center">No products found.</td></tr>`
-
-      `<tr><td colspan="8" class="text-center">No products found.</td></tr>`
-
-
+      '<tr><td colspan="11" class="text-center">No products found.</td></tr>'
     );
   }
 
@@ -172,7 +156,7 @@ $('#editProductForm').submit(function(e){
     stock: $('#edit-stock').val(),
     status: $('#edit-status').val(),
 
-    restock_eta: $('#edit-restock').val()
+    restock_eta: $('#edit-restock').val(),
 
     packaging_info_url: $('#edit-packaging-url').val(),
     safety_sheet_url: $('#edit-safety-url').val()
