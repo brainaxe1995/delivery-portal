@@ -13,32 +13,40 @@ if (!is_array($input) || empty($input)) {
 header('Content-Type: application/json; charset=utf-8');
 
 // 2) Validate required fields
-if (empty($input['order_id']) || empty($input['tracking_code'])) {
+if (empty($input['order_id'])) {
     http_response_code(400);
-    echo json_encode(['error' => 'Missing order_id or tracking_code']);
+    echo json_encode(['error' => 'Missing order_id']);
     exit;
 }
 
-$order_id    = (int) $input['order_id'];
-$tracking_no = trim($input['tracking_code']);
-$carrier     = trim($input['carrier_slug'] ?? '');
+$order_id = (int) $input['order_id'];
+$update   = [];
 
-// 3) Build payload using the plugin’s meta keys
-$update = [
-    'meta_data' => [
-        ['key' => '_wot_tracking_number', 'value' => $tracking_no],
-    ]
-];
+// 3) Optional tracking code update
+if (!empty($input['tracking_code'])) {
+    $tracking_no = trim($input['tracking_code']);
+    $carrier     = trim($input['carrier_slug'] ?? '');
 
-// 3a) If a carrier was provided, include that too
-if ($carrier !== '') {
-    $update['meta_data'][] = [
-        'key'   => '_wot_tracking_carrier',
-        'value' => $carrier
-    ];
+    $meta = [ ['key' => '_wot_tracking_number', 'value' => $tracking_no] ];
+    if ($carrier !== '') {
+        $meta[] = ['key' => '_wot_tracking_carrier', 'value' => $carrier];
+    }
+
+    $update['meta_data'] = $meta;
 }
 
-// 4) Send PUT to WooCommerce REST API
+// 4) Optional status update
+if (!empty($input['status'])) {
+    $update['status'] = trim($input['status']);
+}
+
+if (empty($update)) {
+    http_response_code(400);
+    echo json_encode(['error' => 'No update parameters provided']);
+    exit;
+}
+
+// 5) Send PUT to WooCommerce REST API
 $endpoint = "/wp-json/wc/v3/orders/{$order_id}";
 $ch = curl_init(rtrim($store_url, '/') . $endpoint);
 curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
@@ -51,7 +59,7 @@ $resp   = curl_exec($ch);
 $code   = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 curl_close($ch);
 
-// 5) Return the WooCommerce API response
+// 6) Return the WooCommerce API response
 http_response_code($code);
 echo $resp;
 exit;
