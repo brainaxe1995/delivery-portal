@@ -23,6 +23,7 @@ function fetchPendingOrders(page) {
   currentPage = page;
 
   $.ajax({
+    beforeSend: window.showLoader,
     url: `${BASE_URL}/assets/cPhp/get_pending_orders.php`,
     method: 'GET',
     data: { page, per_page: PER_PAGE },
@@ -41,7 +42,8 @@ function fetchPendingOrders(page) {
     error(xhr, textStatus, errorThrown) {
       console.error('Error fetching pending orders:', textStatus, errorThrown);
       alert('❌ Could not load pending orders');
-    }
+    },
+    complete: window.hideLoader
   });
 }
 
@@ -108,23 +110,31 @@ function renderTable(orders) {
     e.preventDefault();
     const $li    = $(this);
     const newSt  = $li.data('status');
-    const $btn   = $li.closest('.btn-group').find('.status-text');
+    const $btnGrp= $li.closest('.btn-group');
+    const $btn   = $btnGrp.find('.status-text');
     const orderId= $li.closest('tr').data('order-id');
 
     // Update UI immediately
     $btn.text(getStatusLabel(newSt));
 
     // Persist to server
+    const $toggle = $btnGrp.find('.dropdown-toggle');
+    $toggle.prop('disabled', true);
+    window.showLoader();
     $.ajax({
       url: `${BASE_URL}/assets/cPhp/update_order.php`,
       method: 'POST',
       contentType: 'application/json',
       data: JSON.stringify({ order_id: orderId, status: newSt })
     })
-    .done(() => alert(`✅ Status updated to "${getStatusLabel(newSt)}"`))
+    .done(() => fetchPendingOrders(currentPage))
     .fail(xhr => {
       console.error(xhr.responseText);
       alert('❌ Status update failed');
+    })
+    .always(() => {
+      $toggle.prop('disabled', false);
+      window.hideLoader();
     });
   });
 
@@ -135,16 +145,24 @@ function renderTable(orders) {
     const codeVal    = $form.find('[name="tracking_code"]').val().trim();
     const orderId    = $form.closest('tr').data('order-id');
 
+    const $btn = $form.find('button[type="submit"]');
+    $btn.prop('disabled', true);
+    window.showLoader();
+
     $.ajax({
       url: `${BASE_URL}/assets/cPhp/update_order.php`,
       method: 'POST',
       contentType: 'application/json',
       data: JSON.stringify({ order_id: orderId, tracking_code: codeVal })
     })
-    .done(() => alert('✅ Tracking code saved'))
+    .done(() => fetchPendingOrders(currentPage))
     .fail(xhr => {
       console.error(xhr.responseText);
       alert('❌ Failed to save tracking code');
+    })
+    .always(() => {
+      $btn.prop('disabled', false);
+      window.hideLoader();
     });
   });
 }

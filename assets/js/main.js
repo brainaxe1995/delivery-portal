@@ -2,9 +2,20 @@
   /* ========= Preloader ======== */
   const preloader = document.querySelectorAll('#preloader')
 
+  // Helper functions exposed globally
+  window.showLoader = function () {
+    const el = document.getElementById('preloader')
+    if (el) el.style.display = 'flex'
+  }
+
+  window.hideLoader = function () {
+    const el = document.getElementById('preloader')
+    if (el) el.style.display = 'none'
+  }
+
   window.addEventListener('load', function () {
     if (preloader.length) {
-      this.document.getElementById('preloader').style.display = 'none'
+      window.hideLoader()
     }
   })
 
