@@ -4,6 +4,14 @@ let currentPage = 1;
 let totalPages  = 1;
 const PER_PAGE = 20;
 
+function escapeHtml(str) {
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
 $(document).ready(function() {
   // Read ?page= from URL if present
   const params   = new URLSearchParams(window.location.search);
@@ -42,17 +50,17 @@ function renderTable(orders) {
 
   orders.forEach(order => {
     // Build display values
-    const orderId    = `#${order.id}`;
-    const name       = [order.billing.first_name, order.billing.last_name].filter(Boolean).join(' ') || 'No Name';
-    const email      = order.billing.email || 'No Email';
+    const orderId    = `#${escapeHtml(order.id)}`;
+    const name       = escapeHtml([order.billing.first_name, order.billing.last_name].filter(Boolean).join(' ') || 'No Name');
+    const email      = escapeHtml(order.billing.email || 'No Email');
     const dateText   = order.date_created
-      ? new Date(order.date_created).toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' })
+      ? escapeHtml(new Date(order.date_created).toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' }))
       : 'No Date';
     const itemsHtml  = order.line_items.length
-      ? order.line_items.map(i => `<p>${i.quantity}× ${i.name}</p>`).join('')
+      ? order.line_items.map(i => `<p>${escapeHtml(i.quantity)}× ${escapeHtml(i.name)}</p>`).join('')
       : '<p>No Items</p>';
     const currentSt  = order.status || 'unknown';
-    const label      = getStatusLabel(currentSt);
+    const label      = escapeHtml(getStatusLabel(currentSt));
 
     // Build status dropdown
     const dropdown = `
@@ -62,7 +70,7 @@ function renderTable(orders) {
         </button>
         <ul class="dropdown-menu">
           ${['pending','processing','on-hold','in-transit','completed','returned','refunded','cancelled']
-            .map(st => `<li><a class="dropdown-item" href="#" data-status="${st}">${getStatusLabel(st)}</a></li>`)
+            .map(st => `<li><a class="dropdown-item" href="#" data-status="${st}">${escapeHtml(getStatusLabel(st))}</a></li>`)
             .join('')}
         </ul>
       </div>
@@ -70,7 +78,7 @@ function renderTable(orders) {
 
     // Pre-fill tracking code if present
     const existingMeta = order.meta_data.find(m => m.key === '_tracking_number');
-    const initTrack    = existingMeta ? existingMeta.value : '';
+    const initTrack    = existingMeta ? escapeHtml(existingMeta.value) : '';
 
     // Row HTML
     const row = `

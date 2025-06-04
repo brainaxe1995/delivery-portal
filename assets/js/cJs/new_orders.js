@@ -2,6 +2,14 @@
 let currentPage = 1;
 let totalPages  = 1;
 
+function escapeHtml(str) {
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
 $(function(){
   fetchNewOrders(1);
 });
@@ -26,25 +34,25 @@ function fetchNewOrders(page = 1) {
     success(orders) {
       let html = '';
       orders.forEach(o => {
-        const idText = o.id ? `#${o.id}` : '#N/A';
-        const name = ((o.billing?.first_name || '') + ' ' + (o.billing?.last_name || '')).trim() || 'No Name';
-        const email = o.billing?.email || 'No Email';
+        const idText = o.id ? `#${escapeHtml(o.id)}` : '#N/A';
+        const name = escapeHtml(((o.billing?.first_name || '') + ' ' + (o.billing?.last_name || '')).trim() || 'No Name');
+        const email = escapeHtml(o.billing?.email || 'No Email');
 
         let date = 'No Date';
         if (o.date_created) {
-          date = new Date(o.date_created)
-                   .toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+          date = escapeHtml(new Date(o.date_created)
+                   .toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }));
         }
 
         let itemsHtml = '<p>No Items</p>';
         if (Array.isArray(o.line_items) && o.line_items.length) {
-          itemsHtml = o.line_items.map(i => `<p>${i.name} – Qty ${i.quantity}</p>`).join('');
+          itemsHtml = o.line_items.map(i => `<p>${escapeHtml(i.name)} – Qty ${escapeHtml(i.quantity)}</p>`).join('');
         }
 
         const statusDd = `
           <div class="btn-group">
             <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown">
-              <span class="status-text">${o.status}</span>
+              <span class="status-text">${escapeHtml(o.status)}</span>
             </button>
             <ul class="dropdown-menu">
               <li><a class="dropdown-item" href="#" data-status="pending">Pending</a></li>
@@ -73,7 +81,7 @@ function fetchNewOrders(page = 1) {
         }
 
         html += `
-          <tr data-order-id="${o.id}">
+          <tr data-order-id="${escapeHtml(o.id)}">
             <td><p>${idText} ${name}</p></td>
             <td><p><a href="mailto:${email}">${email}</a></p></td>
             <td><p>${date}</p></td>
@@ -81,7 +89,7 @@ function fetchNewOrders(page = 1) {
             <td>${statusDd}</td>
             <td>
               <form class="tracking-form d-flex align-items-center">
-                <input type="text" class="form-control tracking-code-input" placeholder="Tracking Code" value="${tracking}">
+                <input type="text" class="form-control tracking-code-input" placeholder="Tracking Code" value="${escapeHtml(tracking)}">
                 <button type="submit" class="btn btn-link p-0 ms-2 update-btn" title="Update">
                   <i class="lni lni-checkmark-circle" style="font-size:1.5rem;color:#28a745"></i>
                 </button>

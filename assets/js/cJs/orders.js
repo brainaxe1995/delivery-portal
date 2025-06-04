@@ -16,6 +16,14 @@ let currentStatus = 'new';
 let currentPage   = 1;
 let totalPages    = 1;
 
+function escapeHtml(str) {
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
 // fetch + render
 function fetchOrders(page = 1) {
   currentPage = page;
@@ -49,16 +57,16 @@ function renderOrders(orders) {
     const exist = meta ? meta.value : '';
     $body.append(`
       <tr>
-        <td>#${o.id}</td>
-        <td>${date}</td>
-        <td>${(o.billing?.first_name||'') + ' ' + (o.billing?.last_name||'')}</td>
-        <td>AED ${parseFloat(o.total).toFixed(2)}</td>
-        <td>${o.status.replace('-', ' ')}</td>
+        <td>#${escapeHtml(o.id)}</td>
+        <td>${escapeHtml(date)}</td>
+        <td>${escapeHtml((o.billing?.first_name||'') + ' ' + (o.billing?.last_name||''))}</td>
+        <td>AED ${escapeHtml(parseFloat(o.total).toFixed(2))}</td>
+        <td>${escapeHtml(o.status.replace('-', ' '))}</td>
         <td>
           <button class="btn btn-sm btn-success me-1"
-                  onclick="openTracking(${o.id}, '${exist}')">Track</button>
+                  onclick="openTracking(${escapeHtml(o.id)}, '${escapeHtml(exist)}')">Track</button>
           <button class="btn btn-sm btn-secondary"
-                  onclick="openComment(${o.id})">Comment</button>
+                  onclick="openComment(${escapeHtml(o.id)})">Comment</button>
         </td>
       </tr>
     `);
