@@ -21,8 +21,9 @@ $fields = [];
 if (isset($data['price']))  $fields['regular_price'] = (string)$data['price'];
 if (isset($data['stock']))  $fields['stock_quantity'] = (int)$data['stock'];
 if (isset($data['status'])) $fields['stock_status']   = $data['status'];
+$restock_eta = array_key_exists('restock_eta', $data) ? trim($data['restock_eta']) : null;
 
-if (empty($fields)) {
+if (empty($fields) && $restock_eta === null) {
     http_response_code(400);
     header('Content-Type: application/json; charset=utf-8');
     echo json_encode(['error'=>'No fields to update']);
@@ -47,6 +48,27 @@ function wc_request($method, $endpoint, $payload = null) {
     return [$code, json_decode($resp, true)];
 }
 
+// Save restock ETA to local JSON store
+function save_eta($product_id, $eta) {
+    $file = __DIR__ . '/../data/restock_eta.json';
+    $list = file_exists($file) ? json_decode(file_get_contents($file), true) : [];
+    $map = [];
+    foreach ($list as $row) {
+        if (isset($row['id'])) {
+            $map[$row['id']] = $row['restock_eta'] ?? null;
+        }
+    }
+    if ($eta === '' || $eta === null) {
+        unset($map[$product_id]);
+    } else {
+        $map[$product_id] = $eta;
+    }
+    $new = [];
+    foreach ($map as $id => $val) {
+        $new[] = ['id'=>$id, 'restock_eta'=>$val];
+    }
+    file_put_contents($file, json_encode($new, JSON_PRETTY_PRINT));
+}
 // 4) Fetch the product to know its type & variations
 list($code, $product) = wc_request('GET', "/wp-json/wc/v3/products/{$id}");
 if ($code !== 200 || !isset($product['type'])) {
@@ -64,6 +86,7 @@ if ($product['type'] === 'variable' && !empty($product['variations'])) {
         list($c, $resp) = wc_request('PUT', $variationEndpoint, $fields);
         $responses[$varId] = ['code'=>$c, 'response'=>$resp];
     }
+    if ($restock_eta !== null) save_eta($id, $restock_eta);
     http_response_code(200);
     header('Content-Type: application/json; charset=utf-8');
     echo json_encode(['updated_variations'=>$responses]);
@@ -72,6 +95,7 @@ if ($product['type'] === 'variable' && !empty($product['variations'])) {
 
 // 6) Otherwise (simple product) → update the product itself
 list($c2, $resp2) = wc_request('PUT', "/wp-json/wc/v3/products/{$id}", $fields);
+if ($restock_eta !== null) save_eta($id, $restock_eta);
 http_response_code($c2);
 header('Content-Type: application/json; charset=utf-8');
 echo json_encode($resp2);

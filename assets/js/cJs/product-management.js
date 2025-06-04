@@ -52,7 +52,7 @@ function fetchProducts(page = 1) {
     error(_, __, err) {
       console.error('📦 Fetch failed:', err);
       $('#products-table tbody').html(
-        `<tr><td colspan="7" class="text-center">Error loading products.</td></tr>`
+        `<tr><td colspan="8" class="text-center">Error loading products.</td></tr>`
       );
     }
   });
@@ -71,7 +71,7 @@ function renderTable() {
   const $tb = $('#products-table tbody').empty();
   if (!filtered.length) {
     return $tb.append(
-      `<tr><td colspan="7" class="text-center">No products found.</td></tr>`
+      `<tr><td colspan="8" class="text-center">No products found.</td></tr>`
     );
   }
 
@@ -88,6 +88,7 @@ function renderTable() {
             ${escapeHtml(p.stock_status)}
           </span>
         </td>
+        <td>${escapeHtml(p.restock_eta ?? '')}</td>
         <td>
           <button class="btn btn-sm btn-primary edit-btn" data-id="${escapeHtml(p.id)}">
             Edit
@@ -118,6 +119,7 @@ $(document).on('click', '.edit-btn', function() {
       $('#edit-price').val(p.price || p.regular_price || '');
       $('#edit-stock').val(p.stock_quantity ?? '');
       $('#edit-status').val(p.stock_status || 'instock');
+      $('#edit-restock').val(p.restock_eta ?? '');
       new bootstrap.Modal($('#editProductModal')).show();
     })
     .fail(xhr => {
@@ -132,7 +134,8 @@ $('#editProductForm').submit(function(e){
     id:    $('#edit-id').val(),
     price: $('#edit-price').val(),
     stock: $('#edit-stock').val(),
-    status: $('#edit-status').val()
+    status: $('#edit-status').val(),
+    restock_eta: $('#edit-restock').val()
   };
 
   $.ajax({

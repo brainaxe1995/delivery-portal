@@ -83,6 +83,7 @@
                       <th>Stock</th>
                       <th>Price</th>
                       <th>Status</th>
+                      <th>Restock ETA</th>
                       <th>Actions</th>
                     </tr>
                   </thead>
@@ -128,6 +129,10 @@
                   <option value="instock">In Stock</option>
                   <option value="outofstock">Out of Stock</option>
                 </select>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Restock ETA</label>
+                <input type="text" id="edit-restock" name="restock_eta" class="form-control"/>
               </div>
             </div>
             <div class="modal-footer">
