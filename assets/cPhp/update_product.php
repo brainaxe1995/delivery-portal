@@ -20,8 +20,36 @@ if (!$id) {
 $fields = [];
 if (isset($data['price']))  $fields['regular_price'] = (string)$data['price'];
 if (isset($data['stock']))  $fields['stock_quantity'] = (int)$data['stock'];
+
 if (isset($data['status'])) $fields['stock_status']   = $data['status'];
+
 $restock_eta = array_key_exists('restock_eta', $data) ? trim($data['restock_eta']) : null;
+
+if (isset($data['moq']))   $fields['meta_data'] = [['key' => 'moq', 'value' => (int)$data['moq']]];
+
+if (isset($data['status'])) {
+    $allowedStatuses = ['instock', 'outofstock', 'discontinued'];
+    if (!in_array($data['status'], $allowedStatuses, true)) {
+        http_response_code(400);
+        header('Content-Type: application/json; charset=utf-8');
+        echo json_encode(['error' => 'Invalid status']);
+        exit;
+    }
+    $fields['stock_status'] = $data['status'];
+}
+
+
+$meta = [];
+if (isset($data['packaging_info_url'])) {
+    $meta[] = ['key' => '_packaging_info_url', 'value' => $data['packaging_info_url']];
+}
+if (isset($data['safety_sheet_url'])) {
+    $meta[] = ['key' => '_safety_sheet_url', 'value' => $data['safety_sheet_url']];
+}
+if ($meta) {
+    $fields['meta_data'] = $meta;
+}
+
 
 if (empty($fields) && $restock_eta === null) {
     http_response_code(400);

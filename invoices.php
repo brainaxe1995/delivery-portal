@@ -44,6 +44,7 @@ $BASE_URL = rtrim(PROJECT_BASE_URL, '/');
                   <th>Status</th>
                   <th>Date</th>
                   <th>Download</th>
+                  <th>View</th>
                   <th>Delete</th>
                 </tr>
               </thead>
@@ -95,8 +96,44 @@ $BASE_URL = rtrim(PROJECT_BASE_URL, '/');
           </div>
         </div>
       </div>
-    </div>
-    <footer class="footer">
+      </div>
+
+      <!-- View Invoice Modal -->
+      <div class="modal fade" id="viewInvoiceModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Invoice Details</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+              <div class="table-responsive">
+                <table class="table table-bordered" id="viewItemsTable">
+                  <thead class="table-light">
+                    <tr>
+                      <th>Order Number</th>
+                      <th>Tracking Code</th>
+                      <th>Shipping Proof</th>
+                      <th>Customer Name</th>
+                      <th>Address</th>
+                      <th>Country Name</th>
+                      <th>Product Name</th>
+                      <th>Stripe</th>
+                      <th>Product Cost</th>
+                      <th>Shipping Cost</th>
+                      <th>Total Cost</th>
+                      <th>Note</th>
+                    </tr>
+                  </thead>
+                  <tbody></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer class="footer">
       <script src="assets/js/cJs/footer.js"></script>
     </footer>
   </main>

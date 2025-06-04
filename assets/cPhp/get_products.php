@@ -28,7 +28,56 @@ function callWooAPI($baseUrl, $endpoint, $ck, $cs) {
 
 $page     = isset($_GET['page'])     ? (int)$_GET['page']     : 1;
 $per_page = isset($_GET['per_page']) ? (int)$_GET['per_page'] : 20;
-$endpoint = "/wp-json/wc/v3/products?page={$page}&per_page={$per_page}";
+$endpoint = "/wp-json/wc/v3/products?page={$page}&per_page={$per_page}&context=edit";
+
+$body     = callWooAPI($store_url, $endpoint, $consumer_key, $consumer_secret);
+$products = json_decode($body, true);
+if (is_array($products)) {
+    foreach ($products as &$p) {
+        $p['moq'] = '';
+        if (!empty($p['meta_data'])) {
+            foreach ($p['meta_data'] as $m) {
+                if ($m['key'] === 'moq') {
+                    $p['moq'] = $m['value'];
+                    break;
+                }
+            }
+        }
+    }
+    unset($p);
+}
+
+// Optional stock status filter
+$status = $_GET['status'] ?? '';
+$allowed = ['instock', 'outofstock', 'discontinued'];
+if ($status && in_array($status, $allowed, true)) {
+    $endpoint .= "&stock_status={$status}";
+}
+
+$json = callWooAPI($store_url, $endpoint, $consumer_key, $consumer_secret);
+$products = json_decode($json, true);
+
+if (is_array($products)) {
+    foreach ($products as &$p) {
+        if (($p['type'] ?? '') === 'variable') {
+            $varResp = callWooAPI(
+                $store_url,
+                "/wp-json/wc/v3/products/{$p['id']}/variations?per_page=100",
+                $consumer_key,
+                $consumer_secret
+            );
+            $vars = json_decode($varResp, true);
+            if (is_array($vars)) {
+                $p['variant_attributes'] = array_map(function($v){
+                    return $v['attributes'];
+                }, $vars);
+            }
+        }
+    }
+    header('Content-Type: application/json; charset=utf-8');
+    echo json_encode($products);
+    exit;
+}
 
 // ---------------------------------------------------------------------
 // Fetch products from WooCommerce and merge restock_eta from local store
@@ -52,5 +101,13 @@ foreach ($products as &$p) {
 unset($p);
 
 header('Content-Type: application/json; charset=utf-8');
+
 echo json_encode($products);
+
+
+echo $json;
+
+echo json_encode($products);
+
+
 exit;

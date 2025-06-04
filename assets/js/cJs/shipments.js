@@ -30,7 +30,6 @@ $(function(){
     const fd = new FormData(this);
     const $btn = $(this).find('button[type="submit"]');
     $btn.prop('disabled', true);
-    window.showLoader();
     $.ajax({
       url: `${BASE_URL}/assets/cPhp/upload_manifest.php`,
       method: 'POST',
@@ -51,7 +50,6 @@ $(function(){
     })
     .always(() => {
       $btn.prop('disabled', false);
-      window.hideLoader();
     });
   });
 
@@ -65,7 +63,6 @@ $(function(){
 
     const $btn = $(this);
     $btn.prop('disabled', true);
-    window.showLoader();
 
     $.ajax({
       url: `${BASE_URL}/assets/cPhp/update_single_shipment.php`,
@@ -85,7 +82,6 @@ $(function(){
     })
     .always(() => {
       $btn.prop('disabled', false);
-      window.hideLoader();
     });
   });
 });
@@ -97,7 +93,6 @@ function fetchShipments(page = 1) {
   currentPage = page;
 
   $.ajax({
-    beforeSend: window.showLoader,
     url: `${BASE_URL}/assets/cPhp/get_shipments_summary.php`,
     method: 'GET',
     data: { page, per_page: PER_PAGE },
@@ -108,7 +103,6 @@ function fetchShipments(page = 1) {
       totalPages = parseInt(xhr.getResponseHeader('X-My-TotalPages'), 10) || 1;
       buildPagination();
       updateUrl(currentPage);
-      window.hideLoader();
     },
 
     success(list) {
