@@ -5,7 +5,13 @@
 
 require_once __DIR__ . '/master-api.php';
 // Use TCPDF for generating PDFs from HTML templates
-require_once '/usr/share/php/tcpdf/tcpdf.php';
+if (file_exists('/usr/share/php/tcpdf/tcpdf.php')) {
+    require_once '/usr/share/php/tcpdf/tcpdf.php';
+} else {
+    http_response_code(500);
+    echo 'TCPDF library not found at /usr/share/php/tcpdf/tcpdf.php';
+    exit;
+}
 
 $id = isset($_GET['id']) ? (int) $_GET['id'] : 0;
 if (!$id) {
