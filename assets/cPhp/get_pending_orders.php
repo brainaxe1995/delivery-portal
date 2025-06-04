@@ -1,7 +1,7 @@
 <?php
 // get_pending_orders.php
 //
-// Fetches WooCommerce orders with status=processing ("New / Pending Orders")
+// Fetches WooCommerce orders with status=pending ("New / Pending Orders")
 // and re-emits the X-My-TotalPages header so JS can paginate correctly.
 
 require_once(__DIR__ . '/master-api.php'); // loads $store_url, $consumer_key, $consumer_secret
@@ -44,8 +44,8 @@ function callWooAPI($baseUrl, $endpoint, $ck, $cs) {
 $page     = isset($_GET['page'])     ? (int) $_GET['page']     : 1;
 $per_page = isset($_GET['per_page']) ? (int) $_GET['per_page'] : 20;
 
-// Fetch only “processing” orders (your New/Pending bucket)
-$endpoint = "/wp-json/wc/v3/orders?status=processing&page={$page}&per_page={$per_page}";
+// Fetch only "pending" orders (your New/Pending bucket)
+$endpoint = "/wp-json/wc/v3/orders?status=pending&page={$page}&per_page={$per_page}";
 
 // — Fetch raw orders JSON —
 $body   = callWooAPI($store_url, $endpoint, $consumer_key, $consumer_secret);
