@@ -39,6 +39,32 @@ $(function(){
       alert('Upload failed: ' + (xhr.responseJSON?.error || err));
     });
   });
+
+  // Save button handler within the table
+  $('#shipmentsTable').on('click', '.save-btn', function(){
+    const $row     = $(this).closest('tr');
+    const orderId  = $row.data('order-id');
+    const provider = $row.find('.provider-select').val()?.trim() || '';
+    const trackNo  = $row.find('.tracking-code-input').val()?.trim() || '';
+    const eta      = $row.find('.eta-input').val()?.trim() || '';
+
+    $.ajax({
+      url: `${BASE_URL}/assets/cPhp/update_shipment.php`,
+      method: 'POST',
+      contentType: 'application/json',
+      data: JSON.stringify({
+        order_id: orderId,
+        provider: provider,
+        tracking_no: trackNo,
+        eta: eta
+      })
+    })
+    .done(() => fetchShipments(currentPage))
+    .fail(xhr => {
+      console.error('Update failed:', xhr.responseText);
+      alert('Failed to update shipment');
+    });
+  });
 });
 
 /**
@@ -66,9 +92,15 @@ function fetchShipments(page = 1) {
         $tbody.append(`
           <tr data-order-id="${s.order_id}">
             <td>#${s.order_id}</td>
-            <td>${s.provider   || '—'}</td>
-            <td>${s.tracking_no|| '—'}</td>
-            <td>${s.eta        || '—'}</td>
+            <td>
+              <input type="text" class="form-control form-control-sm provider-select" value="${s.provider || ''}">
+            </td>
+            <td>
+              <input type="text" class="form-control form-control-sm tracking-code-input" value="${s.tracking_no || ''}">
+            </td>
+            <td>
+              <input type="date" class="form-control form-control-sm eta-input" value="${s.eta || ''}">
+            </td>
             <td>${s.status}</td>
             <td>${s.last_update}</td>
             <td>
