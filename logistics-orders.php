@@ -1,4 +1,5 @@
 <?php
+// portal/logistics-orders.php
 require_once __DIR__ . '/assets/cPhp/server-config.php';
 $BASE_URL = rtrim(PROJECT_BASE_URL, '/');
 ?>
@@ -32,7 +33,8 @@ $BASE_URL = rtrim(PROJECT_BASE_URL, '/');
       .status-processing { background-color: #d1ecf1; color: #0c5460; }
       /* ... Add more .status-* classes as needed ... */
     </style>
-  <script>const BASE_URL = "<?= $BASE_URL ?>";</script>
+    <!-- Provide BASE_URL constant for JS -->
+    <script>const BASE_URL = "<?= $BASE_URL ?>";</script>
   </head>
   <body>
     <!-- ======== Preloader (optional) =========== -->
