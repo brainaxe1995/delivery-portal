@@ -47,7 +47,10 @@ $summary = [
     'chart_data'    => [],  // last 7 days
     'chart1'        => [],  // last 12 months
     'low_stock'     => 0,
-    'notifications' => []   // will fill in step 7
+    'notifications' => [],  // will fill in step 7
+    'late_shipment_percent' => 0.0,
+    'refund_rate_per_product' => [],
+    'inventory_turnover_rate' => 0.0
 ];
 
 // ── 3) Build 7-day & 12-month buckets ──
@@ -72,6 +75,11 @@ for ($i = 11; $i >= 0; $i--) {
 // ── 4) Tally orders & gather per-product stats ──
 $salesQty     = [];  // product_id => quantity sold
 $salesRevenue = [];  // product_id => total revenue
+$refundedQty  = [];  // product_id => quantity refunded
+$productNames = [];  // product_id => name
+$lateCount    = 0;   // number of late shipments
+$shipCount    = 0;   // shipments with an ETA
+$now          = new DateTime();
 foreach ($orders as $o) {
     // Status counts
     $st = $o['status'];
@@ -93,6 +101,25 @@ foreach ($orders as $o) {
         $rev = (float)$it['total'];
         $salesQty[$pid]     = ($salesQty[$pid]     ?? 0) + $qty;
         $salesRevenue[$pid] = ($salesRevenue[$pid] ?? 0) + $rev;
+        if (!isset($productNames[$pid])) {
+            $productNames[$pid] = $it['name'];
+        }
+        if ($st === 'refunded') {
+            $refundedQty[$pid] = ($refundedQty[$pid] ?? 0) + $qty;
+        }
+    }
+
+    // Late shipment calculation
+    $eta = null;
+    foreach ($o['meta_data'] as $m) {
+        if ($m['key'] === '_wot_eta') { $eta = $m['value']; break; }
+    }
+    if ($eta) {
+        $shipCount++;
+        $etaDt = new DateTime($eta);
+        if ($o['status'] !== 'delivered' && $etaDt < $now) {
+            $lateCount++;
+        }
     }
 
     // 7-day chart
@@ -156,6 +183,33 @@ if (is_array($stockReport)) {
     }
 }
 $summary['low_stock'] = $lowCount;
+
+// ── 6b) Additional analytics metrics ──
+// Late shipment percentage
+$summary['late_shipment_percent'] = $shipCount > 0
+    ? round(($lateCount / $shipCount) * 100, 2)
+    : 0.0;
+
+// Refund rate per product
+$refundRate = [];
+foreach ($salesQty as $pid => $qty) {
+    $rate = $qty > 0 ? round(($refundedQty[$pid] ?? 0) / $qty * 100, 2) : 0;
+    $name = $productNames[$pid] ?? (string)$pid;
+    $refundRate[$name] = $rate;
+}
+$summary['refund_rate_per_product'] = $refundRate;
+
+// Inventory turnover from sales and stock levels
+$totalSold  = array_sum($salesQty);
+$totalStock = 0;
+if (is_array($stockReport)) {
+    foreach ($stockReport as $item) {
+        $totalStock += (int)($item['stock_quantity'] ?? 0);
+    }
+}
+$summary['inventory_turnover_rate'] = $totalStock > 0
+    ? round($totalSold / $totalStock, 2)
+    : 0.0;
 
 // ── 7) Build simple notifications ──
 $now = new DateTime();
