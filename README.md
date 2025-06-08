@@ -123,15 +123,12 @@ Then open `http://localhost:8000/index.php` in your browser.
 
 ## Running Tests
 
-Install dependencies and run the test suite. Requires Node.js >=18.
+The test suite is powered by Jest and requires **Node.js 18 or newer**. Be sure to run `npm install` first so all dev dependencies are present. Running `npm test` without installing packages will fail.
 
 ```bash
-npm install      # install dev dependencies such as jest
+npm install
 npm test
 ```
-
-Running `npm test` without first executing `npm install` will fail because Jest and
-other dev dependencies won't be installed.
 
 ## Shipment Update Endpoints
 
