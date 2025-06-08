@@ -16,6 +16,12 @@ const sidebarHTML = `
           <span class="text">Dashboard</span>
         </a>
       </li>
+      <li class="nav-item">
+        <a href="analytics.php">
+          <span class="icon"><i class="lni lni-bar-chart"></i></span>
+          <span class="text">Analytics</span>
+        </a>
+      </li>
       <!-- Orders -->
       <li class="nav-item nav-item-has-children">
         <a href="#0" class="collapsed" data-bs-toggle="collapse" data-bs-target="#ddmenu_orders" aria-controls="ddmenu_orders" aria-expanded="false" aria-label="Toggle navigation">

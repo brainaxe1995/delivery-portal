@@ -184,3 +184,9 @@ PDF with:
 ```bash
 php assets/cPhp/download_invoice.php?id=1 > invoice-1.pdf
 ```
+
+## Analytics
+
+Visit `analytics.php` to view weekly and monthly sales graphs. The page pulls
+data from `assets/cPhp/get_dashboard_summary.php` and renders charts with
+Chart.js.
