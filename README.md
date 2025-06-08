@@ -185,8 +185,6 @@ PDF with:
 php assets/cPhp/download_invoice.php?id=1 > invoice-1.pdf
 ```
 
-## Analytics
+## Portal Settings
 
-Visit `analytics.php` to view weekly and monthly sales graphs. The page pulls
-data from `assets/cPhp/get_dashboard_summary.php` and renders charts with
-Chart.js.
+General configuration values are stored in `assets/data/settings.json` and can be edited through `settings.php`. The form lets you update the shipping API key, WooCommerce credentials, interface language, time zone and currency. Changes are saved to the JSON file via AJAX calls to `assets/cPhp/update_settings.php`.
