@@ -73,7 +73,7 @@ const sidebarHTML = `
         </a>
         <ul id="ddmenu_logistics" class="collapse dropdown-nav" data-bs-parent="#sidebar-menu">
           <li><a href="shipments.php">Shipments</a></li>
-          <li><a href="logistics-orders.html">Logistics Orders</a></li>
+          <li><a href="logistics-orders.php">Logistics Orders</a></li>
         </ul>
       </li>
 

@@ -27,7 +27,7 @@ function fetchLogisticsOrders(page=1){
   const params = { page, per_page: PER_PAGE };
   if (searchOrderId) params.order_id = searchOrderId;
   $.ajax({
-    url: 'assets/cPhp/get_shipments_summary.php',
+    url: `${BASE_URL}/assets/cPhp/get_shipments_summary.php`,
     method: 'GET',
     data: params,
     dataType: 'json',
