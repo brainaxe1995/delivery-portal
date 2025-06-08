@@ -43,5 +43,56 @@ $(function() {
         $b.append(`<tr><td>${name}</td><td>${values[i].toFixed(2)}%</td></tr>`);
       });
     }
+
+    if (data.chart_data && document.getElementById('chartWeek')) {
+      new Chart(document.getElementById('chartWeek'), {
+        type: 'line',
+        data: {
+          labels: data.chart_data.labels,
+          datasets: [
+            {
+              label: 'Revenue',
+              data: data.chart_data.revenue,
+              borderColor: '#4caf50',
+              backgroundColor: 'rgba(76, 175, 80, 0.2)',
+              yAxisID: 'y'
+            },
+            {
+              label: 'Orders',
+              data: data.chart_data.orders,
+              borderColor: '#2196f3',
+              backgroundColor: 'rgba(33, 150, 243, 0.2)',
+              yAxisID: 'y1'
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          scales: {
+            y: { beginAtZero: true, position: 'left' },
+            y1: {
+              beginAtZero: true,
+              position: 'right',
+              grid: { drawOnChartArea: false }
+            }
+          }
+        }
+      });
+    }
+
+    if (data.chart1 && document.getElementById('chartMonth')) {
+      new Chart(document.getElementById('chartMonth'), {
+        type: 'bar',
+        data: {
+          labels: data.chart1.labels,
+          datasets: [{
+            label: 'Revenue',
+            data: data.chart1.revenue,
+            backgroundColor: '#42a5f5'
+          }]
+        },
+        options: { responsive: true }
+      });
+    }
   });
 });
