@@ -21,7 +21,7 @@ function loadDocs(){
   $.getJSON(`${BASE_URL}/assets/cPhp/get_factory_documents.php`, function(rows){
     const tbody = $('#docsBody').empty();
     rows.forEach(r => {
-      tbody.append(`<tr><td>${r.id}</td><td>${r.supplier}</td><td>${r.product}</td><td><a href="uploads/${r.file_path}">view</a></td><td>${r.uploaded_at}</td></tr>`);
+      tbody.append(`<tr><td>${r.id}</td><td>${r.supplier}</td><td>${r.product}</td><td><a href="assets/uploads/${r.file_path}">view</a></td><td>${r.uploaded_at}</td></tr>`);
     });
   });
 }
