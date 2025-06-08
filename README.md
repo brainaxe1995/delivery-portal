@@ -184,3 +184,7 @@ PDF with:
 ```bash
 php assets/cPhp/download_invoice.php?id=1 > invoice-1.pdf
 ```
+
+## Portal Settings
+
+General configuration values are stored in `assets/data/settings.json` and can be edited through `settings.php`. The form lets you update the shipping API key, WooCommerce credentials, interface language, time zone and currency. Changes are saved to the JSON file via AJAX calls to `assets/cPhp/update_settings.php`.

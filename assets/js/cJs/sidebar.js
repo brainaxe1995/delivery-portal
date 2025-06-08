@@ -97,6 +97,12 @@ const sidebarHTML = `
           <li><a href="payment-terms.php">Payment Terms</a></li>
         </ul>
       </li>
+      <li class="nav-item">
+        <a href="settings.php">
+          <span class="icon"><i class="lni lni-cog"></i></span>
+          <span class="text">Settings</span>
+        </a>
+      </li>
       <!-- Additional sidebar sections can be added here -->
     </ul>
   </nav>
