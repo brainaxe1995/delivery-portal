@@ -1,3 +1,7 @@
+<?php
+require_once __DIR__ . '/assets/cPhp/server-config.php';
+$BASE_URL = rtrim(PROJECT_BASE_URL, '/');
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -28,6 +32,7 @@
       .status-processing { background-color: #d1ecf1; color: #0c5460; }
       /* ... Add more .status-* classes as needed ... */
     </style>
+  <script>const BASE_URL = "<?= $BASE_URL ?>";</script>
   </head>
   <body>
     <!-- ======== Preloader (optional) =========== -->
