@@ -1,57 +1,46 @@
-// assets/js/cJs/analytics.js
-
-$(function(){
+$(function() {
   $.getJSON(`${BASE_URL}/assets/cPhp/get_dashboard_summary.php`, data => {
-    const week = data.chart_data || {labels:[], revenue:[], profit:[], orders:[]};
-    const month = data.chart1 || {labels:[], revenue:[]};
-
-    const ctxWeek = document.getElementById('chartWeek');
-    if (ctxWeek) {
-      new Chart(ctxWeek, {
-        type: 'line',
-        data: {
-          labels: week.labels,
-          datasets: [
-            {
-              label: 'Revenue',
-              data: week.revenue,
-              borderColor: '#4F46E5',
-              backgroundColor: 'rgba(99,102,241,0.3)',
-              tension: 0.3,
-            },
-            {
-              label: 'Profit',
-              data: week.profit,
-              borderColor: '#059669',
-              backgroundColor: 'rgba(16,185,129,0.3)',
-              tension: 0.3,
-            },
-            {
-              label: 'Orders',
-              data: week.orders,
-              borderColor: '#F59E0B',
-              backgroundColor: 'rgba(245,158,11,0.3)',
-              tension: 0.3,
-            }
-          ]
-        },
-        options: { responsive: true, maintainAspectRatio: false }
-      });
+    if (data.late_shipment_percent !== undefined && $('#late-percent').length) {
+      $('#late-percent').text(data.late_shipment_percent.toFixed(2) + '%');
+      if (document.getElementById('lateShipmentChart')) {
+        new Chart(document.getElementById('lateShipmentChart'), {
+          type: 'doughnut',
+          data: {
+            labels: ['Late', 'On Time'],
+            datasets: [{
+              data: [data.late_shipment_percent, 100 - data.late_shipment_percent],
+              backgroundColor: ['#f06292', '#4caf50']
+            }]
+          },
+          options: {responsive: true, plugins:{legend:{display:false}}}
+        });
+      }
     }
 
-    const ctxMonth = document.getElementById('chartMonth');
-    if (ctxMonth) {
-      new Chart(ctxMonth, {
+    if (data.inventory_turnover_rate !== undefined && $('#turnover-rate').length) {
+      $('#turnover-rate').text(data.inventory_turnover_rate.toFixed(2));
+    }
+
+    const rates = data.refund_rate_per_product || {};
+    const labels = Object.keys(rates);
+    const values = labels.map(k => rates[k]);
+    if (document.getElementById('refundRateChart')) {
+      new Chart(document.getElementById('refundRateChart'), {
         type: 'bar',
         data: {
-          labels: month.labels,
+          labels: labels,
           datasets: [{
-            label: 'Revenue',
-            data: month.revenue,
-            backgroundColor: '#4F46E5'
+            label: 'Refund Rate (%)',
+            data: values,
+            backgroundColor: '#42a5f5'
           }]
         },
-        options: { responsive: true, maintainAspectRatio: false }
+        options: {scales:{y:{beginAtZero:true,max:100}}}
+      });
+    } else if ($('#refund-rate-body').length) {
+      const $b = $('#refund-rate-body').empty();
+      labels.forEach((name,i) => {
+        $b.append(`<tr><td>${name}</td><td>${values[i].toFixed(2)}%</td></tr>`);
       });
     }
   });
