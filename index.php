@@ -1,3 +1,6 @@
+<?php
+require_once __DIR__ . '/assets/cPhp/config/bootstrap.php';
+?>
 <!-- portal/index.php -->
 <!DOCTYPE html>
 <html lang="en">

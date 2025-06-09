@@ -15,25 +15,27 @@ file_put_contents($file, json_encode($data, JSON_PRETTY_PRINT));
 
 // ------------------------------------------------------------------
 // Also update the .env file with credentials from settings
-$envPath  = __DIR__ . '/../../.env';
-$envLines = file_exists($envPath) ? file($envPath, FILE_IGNORE_NEW_LINES) : [];
-$envMap   = [];
-foreach ($envLines as $line) {
-    if (strpos($line, '=') !== false) {
-        [$k, $v] = explode('=', $line, 2);
-        $envMap[$k] = $v;
+$envPath = __DIR__ . '/../../.env';
+$dotenvData = file_exists($envPath) ? file($envPath, FILE_IGNORE_NEW_LINES) : [];
+$updates = [
+    'WC_CONSUMER_KEY'    => $data['woocommerce_ck'],
+    'WC_CONSUMER_SECRET' => $data['woocommerce_cs'],
+    'STORE_URL'          => $data['store_url'],
+];
+foreach ($updates as $key => $val) {
+    $found = false;
+    foreach ($dotenvData as &$line) {
+        if (strpos($line, "{$key}=") === 0) {
+            $line = "{$key}=\"{$val}\"";
+            $found = true;
+            break;
+        }
+    }
+    if (! $found) {
+        $dotenvData[] = "{$key}=\"{$val}\"";
     }
 }
-
-$envMap['WC_CONSUMER_KEY']    = $data['woocommerce_ck'] ?? '';
-$envMap['WC_CONSUMER_SECRET'] = $data['woocommerce_cs'] ?? '';
-$envMap['STORE_URL']          = $data['store_url'] ?? '';
-
-$newEnv = '';
-foreach ($envMap as $k => $v) {
-    $newEnv .= $k . '=' . $v . PHP_EOL;
-}
-file_put_contents($envPath, $newEnv);
+file_put_contents($envPath, implode(PHP_EOL, $dotenvData));
 
 echo json_encode(['success' => true]);
 ?>

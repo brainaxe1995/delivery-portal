@@ -1,5 +1,6 @@
 <?php
 // portal/product-management.php
+require_once __DIR__ . '/assets/cPhp/config/bootstrap.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">

@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/assets/cPhp/config/bootstrap.php';
 require_once __DIR__ . '/assets/cPhp/server-config.php';
 $BASE_URL = rtrim(PROJECT_BASE_URL, '/');
 ?>
