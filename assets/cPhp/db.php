@@ -73,4 +73,5 @@ $db->exec('CREATE TABLE IF NOT EXISTS refund_comments (
     comment TEXT,
     timestamp TEXT DEFAULT CURRENT_TIMESTAMP
 )');
+$db->exec("CREATE TABLE IF NOT EXISTS settings (key TEXT PRIMARY KEY,value TEXT)");
 ?>

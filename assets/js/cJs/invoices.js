@@ -147,13 +147,7 @@ function deleteInvoice(id){
 }
 
 function viewInvoice(id){
-  $.ajax({
-    url: `${BASE_URL}/assets/cPhp/get_invoices.php`,
-    method: 'GET',
-    data: {id, per_page: 1000},
-    dataType: 'json'
-  }).done(res => {
-    const inv = Array.isArray(res) ? res.find(v => String(v.id) === String(id)) : res;
+  $.getJSON(`${BASE_URL}/assets/cPhp/get_invoices.php?id=${id}` , inv => {
     if(!inv){
       alert('Invoice not found');
       return;
@@ -193,13 +187,7 @@ function generateInvoicePdf(id){
     window.location = `${BASE_URL}/assets/cPhp/download_invoice.php?id=${id}`;
     return;
   }
-  $.ajax({
-    url: `${BASE_URL}/assets/cPhp/get_invoices.php`,
-    method: "GET",
-    data: {id, per_page: 1000},
-    dataType: "json"
-  }).done(res => {
-    const inv = Array.isArray(res) ? res.find(v => String(v.id) === String(id)) : res;
+  $.getJSON(`${BASE_URL}/assets/cPhp/get_invoices.php?id=${id}` , inv => {
     if(!inv){
       alert("Invoice not found");
       return;

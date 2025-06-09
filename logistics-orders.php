@@ -2,6 +2,10 @@
 // portal/logistics-orders.php
 require_once __DIR__ . '/assets/cPhp/config/bootstrap.php';
 require_once __DIR__ . '/assets/cPhp/server-config.php';
+$shipments=[];
+$endpoint=rtrim(PROJECT_BASE_URL,"/")."/assets/cPhp/get_shipments_summary.php?per_page=20";
+$resp=@file_get_contents($endpoint);
+if($resp!==false){$shipments=json_decode($resp,true)||[];}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -95,7 +99,16 @@ require_once __DIR__ . '/assets/cPhp/server-config.php';
                         </tr>
                       </thead>
                       <tbody>
-                        <!-- Dynamically injected rows from logistics_orders.js -->
+<?php foreach($shipments as $s): ?>
+<tr>
+  <td>#<?= htmlspecialchars($s["order_id"] ?? "") ?></td>
+  <td><?= htmlspecialchars($s["total"] ?? "") ?></td>
+  <td><?= htmlspecialchars($s["status"] ?? "") ?></td>
+  <td><button class="btn btn-sm btn-primary view-btn" data-id="<?= htmlspecialchars($s["order_id"] ?? "") ?>"><i class="lni lni-eye"></i></button></td>
+  <td><?= htmlspecialchars($s["tracking_no"] ?? "") ?></td>
+  <td><?= htmlspecialchars($s["origin"] ?? "") ?></td>
+</tr>
+<?php endforeach; ?>
                       </tbody>
                     </table>
                   </div>
@@ -112,6 +125,17 @@ require_once __DIR__ . '/assets/cPhp/server-config.php';
       </section>
       <!-- ========== table components end ========== -->
 
+    <div class="modal fade" id="shipmentModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Shipment Details</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+          <div class="modal-body" id="shipmentDetailBody">Loading...</div>
+        </div>
+      </div>
+    </div>
       <!-- ========== footer start =========== -->
       <footer class="footer">
         <script src="assets/js/cJs/footer.js"></script>
@@ -132,7 +156,7 @@ require_once __DIR__ . '/assets/cPhp/server-config.php';
     <script src="assets/js/main.js"></script>
 
     <!-- JS to load logistics orders and pagination -->
-    <script src="assets/js/cJs/logistics_orders.js"></script>
+    <script src="assets/js/cJs/logistics-orders.js"></script>
     <script src="assets/js/cJs/pagination.js"></script>
   </body>
 </html>

@@ -74,3 +74,18 @@ function formatDate(str){
   if(!str) return '';
   return new Date(str).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
 }
+
+$(document).on('click','.view-btn',function(){
+  const id = $(this).data('id');
+  $('#shipmentDetailBody').text('Loading...');
+  $.getJSON(`${BASE_URL}/assets/cPhp/get_shipment_detail.php`,{id})
+    .done(data=>{
+      const html = '<pre>'+JSON.stringify(data,null,2)+'</pre>';
+      $('#shipmentDetailBody').html(html);
+      $('#shipmentModal').modal('show');
+    })
+    .fail(()=>{
+      $('#shipmentDetailBody').text('Failed to load shipment');
+      $('#shipmentModal').modal('show');
+    });
+});
