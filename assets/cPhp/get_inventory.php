@@ -2,6 +2,7 @@
 // portal/assets/cPhp/get_inventory.php
 
 require_once __DIR__ . '/master-api.php';  // loads $store_url, $consumer_key, $consumer_secret
+require_once __DIR__ . '/db.php';
 
 function callWoo($base, $endpoint, $ck, $cs) {
     $url = rtrim($base, '/') . $endpoint;
@@ -42,11 +43,20 @@ $rawJson = callWoo($store_url, $endpoint, $consumer_key, $consumer_secret);
 $products = json_decode($rawJson, true);
 $inventory = [];
 foreach ($products as $p) {
+    $sid = (int)$p['id'];
+    $row = $db->querySingle('SELECT safety_stock,reorder_threshold FROM inventory_settings WHERE product_id='.$sid, true) ?: [];
+    $safety  = isset($row['safety_stock']) ? (int)$row['safety_stock'] : null;
+    $reorder = isset($row['reorder_threshold']) ? (int)$row['reorder_threshold'] : null;
+    $qty = $p['stock_quantity'] ?? null;
+    $low = ($reorder !== null && $qty !== null && $qty <= $reorder);
     $inventory[] = [
-        'id'             => $p['id'],
-        'name'           => $p['name'],
-        'stock_quantity' => $p['stock_quantity'] ?? null,
-        'stock_status'   => $p['stock_status'],
+        'id'                => $sid,
+        'name'              => $p['name'],
+        'stock_quantity'    => $qty,
+        'stock_status'      => $p['stock_status'],
+        'safety_stock'      => $safety,
+        'reorder_threshold' => $reorder,
+        'low_stock'         => $low
     ];
 }
 
