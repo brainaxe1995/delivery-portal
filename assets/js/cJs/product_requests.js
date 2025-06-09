@@ -73,7 +73,7 @@ $(document).on('click', '.pricing-btn', function(){
   const id = $(this).data('id');
   $('#priceProductId').val(id);
   loadTiers(id);
-  $('#pricingModal').modal('show');
+  document.getElementById('tiersTable').scrollIntoView({behavior:'smooth'});
 });
 
 function updateStatus(id,status){
@@ -96,28 +96,59 @@ function loadTiers(id){
   });
 }
 
+let editingRow = null;
+
 function addTierRow(min='', max='', price=''){
   $('#tiersTable tbody').append(`
     <tr>
-      <td><input type="number" class="form-control form-control-sm min" value="${min}"></td>
-      <td><input type="number" class="form-control form-control-sm max" value="${max}"></td>
-      <td><input type="number" step="0.01" class="form-control form-control-sm price" value="${price}"></td>
-      <td><button type="button" class="btn btn-sm btn-danger remove-tier">&times;</button></td>
+      <td class="min">${min}</td>
+      <td class="max">${max}</td>
+      <td class="price">${price}</td>
+      <td>
+        <button type="button" class="btn btn-sm btn-secondary edit-tier">Edit</button>
+        <button type="button" class="btn btn-sm btn-danger delete-tier">Delete</button>
+      </td>
     </tr>`);
 }
 
-$('#addTier').on('click', () => addTierRow());
+$('#addTier').on('click', () => {
+  editingRow = null;
+  $('#tierForm')[0].reset();
+  $('#tierModal').modal('show');
+});
 
-$(document).on('click','.remove-tier', function(){ $(this).closest('tr').remove(); });
+$(document).on('click','.edit-tier', function(){
+  editingRow = $(this).closest('tr');
+  $('#tierMin').val(editingRow.find('.min').text());
+  $('#tierMax').val(editingRow.find('.max').text());
+  $('#tierPrice').val(editingRow.find('.price').text());
+  $('#tierModal').modal('show');
+});
+
+$('#saveTierModal').on('click', function(){
+  const min = $('#tierMin').val();
+  const max = $('#tierMax').val();
+  const price = $('#tierPrice').val();
+  if(editingRow){
+    editingRow.find('.min').text(min);
+    editingRow.find('.max').text(max);
+    editingRow.find('.price').text(price);
+  }else{
+    addTierRow(min, max, price);
+  }
+  $('#tierModal').modal('hide');
+});
+
+$(document).on('click','.delete-tier', function(){ $(this).closest('tr').remove(); });
 
 $('#saveTiers').on('click', function(){
   const product_id = $('#priceProductId').val();
   const tiers = [];
   $('#tiersTable tbody tr').each(function(){
     tiers.push({
-      min_qty: $(this).find('.min').val(),
-      max_qty: $(this).find('.max').val(),
-      unit_price: $(this).find('.price').val()
+      min_qty: $(this).find('.min').text(),
+      max_qty: $(this).find('.max').text(),
+      unit_price: $(this).find('.price').text()
     });
   });
   $.ajax({
@@ -125,6 +156,6 @@ $('#saveTiers').on('click', function(){
     method:'POST',
     contentType:'application/json',
     data: JSON.stringify({product_id, tiers})
-  }).done(()=>$('#pricingModal').modal('hide'))
+  }).done(()=>alert('Pricing saved'))
     .fail(xhr=>alert('Save failed: ' + (xhr.responseJSON?.error || xhr.statusText)));
 });
