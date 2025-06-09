@@ -1,5 +1,6 @@
 <?php
 // portal/inventory-management.php
+require_once __DIR__ . '/assets/cPhp/config/bootstrap.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">

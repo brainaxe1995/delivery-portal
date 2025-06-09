@@ -4,6 +4,22 @@ require_once __DIR__ . '/config/bootstrap.php';
 
 require_once(__DIR__ . '/master-api.php');  // defines $store_url, $consumer_key, $consumer_secret
 require_once(__DIR__ . '/db.php');
+// Ensure stock_log table exists if using WordPress DB
+if (isset($GLOBALS['wpdb'])) {
+    global $wpdb;
+    $table = $wpdb->prefix . 'stock_log';
+    if (! $wpdb->get_var($wpdb->prepare("SHOW TABLES LIKE %s", $table))) {
+        $wpdb->query("
+            CREATE TABLE {$table} (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                product_id BIGINT NOT NULL,
+                change_qty INT NOT NULL,
+                reason TEXT NOT NULL,
+                timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+        ");
+    }
+}
 
 // 1) Decode JSON payload (or fallback to $_POST)
 $raw  = file_get_contents('php://input');
