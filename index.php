@@ -120,7 +120,7 @@
               </div>
             </div>
             <div class="table-responsive">
-              <table class="table align-middle mb-0">
+              <table class="table table-striped table-hover align-middle mb-0">
                 <thead>
                   <tr>
                     <th>#</th>

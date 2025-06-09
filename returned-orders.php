@@ -59,7 +59,7 @@
                 <div class="card-style mb-30">
                   <h6 class="mb-10">Data Table</h6>
                   <div class="table-responsive">
-                    <table class="table align-middle">
+                    <table class="table table-striped table-hover align-middle">
                       <thead>
                         <tr>
                           <th><h6>Order</h6></th>

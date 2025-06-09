@@ -37,7 +37,7 @@ $BASE_URL = rtrim(PROJECT_BASE_URL, '/');
         </div>
         <div class="card-style mb-30">
           <div class="table-responsive">
-            <table class="table" id="requestsTable">
+            <table class="table table-striped table-hover" id="requestsTable">
               <thead class="table-light">
                 <tr>
                   <th>ID</th>
@@ -96,7 +96,7 @@ $BASE_URL = rtrim(PROJECT_BASE_URL, '/');
           </div>
           <div class="modal-body">
             <input type="hidden" id="priceProductId" />
-            <table class="table" id="tiersTable">
+            <table class="table table-striped table-hover" id="tiersTable">
               <thead><tr><th>Min Qty</th><th>Max Qty</th><th>Unit Price</th><th></th></tr></thead>
               <tbody></tbody>
             </table>

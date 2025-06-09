@@ -76,7 +76,7 @@
 
               <!-- Table -->
               <div class="table-responsive">
-                <table id="products-table" class="table table-striped align-middle mb-0">
+                <table id="products-table" class="table table-striped table-hover align-middle mb-0">
                   <thead>
                     <tr>
                       <th>ID</th>

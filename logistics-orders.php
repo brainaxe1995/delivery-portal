@@ -79,8 +79,8 @@ $BASE_URL = rtrim(PROJECT_BASE_URL, '/');
               <div class="col-lg-12">
                 <div class="card-style mb-30">
                   <h6 class="mb-10">Data Table</h6>
-                  <div class="table-wrapper table-responsive">
-                    <table id="shipmentsTable" class="table">
+                  <div class="table-responsive">
+                    <table id="shipmentsTable" class="table table-striped table-hover">
                       <thead>
                         <tr>
                           <th><h6>Order #</h6></th>

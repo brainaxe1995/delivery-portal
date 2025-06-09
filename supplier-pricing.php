@@ -33,7 +33,7 @@ $BASE_URL = rtrim(PROJECT_BASE_URL, '/');
             <div class="col-md-2"><button class="btn btn-primary w-100">Save</button></div>
           </form>
           <div class="table-responsive">
-            <table class="table table-bordered">
+            <table class="table table-striped table-hover table-bordered">
               <thead><tr><th>ID</th><th>Supplier</th><th>Product</th><th>Price</th><th>Bulk Price</th><th>Effective</th></tr></thead>
               <tbody id="pricesBody"></tbody>
             </table>
