@@ -1,7 +1,7 @@
-CREATE TABLE IF NOT EXISTS refund_comments (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    refund_id INTEGER,
-    user_id INTEGER,
-    comment TEXT,
-    timestamp TEXT DEFAULT CURRENT_TIMESTAMP
+CREATE TABLE refund_comments (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  refund_id BIGINT NOT NULL,
+  user_id BIGINT NOT NULL,
+  comment TEXT NOT NULL,
+  timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
