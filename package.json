@@ -20,7 +20,7 @@
     "sass": "^1.63.6"
   },
   "scripts": {
-    "test": "echo \"No tests\""
+    "test": "jest"
   },
   "jest": {
     "testEnvironment": "jsdom",
