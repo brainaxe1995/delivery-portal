@@ -36,7 +36,7 @@ $BASE_URL = rtrim(PROJECT_BASE_URL, '/');
             <div class="col-md-2"><button class="btn btn-primary w-100">Add</button></div>
           </form>
           <div class="table-responsive">
-            <table class="table table-bordered" id="requestsTable">
+            <table class="table table-striped table-hover table-bordered" id="requestsTable">
               <thead>
                 <tr>
                   <th>ID</th>
@@ -54,7 +54,7 @@ $BASE_URL = rtrim(PROJECT_BASE_URL, '/');
           <h5 class="mt-4 mb-2">Bulk Pricing</h5>
           <input type="hidden" id="priceProductId" />
           <div class="table-responsive mb-2">
-            <table class="table" id="tiersTable">
+            <table class="table table-striped table-hover" id="tiersTable">
               <thead>
                 <tr>
                   <th>Min Qty</th>

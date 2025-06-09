@@ -33,7 +33,7 @@ $BASE_URL = rtrim(PROJECT_BASE_URL, '/');
         <div class="card-style mb-30">
           <div class="card-body p-0">
             <div class="table-responsive">
-              <table class="table mb-0">
+              <table class="table table-striped table-hover mb-0">
                 <thead>
                   <tr>
                     <th>Order</th>
