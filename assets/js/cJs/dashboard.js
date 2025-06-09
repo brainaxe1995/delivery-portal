@@ -4,6 +4,7 @@ $(function() {
     $('#box-pending').text(data.pending);
     $('#box-in-transit').text(data.in_transit);
     $('#box-delivered').text(data.delivered);
+    $('#box-on-hold').text(data.on_hold || 0);
     $('#box-refunds').text(data.refunded);
     $('#box-low-stock').text(data.low_stock);
     $('#box-revenue').text(`AED ${data.revenue.toFixed(2)}`);
@@ -69,14 +70,13 @@ $(function() {
       });
     }
 
-    renderTop(data.top_sellers_yearly || data.top_sellers);
+    $.getJSON(`${BASE_URL}/assets/cPhp/get_top_sellers.php`, list => {
+      renderTop(list);
+    });
 
     $('#top-range').on('change', function() {
-      const list = (this.value === 'monthly'
-        ? (data.top_sellers_monthly || data.top_sellers)
-        : (data.top_sellers_yearly  || data.top_sellers)
-      );
-      renderTop(list);
+      const period = this.value;
+      $.getJSON(`${BASE_URL}/assets/cPhp/get_top_sellers.php?period=${period}`, renderTop);
     });
   });
 });

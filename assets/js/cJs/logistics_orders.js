@@ -19,6 +19,10 @@ $(function(){
     searchOrderId = this.value.trim();
     fetchLogisticsOrders(1);
   });
+
+  $('#refreshShipments').on('click', function(){
+    $.getJSON(`${BASE_URL}/assets/cPhp/update_tracking.php`, () => fetchLogisticsOrders(currentPage));
+  });
 });
 
 // Fetch orders currently in the "processing" state

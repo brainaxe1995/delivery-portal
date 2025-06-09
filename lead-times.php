@@ -26,6 +26,7 @@ $BASE_URL = rtrim(PROJECT_BASE_URL, '/');
         <div class="container-fluid">
           <h3 class="mb-3">Lead Time Tracking</h3>
           <form id="leadForm" class="row g-2 mb-3">
+            <input type="hidden" id="lt_id" />
             <div class="col-md-3"><input id="lt_product" class="form-control" placeholder="Product" required></div>
             <div class="col-md-3"><input id="lt_supplier" class="form-control" placeholder="Supplier" required></div>
             <div class="col-md-3"><input id="lt_time" class="form-control" placeholder="Lead Time (days)" required></div>
@@ -33,7 +34,7 @@ $BASE_URL = rtrim(PROJECT_BASE_URL, '/');
           </form>
           <div class="table-responsive">
             <table class="table table-striped table-hover table-bordered">
-              <thead><tr><th>ID</th><th>Product</th><th>Supplier</th><th>Lead Time</th><th>Updated</th></tr></thead>
+              <thead><tr><th>ID</th><th>Product</th><th>Supplier</th><th>Lead Time</th><th>Updated</th><th></th></tr></thead>
               <tbody id="timesBody"></tbody>
             </table>
           </div>
