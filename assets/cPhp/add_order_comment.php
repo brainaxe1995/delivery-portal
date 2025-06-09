@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/config/bootstrap.php';
 // assets/cPhp/add_order_comment.php
 require_once(__DIR__ . '/master-api.php'); // loads $store_url, $consumer_key, $consumer_secret
 

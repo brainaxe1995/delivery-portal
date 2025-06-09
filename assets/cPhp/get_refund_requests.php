@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/config/bootstrap.php';
 // assets/cPhp/get_refund_requests.php
 // Fetch WooCommerce refunds for the refund dashboard via REST API
 

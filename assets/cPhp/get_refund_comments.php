@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/config/bootstrap.php';
 require_once __DIR__ . '/db.php';
 header('Content-Type: application/json; charset=utf-8');
 $id = isset($_GET['refund_id']) ? (int)$_GET['refund_id'] : 0;

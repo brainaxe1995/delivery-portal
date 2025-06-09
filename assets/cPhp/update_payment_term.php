@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/config/bootstrap.php';
 // portal/assets/cPhp/update_payment_term.php
 $file = __DIR__ . '/../data/payment_terms.json';
 $data = file_exists($file) ? json_decode(file_get_contents($file), true) : [];

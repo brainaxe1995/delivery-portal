@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/config/bootstrap.php';
 // portal/assets/cPhp/download_invoice.php
 // Serve an invoice PDF. If the file doesn't exist locally, try generating
 // it from WooCommerce order data.

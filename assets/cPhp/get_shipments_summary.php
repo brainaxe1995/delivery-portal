@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/config/bootstrap.php';
 // Enable detailed errors only when DEBUG environment variable is truthy
 if (getenv('DEBUG')) {
     ini_set('display_errors', '1');

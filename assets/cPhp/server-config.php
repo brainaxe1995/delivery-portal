@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/config/bootstrap.php';
 $environment = 'local'; // 'local' or 'live'
 
 $config = [

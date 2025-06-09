@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/config/bootstrap.php';
 // get_on_hold_orders.php
 // Fetches WooCommerce orders with status=on-hold
 // and re-emits the X-My-TotalPages header so JS can paginate correctly.

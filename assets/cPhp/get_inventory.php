@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/config/bootstrap.php';
 // portal/assets/cPhp/get_inventory.php
 
 require_once __DIR__ . '/master-api.php';  // loads $store_url, $consumer_key, $consumer_secret
