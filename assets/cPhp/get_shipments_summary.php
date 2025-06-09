@@ -64,10 +64,12 @@ foreach ($orders as $o) {
     }
     $out[] = [
       'order_id'    => $o['id'],
+      'total'       => $o['total'],
       'provider'    => $prov,
       'tracking_no' => $track,
       'eta'         => $eta,
       'status'      => $o['status'],
+      'origin'      => $o['shipping']['country'] ?? '',
       'last_update' => $o['date_modified'],
     ];
 }

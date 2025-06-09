@@ -2,7 +2,6 @@
 // portal/supplier-pricing.php
 require_once __DIR__ . '/assets/cPhp/config/bootstrap.php';
 require_once __DIR__ . '/assets/cPhp/server-config.php';
-$BASE_URL = rtrim(PROJECT_BASE_URL, '/');
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -14,7 +13,10 @@ $BASE_URL = rtrim(PROJECT_BASE_URL, '/');
     <link rel="stylesheet" href="assets/css/bootstrap.min.css" />
     <link rel="stylesheet" href="assets/css/lineicons.css" />
     <link rel="stylesheet" href="assets/css/main.css" />
-    <script>const BASE_URL = "<?= $BASE_URL ?>";</script>
+    <script>
+      // Must appear before any other JS
+      window.BASE_URL = "<?php echo rtrim(PROJECT_BASE_URL, '/'); ?>";
+    </script>
   </head>
   <body>
     <div id="skeleton-loader"><div class="skeleton-block"></div></div>

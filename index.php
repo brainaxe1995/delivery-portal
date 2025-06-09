@@ -22,6 +22,10 @@ require_once __DIR__ . '/assets/cPhp/server-config.php';
       /* small tweak so selects don’t shrink */
       .select-sm { min-width: 120px; }
     </style>
+    <script>
+      // Must appear before any other JS
+      window.BASE_URL = "<?php echo rtrim(PROJECT_BASE_URL, '/'); ?>";
+    </script>
   </head>
   <body>
     <div id="skeleton-loader"><div class="skeleton-block"></div></div>
@@ -177,9 +181,6 @@ require_once __DIR__ . '/assets/cPhp/server-config.php';
     <script src="assets/js/world-merc.js"></script>
     <script src="assets/js/polyfill.js"></script>
     <script src="assets/js/main.js"></script>
-    <script>
-      const BASE_URL = "<?php include 'assets/cPhp/server-config.php'; echo rtrim(PROJECT_BASE_URL, '/'); ?>";
-    </script>
     <script src="assets/js/cJs/dashboard.js"></script>
   </body>
 </html>

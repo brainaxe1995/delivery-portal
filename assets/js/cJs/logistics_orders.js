@@ -41,13 +41,11 @@ function fetchLogisticsOrders(page=1){
         $tb.append(`
           <tr>
             <td>#${o.order_id}</td>
-            <td>${formatDate(o.last_update)}</td>
+            <td>AED ${o.total}</td>
             <td>${o.status}</td>
-            <td>-</td>
-            <td>-</td>
             <td><button class="btn btn-sm btn-primary view-btn" data-id="${o.order_id}"><i class="lni lni-eye"></i></button></td>
             <td>${o.tracking_no || ''}</td>
-            <td>${o.provider || ''}</td>
+            <td>${o.origin || ''}</td>
           </tr>
         `);
       });
