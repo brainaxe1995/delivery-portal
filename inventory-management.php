@@ -81,7 +81,10 @@
                       <th>ID</th>
                       <th>Name</th>
                       <th>Stock</th>
+                      <th>Safety Stock</th>
+                      <th>Reorder Threshold</th>
                       <th>Status</th>
+                      <th>Actions</th>
                     </tr>
                   </thead>
                   <tbody><!-- injected by JS --></tbody>
@@ -97,6 +100,50 @@
           </div>
         </div>
       </section>
+
+      <!-- Edit Thresholds Modal -->
+      <div class="modal fade" id="thresholdModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Inventory Settings</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+              <input type="hidden" id="invProductId" />
+              <div class="mb-3">
+                <label class="form-label">Safety Stock</label>
+                <input type="number" class="form-control" id="safetyStock" />
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Reorder Threshold</label>
+                <input type="number" class="form-control" id="reorderThreshold" />
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary" id="saveThresholds">Save</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- History Modal -->
+      <div class="modal fade" id="historyModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Stock History</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table" id="historyTable">
+                <thead><tr><th>Qty</th><th>Reason</th><th>Time</th></tr></thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
 
       <footer class="footer">
         <script src="assets/js/cJs/footer.js"></script>

@@ -7,6 +7,16 @@ require_once __DIR__ . '/master-api.php';
 
 $apiKey = getenv('TRACK17_APIKEY');
 if (!$apiKey) {
+    $settingsFile = __DIR__ . '/../data/settings.json';
+    if (is_readable($settingsFile)) {
+        $settings = json_decode(file_get_contents($settingsFile), true);
+        if (isset($settings['shipping_key']) && $settings['shipping_key'] !== '') {
+            $apiKey = $settings['shipping_key'];
+        }
+    }
+}
+
+if (!$apiKey) {
     http_response_code(500);
     echo json_encode(['error' => 'TRACK17_APIKEY not set']);
     exit;

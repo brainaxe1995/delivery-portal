@@ -1,0 +1,7 @@
+CREATE TABLE IF NOT EXISTS price_tiers (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    product_id INTEGER NOT NULL,
+    min_qty INTEGER NOT NULL,
+    max_qty INTEGER NOT NULL,
+    unit_price REAL NOT NULL
+);

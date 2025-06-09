@@ -48,6 +48,7 @@ $BASE_URL = rtrim(PROJECT_BASE_URL, '/');
                   <th>Reason</th>
                   <th>Proof</th>
                   <th>Status History</th>
+                  <th>Actions</th>
                 </tr>
               </thead>
               <tbody></tbody>

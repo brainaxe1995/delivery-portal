@@ -53,7 +53,7 @@ function fetchInventory(page = 1) {
     error(_, __, err) {
       console.error('Inventory fetch failed:', err);
       $('#inventory-table tbody').html(
-        `<tr><td colspan="4" class="text-center">Error loading inventory.</td></tr>`
+      `<tr><td colspan="4" class="text-center">Error loading inventory.</td></tr>`
       );
     }
   });
@@ -72,20 +72,25 @@ function renderTable() {
   const $tb = $('#inventory-table tbody').empty();
   if (!filtered.length) {
     return $tb.append(
-      `<tr><td colspan="4" class="text-center">No items found.</td></tr>`
+      `<tr><td colspan="7" class="text-center">No items found.</td></tr>`
     );
   }
 
   filtered.forEach(i => {
+    const low = i.low_stock ? 'table-warning' : '';
     $tb.append(`
-      <tr>
+      <tr class="${low}">
         <td>${escapeHtml(i.id)}</td>
         <td>${escapeHtml(i.name)}</td>
         <td>${escapeHtml(i.stock_quantity ?? 'N/A')}</td>
+        <td>${escapeHtml(i.safety_stock ?? '')}</td>
+        <td>${escapeHtml(i.reorder_threshold ?? '')}</td>
         <td>
-          <span class="badge ${i.stock_status === 'instock' ? 'bg-success' : 'bg-danger'}">
-            ${escapeHtml(i.stock_status)}
-          </span>
+          <span class="badge ${i.stock_status === 'instock' ? 'bg-success' : 'bg-danger'}">${escapeHtml(i.stock_status)}</span>
+        </td>
+        <td>
+          <button class="btn btn-sm btn-secondary edit-threshold" data-id="${i.id}">Edit</button>
+          <button class="btn btn-sm btn-info view-history" data-id="${i.id}">History</button>
         </td>
       </tr>
     `);
@@ -96,3 +101,33 @@ function renderTable() {
 //     THIS LINE MAKES pagination.js “see” your fetchInventory() call
 // --------------------------------------------------------------------------------
 window.fetchPendingOrders = fetchInventory;
+
+$(document).on('click', '.edit-threshold', function(){
+  const id = $(this).data('id');
+  const item = allItems.find(i => i.id == id) || {};
+  $('#invProductId').val(id);
+  $('#safetyStock').val(item.safety_stock || '');
+  $('#reorderThreshold').val(item.reorder_threshold || '');
+  $('#thresholdModal').modal('show');
+});
+
+$('#saveThresholds').on('click', function(){
+  const product_id = $('#invProductId').val();
+  const safety_stock = $('#safetyStock').val();
+  const reorder_threshold = $('#reorderThreshold').val();
+  $.ajax({
+    url:`${BASE_URL}/assets/cPhp/update_inventory_settings.php`,
+    method:'POST',
+    contentType:'application/json',
+    data: JSON.stringify({product_id, safety_stock, reorder_threshold})
+  }).done(()=>{ $('#thresholdModal').modal('hide'); fetchInventory(currentPage); });
+});
+
+$(document).on('click', '.view-history', function(){
+  const id = $(this).data('id');
+  $.getJSON(`${BASE_URL}/assets/cPhp/get_stock_log.php`, {product_id:id}, rows => {
+    const tb = $('#historyTable tbody').empty();
+    rows.forEach(r => tb.append(`<tr><td>${r.change_qty}</td><td>${r.reason}</td><td>${r.timestamp}</td></tr>`));
+    $('#historyModal').modal('show');
+  });
+});

@@ -2,6 +2,7 @@
 // portal/assets/cPhp/update_product.php
 
 require_once(__DIR__ . '/master-api.php');  // defines $store_url, $consumer_key, $consumer_secret
+require_once(__DIR__ . '/db.php');
 
 // 1) Decode JSON payload (or fallback to $_POST)
 $raw  = file_get_contents('php://input');
@@ -97,6 +98,15 @@ function save_eta($product_id, $eta) {
     }
     file_put_contents($file, json_encode($new, JSON_PRETTY_PRINT));
 }
+
+function log_stock($product_id, $qty, $reason) {
+    global $db;
+    $stmt = $db->prepare('INSERT INTO stock_log (product_id, change_qty, reason) VALUES (:p,:q,:r)');
+    $stmt->bindValue(':p', $product_id, SQLITE3_INTEGER);
+    $stmt->bindValue(':q', $qty, SQLITE3_INTEGER);
+    $stmt->bindValue(':r', $reason, SQLITE3_TEXT);
+    $stmt->execute();
+}
 // 4) Fetch the product to know its type & variations
 list($code, $product) = wc_request('GET', "/wp-json/wc/v3/products/{$id}");
 if ($code !== 200 || !isset($product['type'])) {
@@ -114,6 +124,9 @@ if ($product['type'] === 'variable' && !empty($product['variations'])) {
         list($c, $resp) = wc_request('PUT', $variationEndpoint, $fields);
         $responses[$varId] = ['code'=>$c, 'response'=>$resp];
     }
+    if (isset($data['stock'])) {
+        log_stock($id, (int)$data['stock'], $data['reason'] ?? 'update');
+    }
     if ($restock_eta !== null) save_eta($id, $restock_eta);
     http_response_code(200);
     header('Content-Type: application/json; charset=utf-8');
@@ -124,6 +137,9 @@ if ($product['type'] === 'variable' && !empty($product['variations'])) {
 // 6) Otherwise (simple product) → update the product itself
 list($c2, $resp2) = wc_request('PUT', "/wp-json/wc/v3/products/{$id}", $fields);
 if ($restock_eta !== null) save_eta($id, $restock_eta);
+if (isset($data['stock'])) {
+    log_stock($id, (int)$data['stock'], $data['reason'] ?? 'update');
+}
 http_response_code($c2);
 header('Content-Type: application/json; charset=utf-8');
 echo json_encode($resp2);

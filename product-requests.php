@@ -45,6 +45,7 @@ $BASE_URL = rtrim(PROJECT_BASE_URL, '/');
                   <th>Product</th>
                   <th>Description</th>
                   <th>Requested</th>
+                  <th>Actions</th>
                 </tr>
               </thead>
               <tbody id="requestsBody"></tbody>
@@ -83,8 +84,31 @@ $BASE_URL = rtrim(PROJECT_BASE_URL, '/');
             <button type="button" class="btn btn-primary" id="saveRequest">Submit</button>
           </div>
         </div>
+    </div>
+  </div>
+    <!-- Pricing Modal -->
+    <div class="modal fade" id="pricingModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Bulk Pricing</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+          <div class="modal-body">
+            <input type="hidden" id="priceProductId" />
+            <table class="table" id="tiersTable">
+              <thead><tr><th>Min Qty</th><th>Max Qty</th><th>Unit Price</th><th></th></tr></thead>
+              <tbody></tbody>
+            </table>
+            <button id="addTier" type="button" class="btn btn-sm btn-secondary">Add Tier</button>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" id="saveTiers">Save</button>
+          </div>
+        </div>
       </div>
     </div>
+
     <footer class="footer">
       <script src="assets/js/cJs/footer.js"></script>
     </footer>
