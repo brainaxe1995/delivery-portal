@@ -109,7 +109,7 @@ require_once __DIR__ . '/assets/cPhp/config/bootstrap.php';
       const BASE_URL = "<?php include 'assets/cPhp/server-config.php'; echo rtrim(PROJECT_BASE_URL, '/'); ?>";
     </script>
     
-    <script src="assets/js/cJs/refunded_orders.js"></script>
+    <script src="assets/js/cJs/refunded-orders.js"></script>
     <script src="assets/js/cJs/pagination.js"></script>
   </body>
 </html>

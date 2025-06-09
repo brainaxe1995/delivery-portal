@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/assets/cPhp/config/bootstrap.php';
+require_once __DIR__ . '/assets/cPhp/server-config.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -15,6 +16,9 @@ require_once __DIR__ . '/assets/cPhp/config/bootstrap.php';
     <link rel="stylesheet" href="assets/css/materialdesignicons.min.css" />
     <link rel="stylesheet" href="assets/css/fullcalendar.css" />
     <link rel="stylesheet" href="assets/css/main.css" />
+    <script>
+      window.BASE_URL = "<?= rtrim(PROJECT_BASE_URL, '/') ?>";
+    </script>
     <!-- Inline CSS -->
     <style>
       td {
@@ -96,20 +100,7 @@ require_once __DIR__ . '/assets/cPhp/config/bootstrap.php';
     </main>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="assets/js/bootstrap.bundle.min.js"></script>
-    <script src="assets/js/Chart.min.js"></script>
-    <script src="assets/js/dynamic-pie-chart.js"></script>
-    <script src="assets/js/moment.min.js"></script>
-    <script src="assets/js/fullcalendar.js"></script>
-    <script src="assets/js/jvectormap.min.js"></script>
-    <script src="assets/js/world-merc.js"></script>
-    <script src="assets/js/polyfill.js"></script>
     <script src="assets/js/main.js"></script>
-    <!-- Our custom JS files for handling orders & pagination -->
-    <script>
-      const BASE_URL = "<?php include 'assets/cPhp/server-config.php'; echo rtrim(PROJECT_BASE_URL, '/'); ?>";
-    </script>
-    
-    <script src="assets/js/cJs/cancelled_orders.js"></script>
-    <script src="assets/js/cJs/pagination.js"></script>
+    <script src="assets/js/cJs/cancelled-orders.js"></script>
   </body>
 </html>

@@ -2,7 +2,6 @@
 // portal/delivered-orders.php
 require_once __DIR__ . '/assets/cPhp/config/bootstrap.php';
 require_once __DIR__ . '/assets/cPhp/server-config.php';
-$BASE_URL = rtrim(PROJECT_BASE_URL, '/');
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -13,6 +12,7 @@ $BASE_URL = rtrim(PROJECT_BASE_URL, '/');
   <link rel="stylesheet" href="assets/css/bootstrap.min.css"/>
   <link rel="stylesheet" href="assets/css/lineicons.css"/>
   <link rel="stylesheet" href="assets/css/main.css"/>
+  <script>window.BASE_URL = "<?= rtrim(PROJECT_BASE_URL, '/') ?>";</script>
   <style>.items-col p{margin:0;}</style>
 </head>
 <body>
@@ -63,9 +63,6 @@ $BASE_URL = rtrim(PROJECT_BASE_URL, '/');
   <script src="assets/js/bootstrap.bundle.min.js"></script>
   <script src="assets/js/main.js"></script>
 
-  <!-- supply BASE_URL for AJAX -->
-  <script>const BASE_URL = "<?= $BASE_URL ?>";</script>
-  <script src="assets/js/cJs/delivered_orders.js"></script>
-  <script src="assets/js/cJs/pagination.js"></script>
+  <script src="assets/js/cJs/delivered-orders.js"></script>
 </body>
 </html>
