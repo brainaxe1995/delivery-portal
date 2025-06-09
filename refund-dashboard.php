@@ -41,7 +41,7 @@ $BASE_URL = rtrim(PROJECT_BASE_URL, '/');
         </div>
         <div class="card-style mb-30">
           <div class="table-responsive">
-            <table class="table" id="refundTable">
+            <table class="table">
               <thead>
                 <tr>
                   <th>Order</th>
@@ -51,7 +51,7 @@ $BASE_URL = rtrim(PROJECT_BASE_URL, '/');
                   <th>Actions</th>
                 </tr>
               </thead>
-              <tbody></tbody>
+              <tbody id="refundTable"></tbody>
             </table>
           </div>
         </div>

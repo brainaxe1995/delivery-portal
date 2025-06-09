@@ -31,7 +31,7 @@ function fetchRequests(page = 1) {
 }
 
 function renderTable(list){
-  const $tb = $('#refundTable tbody').empty();
+  const $tb = $('#refundTable').empty();
 
   if (!list.length) {
     return $tb.append('<tr><td colspan="5" class="text-center">No refunds found.</td></tr>');
@@ -52,7 +52,13 @@ function renderTable(list){
         <td>${hist}</td>
         <td><button class="btn btn-sm btn-primary add-comment" data-id="${r.id}">Add Comment</button></td>
       </tr>
-      <tr class="comments-row"><td colspan="5"><div class="comments" id="comments-${r.id}"></div><textarea class="form-control comment-text mt-2" rows="2" data-id="${r.id}"></textarea></td></tr>`);
+      <tr class="comments-row">
+        <td colspan="5">
+          <div class="comments" id="comments-${r.id}"></div>
+          <textarea class="form-control comment-text mt-2" rows="2" data-id="${r.id}"></textarea>
+          <button class="btn btn-sm btn-success post-comment" data-id="${r.id}">Post</button>
+        </td>
+      </tr>`);
     loadComments(r.id);
   });
 }
@@ -76,6 +82,10 @@ function loadComments(id){
 }
 
 $(document).on('click', '.add-comment', function(){
+  $(this).closest('tr').next('.comments-row').toggle();
+});
+
+$(document).on('click', '.post-comment', function(){
   const id = $(this).data('id');
   const text = $(`.comment-text[data-id="${id}"]`).val();
   if (!text) return;

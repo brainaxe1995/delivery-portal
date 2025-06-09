@@ -68,6 +68,7 @@ $BASE_URL = rtrim(PROJECT_BASE_URL, '/');
                 <label for="orderSearch" class="me-2 mb-0">Search:</label>
                 <input id="orderSearch" type="text" class="form-control form-control-sm"
                        style="width:120px;" placeholder="Order ID" />
+                <button id="refreshShipments" class="btn btn-outline-primary btn-sm ms-2">Refresh</button>
               </div>
               <!-- end col -->
             </div>
@@ -79,7 +80,7 @@ $BASE_URL = rtrim(PROJECT_BASE_URL, '/');
                 <div class="card-style mb-30">
                   <h6 class="mb-10">Data Table</h6>
                   <div class="table-wrapper table-responsive">
-                    <table class="table">
+                    <table id="shipmentsTable" class="table">
                       <thead>
                         <tr>
                           <th><h6>Order #</h6></th>
