@@ -97,7 +97,7 @@ require_once __DIR__ . '/assets/cPhp/config/bootstrap.php';
 </script>
 
     <!-- page‑specific -->
-    <script src="assets/js/cJs/new_orders.js"></script>
+    <script src="assets/js/cJs/new-orders.js"></script>
     <!-- generic pagination -->
     <script src="assets/js/cJs/pagination.js"></script>
   </body>

@@ -111,7 +111,7 @@ require_once __DIR__ . '/assets/cPhp/config/bootstrap.php';
   ?>";
 </script>
     <!-- Our custom JS files for handling orders & pagination -->
-<script src="assets/js/cJs/pending_orders.js"></script>
+<script src="assets/js/cJs/pending-orders.js"></script>
     <script src="assets/js/cJs/pagination.js"></script>
   </body>
 </html>
