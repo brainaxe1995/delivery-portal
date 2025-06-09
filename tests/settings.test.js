@@ -3,10 +3,10 @@ const path = require('path');
 const vm = require('vm');
 
 
-describe('payment_terms.js', () => {
+describe('payment-terms.js', () => {
   let script;
   beforeAll(() => {
-    script = fs.readFileSync(path.resolve(__dirname, '../assets/js/cJs/payment_terms.js'), 'utf8');
+    script = fs.readFileSync(path.resolve(__dirname, '../assets/js/cJs/payment-terms.js'), 'utf8');
   });
 
   beforeEach(() => {

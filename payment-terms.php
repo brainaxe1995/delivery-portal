@@ -82,6 +82,6 @@ require_once __DIR__ . '/assets/cPhp/server-config.php';
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="assets/js/bootstrap.bundle.min.js"></script>
   <script src="assets/js/main.js"></script>
-  <script src="assets/js/cJs/payment_terms.js"></script>
+  <script src="assets/js/cJs/payment-terms.js"></script>
 </body>
 </html>
