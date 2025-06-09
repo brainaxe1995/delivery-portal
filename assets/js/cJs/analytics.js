@@ -80,19 +80,22 @@ $(function() {
       });
     }
 
-    if (data.chart1 && document.getElementById('chartMonth')) {
-      new Chart(document.getElementById('chartMonth'), {
-        type: 'bar',
-        data: {
-          labels: data.chart1.labels,
-          datasets: [{
-            label: 'Revenue',
-            data: data.chart1.revenue,
-            backgroundColor: '#42a5f5'
-          }]
-        },
-        options: { responsive: true }
-      });
-    }
+
+    $.getJSON(`${BASE_URL}/assets/cPhp/get_analytics.php?period=monthly`, month => {
+      if (month.chart1 && document.getElementById('chartMonth')) {
+        new Chart(document.getElementById('chartMonth'), {
+          type: 'bar',
+          data: {
+            labels: month.chart1.labels,
+            datasets: [{
+              label: 'Revenue',
+              data: month.chart1.revenue,
+              backgroundColor: '#42a5f5'
+            }]
+          },
+          options: { responsive: true }
+        });
+      }
+    });
   });
 });

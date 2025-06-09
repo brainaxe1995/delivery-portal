@@ -42,6 +42,7 @@ $summary = [
     'pending'       => 0,
     'in_transit'    => 0,
     'delivered'     => 0,
+    'on_hold'       => 0,
     'refunded'      => 0,
     'revenue'       => 0.0,
     'top_sellers'   => [],  // will fill in step 5
@@ -87,6 +88,7 @@ foreach ($orders as $o) {
     if ($st === 'pending')     $summary['pending']++;
     if ($st === 'in-transit')  $summary['in_transit']++;
     if ($st === 'delivered')   $summary['delivered']++;
+    if ($st === 'on-hold')     $summary['on_hold']++;
     if ($st === 'refunded')    $summary['refunded']++;
 
     // Monthly revenue

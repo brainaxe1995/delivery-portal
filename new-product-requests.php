@@ -29,13 +29,13 @@ $BASE_URL = rtrim(PROJECT_BASE_URL, '/');
       </header>
       <section class="section">
         <div class="container-fluid">
-          <h3 class="mb-3">New Product Requests</h3>
-          <form id="requestForm" class="row g-2 mb-3">
-            <div class="col-md-3"><input id="supplier" class="form-control" placeholder="Supplier" required></div>
-            <div class="col-md-3"><input id="product" class="form-control" placeholder="Product" required></div>
-            <div class="col-md-4"><input id="description" class="form-control" placeholder="Description"></div>
-            <div class="col-md-2"><button class="btn btn-primary w-100">Add</button></div>
-          </form>
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h3 class="mb-0">New Product Requests</h3>
+            <div>
+              <button id="newProductBtn" class="btn btn-primary btn-sm me-2">New Product</button>
+              <button id="priceChangeBtn" class="btn btn-secondary btn-sm">Price Change</button>
+            </div>
+          </div>
           <div class="table-responsive">
             <table class="table table-striped table-hover table-bordered" id="requestsTable">
               <thead>
@@ -51,24 +51,6 @@ $BASE_URL = rtrim(PROJECT_BASE_URL, '/');
               <tbody id="requestsBody"></tbody>
             </table>
           </div>
-
-          <h5 class="mt-4 mb-2">Bulk Pricing</h5>
-          <input type="hidden" id="priceProductId" />
-          <div class="table-responsive mb-2">
-            <table class="table table-striped table-hover" id="tiersTable">
-              <thead>
-                <tr>
-                  <th>Min Qty</th>
-                  <th>Max Qty</th>
-                  <th>Unit Price</th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody></tbody>
-            </table>
-          </div>
-          <button id="addTier" type="button" class="btn btn-sm btn-secondary me-2">Add Tier</button>
-          <button id="saveTiers" type="button" class="btn btn-sm btn-primary">Save Tiers</button>
 
           <!-- Tier Modal -->
           <div class="modal fade" id="tierModal" tabindex="-1" aria-hidden="true">
@@ -97,6 +79,62 @@ $BASE_URL = rtrim(PROJECT_BASE_URL, '/');
                 <div class="modal-footer">
                   <button type="button" class="btn btn-primary" id="saveTierModal">Save</button>
                 </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Request Modal -->
+        <div class="modal fade" id="requestModal" tabindex="-1" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">Submit Request</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+              </div>
+              <div class="modal-body">
+                <form id="requestForm">
+                  <div class="mb-3">
+                    <label class="form-label">Supplier</label>
+                    <input type="text" class="form-control" id="supplier" required />
+                  </div>
+                  <div class="mb-3">
+                    <label class="form-label">Product</label>
+                    <input type="text" class="form-control" id="product" required />
+                  </div>
+                  <div class="mb-3">
+                    <label class="form-label">Description</label>
+                    <textarea class="form-control" id="description"></textarea>
+                  </div>
+                </form>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="saveRequest">Submit</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pricing Modal -->
+        <div class="modal fade" id="pricingModal" tabindex="-1" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">Bulk Pricing</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+              </div>
+              <div class="modal-body">
+                <input type="hidden" id="priceProductId" />
+                <table class="table table-striped table-hover" id="tiersTable">
+                  <thead>
+                    <tr><th>Min Qty</th><th>Max Qty</th><th>Unit Price</th><th></th></tr>
+                  </thead>
+                  <tbody></tbody>
+                </table>
+                <button id="addTier" type="button" class="btn btn-sm btn-secondary">Add Tier</button>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="saveTiers">Save</button>
               </div>
             </div>
           </div>

@@ -172,7 +172,13 @@ $('#editProductForm').submit(function(e){
   })
   .done(() => {
     bootstrap.Modal.getInstance($('#editProductModal')[0]).hide();
-    fetchProducts(currentPage);
+    const idx = allProducts.findIndex(p => p.id == payload.id);
+    if (idx >= 0) {
+      allProducts[idx] = { ...allProducts[idx], ...payload };
+      renderTable();
+    } else {
+      fetchProducts(currentPage);
+    }
   })
   .fail(xhr => {
     console.error('Update failed:', xhr.responseText);

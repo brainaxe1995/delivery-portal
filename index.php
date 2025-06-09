@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/assets/cPhp/config/bootstrap.php';
+require_once __DIR__ . '/assets/cPhp/server-config.php';
 ?>
 <!-- portal/index.php -->
 <!DOCTYPE html>
@@ -73,6 +74,15 @@ require_once __DIR__ . '/assets/cPhp/config/bootstrap.php';
                 <div class="content">
                   <h6>Orders Delivered</h6>
                   <h3 id="box-delivered">Loading…</h3>
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-3 col-lg-4 col-sm-6">
+              <div class="icon-card mb-30">
+                <div class="icon secondary"><i class="lni lni-pause"></i></div>
+                <div class="content">
+                  <h6>On Hold Orders</h6>
+                  <h3 id="box-on-hold">Loading…</h3>
                 </div>
               </div>
             </div>

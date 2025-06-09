@@ -1,6 +1,7 @@
 <?php
 // portal/inventory-management.php
 require_once __DIR__ . '/assets/cPhp/config/bootstrap.php';
+require_once __DIR__ . '/assets/cPhp/server-config.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">
