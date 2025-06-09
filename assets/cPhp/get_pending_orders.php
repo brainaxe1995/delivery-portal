@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/config/bootstrap.php';
 // get_pending_orders.php
 //
 // Fetches WooCommerce orders with status=pending ("New / Pending Orders")

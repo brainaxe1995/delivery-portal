@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/config/bootstrap.php';
 // get_processing_orders.php
 //
 // Fetches WooCommerce orders with status=processing ("New Orders")

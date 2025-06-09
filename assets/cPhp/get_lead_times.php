@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/config/bootstrap.php';
 // portal/assets/cPhp/get_lead_times.php
 require_once __DIR__ . '/db.php';
 

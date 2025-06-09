@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/config/bootstrap.php';
 require_once __DIR__ . '/master-api.php';
 
 function callWooAPI($baseUrl, $endpoint, $ck, $cs) {

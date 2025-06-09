@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/config/bootstrap.php';
 // assets/cPhp/update_product_request.php
 // Update the status of a product request in the SQLite database
 

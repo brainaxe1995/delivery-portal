@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/config/bootstrap.php';
 // assets/cPhp/upload_manifest.php
 
 require_once(__DIR__ . '/master-api.php');

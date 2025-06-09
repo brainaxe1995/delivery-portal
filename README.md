@@ -5,17 +5,17 @@
 The PHP scripts under `assets/cPhp` expect the following environment variables to be present.
 `master-api.php` will terminate early if any of the first three variables are missing:
 
-- `WOOCOMMERCE_CK` – WooCommerce consumer key
-- `WOOCOMMERCE_CS` – WooCommerce consumer secret
+- `WC_CONSUMER_KEY` – WooCommerce consumer key
+- `WC_CONSUMER_SECRET` – WooCommerce consumer secret
 - `STORE_URL` – URL of your WooCommerce store
 - `TRACK17_APIKEY` – API key for communicating with [17TRACK](https://www.17track.net/)
 - `ALERT_EMAIL`  – optional address to email when a shipment delay is detected
 
-Create a `.env` file in the project root containing these variables and export them in your server environment before running the application. If `WOOCOMMERCE_CK`, `WOOCOMMERCE_CS`, or `STORE_URL` are unset you will see the error message `Environment variables WOOCOMMERCE_CK, WOOCOMMERCE_CS and STORE_URL must be set.` when a PHP page loads:
+Create a `.env` file in the project root containing these variables and export them in your server environment before running the application. If `WC_CONSUMER_KEY`, `WC_CONSUMER_SECRET`, or `STORE_URL` are unset you will see the error message `Environment variables WC_CONSUMER_KEY, WC_CONSUMER_SECRET and STORE_URL must be set.` when a PHP page loads:
 
 ```bash
-WOOCOMMERCE_CK=your_key
-WOOCOMMERCE_CS=your_secret
+WC_CONSUMER_KEY=your_key
+WC_CONSUMER_SECRET=your_secret
 STORE_URL=https://example.com
 TRACK17_APIKEY=your_api_key
 ```
@@ -25,7 +25,7 @@ TRACK17_APIKEY=your_api_key
 If a PHP script exits with the message:
 
 ```
-Environment variables WOOCOMMERCE_CK, WOOCOMMERCE_CS and STORE_URL must be set.
+Environment variables WC_CONSUMER_KEY, WC_CONSUMER_SECRET and STORE_URL must be set.
 ```
 
 the application could not locate your WooCommerce credentials. Copy `.env.example` to `.env` and fill in your keys:
@@ -87,7 +87,7 @@ created yet, the script pulls order details from WooCommerce and then
 saves the generated PDF under `assets/uploads/invoices/`.
 
 Because it talks to WooCommerce, `download_invoice.php` requires the
-`WOOCOMMERCE_CK`, `WOOCOMMERCE_CS` and `STORE_URL` variables defined in
+`WC_CONSUMER_KEY`, `WC_CONSUMER_SECRET` and `STORE_URL` variables defined in
 your `.env` file just like other API scripts.
 
 ### Creating a Test Invoice

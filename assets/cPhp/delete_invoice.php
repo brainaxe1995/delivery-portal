@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/config/bootstrap.php';
 header('Content-Type: application/json; charset=utf-8');
 $file = __DIR__ . '/../data/invoices.json';
 $data = file_exists($file) ? json_decode(file_get_contents($file), true) : [];

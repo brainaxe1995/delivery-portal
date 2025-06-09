@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/config/bootstrap.php';
 // portal/assets/cPhp/get_invoices.php
 
 header('Content-Type: application/json; charset=utf-8');

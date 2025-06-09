@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/config/bootstrap.php';
 // portal/assets/cPhp/get_delivered_order.php
 require_once __DIR__ . '/master-api.php';
 

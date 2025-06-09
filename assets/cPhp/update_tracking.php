@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/config/bootstrap.php';
 // assets/cPhp/update_tracking.php
 // Query the 17track API for shipment updates and optionally
 // update WooCommerce order statuses.

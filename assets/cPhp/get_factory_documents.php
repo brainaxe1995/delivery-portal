@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/config/bootstrap.php';
 // portal/assets/cPhp/get_factory_documents.php
 require_once __DIR__ . '/db.php';
 

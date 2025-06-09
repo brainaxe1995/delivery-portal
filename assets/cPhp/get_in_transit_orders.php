@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/config/bootstrap.php';
 // get_in_transit_orders.php
 //
 // Fetches WooCommerce orders with status=in-transit ("In-Transit Orders")

@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/config/bootstrap.php';
 // portal/assets/cPhp/get_payment_terms.php
 header('Content-Type: application/json; charset=utf-8');
 $file = __DIR__ . '/../data/payment_terms.json';

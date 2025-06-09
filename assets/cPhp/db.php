@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/config/bootstrap.php';
 // portal/assets/cPhp/db.php
 
 // Path to SQLite database file - allow override via DB_FILE env var
