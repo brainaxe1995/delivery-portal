@@ -2,7 +2,6 @@
 // portal/logistics-orders.php
 require_once __DIR__ . '/assets/cPhp/config/bootstrap.php';
 require_once __DIR__ . '/assets/cPhp/server-config.php';
-$BASE_URL = rtrim(PROJECT_BASE_URL, '/');
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -35,7 +34,10 @@ $BASE_URL = rtrim(PROJECT_BASE_URL, '/');
       /* ... Add more .status-* classes as needed ... */
     </style>
     <!-- Provide BASE_URL constant for JS -->
-    <script>const BASE_URL = "<?= $BASE_URL ?>";</script>
+    <script>
+      // Must appear before any other JS
+      window.BASE_URL = "<?php echo rtrim(PROJECT_BASE_URL, '/'); ?>";
+    </script>
   </head>
   <body>
     <!-- ======== Preloader (optional) =========== -->
@@ -85,8 +87,6 @@ $BASE_URL = rtrim(PROJECT_BASE_URL, '/');
                       <thead>
                         <tr>
                           <th><h6>Order #</h6></th>
-                          <th><h6>Date</h6></th>
-                          <th><h6>Status</h6></th>
                           <th><h6>Total</h6></th>
                           <th><h6>Export/Status</h6></th>
                           <th><h6>Actions</h6></th>

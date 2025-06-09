@@ -4,7 +4,6 @@ $(function() {
     $('#box-pending').text(data.pending);
     $('#box-in-transit').text(data.in_transit);
     $('#box-delivered').text(data.delivered);
-    $('#box-on-hold').text(data.on_hold || 0);
     $('#box-refunds').text(data.refunded);
     $('#box-low-stock').text(data.low_stock);
     $('#box-revenue').text(`AED ${data.revenue.toFixed(2)}`);
@@ -21,6 +20,11 @@ $(function() {
     }
 
     renderNotifications(data.notifications);
+
+    // Fetch on-hold orders separately
+    $.getJSON(`${BASE_URL}/assets/cPhp/get_on_hold_count.php`, c => {
+      $('#box-on-hold').text(c.count || 0);
+    });
 
     function fetchTrackingNotifications() {
       $.getJSON(`${BASE_URL}/assets/cPhp/update_tracking.php`, res => {
@@ -70,13 +74,13 @@ $(function() {
       });
     }
 
-    $.getJSON(`${BASE_URL}/assets/cPhp/get_top_sellers.php`, list => {
+    $.getJSON(`${BASE_URL}/assets/cPhp/get_top_sellers.php?limit=10`, list => {
       renderTop(list);
     });
 
     $('#top-range').on('change', function() {
       const period = this.value;
-      $.getJSON(`${BASE_URL}/assets/cPhp/get_top_sellers.php?period=${period}`, renderTop);
+      $.getJSON(`${BASE_URL}/assets/cPhp/get_top_sellers.php?limit=10&period=${period}`, renderTop);
     });
   });
 });

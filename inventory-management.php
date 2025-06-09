@@ -23,6 +23,10 @@ require_once __DIR__ . '/assets/cPhp/server-config.php';
       td { white-space: nowrap; vertical-align: top; }
       .badge { font-size: .9em; }
     </style>
+    <script>
+      // Must appear before any other JS
+      window.BASE_URL = "<?php echo rtrim(PROJECT_BASE_URL, '/'); ?>";
+    </script>
   </head>
   <body>
     <div id="skeleton-loader"><div class="skeleton-block"></div></div>
@@ -156,14 +160,6 @@ require_once __DIR__ . '/assets/cPhp/server-config.php';
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="assets/js/bootstrap.bundle.min.js"></script>
     <script src="assets/js/main.js"></script>
-
-    <!-- Portal Base URL for AJAX -->
-    <script>
-      window.BASE_URL = "<?php
-        include 'assets/cPhp/server-config.php';
-        echo rtrim(PROJECT_BASE_URL, '/');
-      ?>";
-    </script>
 
     <!-- Page-specific JS -->
     <script src="assets/js/cJs/inventory-management.js"></script>
