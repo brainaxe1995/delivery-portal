@@ -112,3 +112,18 @@ php assets/cPhp/download_invoice.php?id=1 > invoice-1.pdf
 ## Portal Settings
 
 General configuration values are stored in `assets/data/settings.json` and can be edited through `settings.php`. The form lets you update the shipping API key, WooCommerce credentials, interface language, time zone and currency. Changes are saved to the JSON file via AJAX calls to `assets/cPhp/update_settings.php`.
+
+## Webhook Logs
+
+WooCommerce or Shopify can be configured to POST webhook events to
+`assets/cPhp/webhook_handler.php`. The handler simply appends each JSON
+payload with a timestamp to `assets/data/webhook_logs.json`. Only the
+last 100 entries are retained.
+
+Example curl test:
+
+```bash
+curl -X POST http://localhost:8000/assets/cPhp/webhook_handler.php \
+  -H 'Content-Type: application/json' \
+  -d '{"event":"test","foo":"bar"}'
+```
